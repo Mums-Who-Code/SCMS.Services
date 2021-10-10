@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using SMCS.Services.Api.Brokers.DateTimes;
 
 namespace SMCS.Services.Api
 {
@@ -22,6 +23,7 @@ namespace SMCS.Services.Api
         {
 
             services.AddControllers();
+            services.AddScoped<IDateTimeBroker, DateTimeBroker>();
 
             services.AddSwaggerGen(options =>
             {
