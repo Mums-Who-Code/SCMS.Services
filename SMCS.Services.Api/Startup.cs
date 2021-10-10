@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using SMCS.Services.Api.Brokers.DateTimes;
 using SMCS.Services.Api.Brokers.Loggings;
+using SMCS.Services.Api.Brokers.Storages;
 
 namespace SMCS.Services.Api
 {
@@ -65,6 +66,7 @@ namespace SMCS.Services.Api
             services.AddScoped<IDateTimeBroker, DateTimeBroker>();
             services.AddScoped<ILogger, Logger<LoggingBroker>>();
             services.AddScoped<ILoggingBroker, LoggingBroker>();
+            services.AddScoped<IStorageBroker, StorageBroker>();
         }
     }
 }
