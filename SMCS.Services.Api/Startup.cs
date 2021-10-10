@@ -44,7 +44,7 @@ namespace SMCS.Services.Api
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
 
-                app.UseSwaggerUI(options => 
+                app.UseSwaggerUI(options =>
                     options.SwaggerEndpoint(
                         name: "/swagger/v1/swagger.json",
                         url: "SMCS.Services.Api v1"));
