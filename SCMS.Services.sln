@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31717.71
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMCS.Services.Api", "SMCS.Services.Api\SMCS.Services.Api.csproj", "{6109363E-56D8-4A04-9470-7DBCEA88556A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{722E8F19-B674-44BF-AB30-A183F2605895}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6109363E-56D8-4A04-9470-7DBCEA88556A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6109363E-56D8-4A04-9470-7DBCEA88556A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6109363E-56D8-4A04-9470-7DBCEA88556A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6109363E-56D8-4A04-9470-7DBCEA88556A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2EA7DC15-FB61-4EED-9EA0-E23D52628AB1}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,3 @@
+[*.cs]
+
+file_header_template = -----------------------------------------------------------------------\nCopyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.\n-----------------------------------------------------------------------
