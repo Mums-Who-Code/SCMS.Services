@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCMS.Services.Tests.Unit", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCMS.Services.Tests.Acceptance", "SCMS.Services.Tests.Acceptance\SCMS.Services.Tests.Acceptance.csproj", "{05495E52-2950-4827-BC2E-CD145D51F7FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCMS.Services.Infrastructure.Build", "SCMS.Services.Infrastructure.Build\SCMS.Services.Infrastructure.Build.csproj", "{824C6180-B887-4A34-B81B-10C0F3B4286C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{05495E52-2950-4827-BC2E-CD145D51F7FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05495E52-2950-4827-BC2E-CD145D51F7FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05495E52-2950-4827-BC2E-CD145D51F7FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{824C6180-B887-4A34-B81B-10C0F3B4286C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{824C6180-B887-4A34-B81B-10C0F3B4286C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{824C6180-B887-4A34-B81B-10C0F3B4286C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{824C6180-B887-4A34-B81B-10C0F3B4286C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
