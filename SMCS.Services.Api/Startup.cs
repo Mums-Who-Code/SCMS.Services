@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using SMCS.Services.Api.Brokers.DateTimes;
+using SMCS.Services.Api.Brokers.Loggings;
 
 namespace SMCS.Services.Api
 {
@@ -23,7 +25,7 @@ namespace SMCS.Services.Api
         {
 
             services.AddControllers();
-            services.AddScoped<IDateTimeBroker, DateTimeBroker>();
+            AddBrokers(services);
 
             services.AddSwaggerGen(options =>
             {
@@ -56,6 +58,13 @@ namespace SMCS.Services.Api
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => endpoints.MapControllers());
+        }
+
+        private void AddBrokers(IServiceCollection services)
+        {
+            services.AddScoped<IDateTimeBroker, DateTimeBroker>();
+            services.AddScoped<ILogger, Logger<LoggingBroker>>();
+            services.AddScoped<ILoggingBroker, LoggingBroker>();
         }
     }
 }
