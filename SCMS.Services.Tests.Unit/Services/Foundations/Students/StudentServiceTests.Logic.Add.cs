@@ -38,6 +38,15 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             // then
             actualStudent.Should().
                 BeEquivalentTo(expectedStudent);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentAsync(
+                    It.IsAny<Student>()),
+                        Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
