@@ -5,6 +5,7 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
+using Moq;
 using SMCS.Services.Api.Models.Foundations.Students;
 using Xunit;
 
@@ -20,12 +21,14 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
                 CreateRandomStudent();
 
             Student inputStudent = randomStudent;
-
-            Student storedStudent =
-                inputStudent.DeepClone();
+            Student storedStudent = inputStudent;
 
             Student expectedStudent =
                 storedStudent.DeepClone();
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertStudentAsync(inputStudent))
+                    .ReturnsAsync(storedStudent);
 
             // when
             Student actualStudent = await
