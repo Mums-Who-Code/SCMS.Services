@@ -17,7 +17,8 @@ namespace SMCS.Services.Api.Services.Foundations.Students
 
             Validate(
                 (Rule: IsInvalid(student.Id), Parameter: nameof(Student.Id)),
-                (Rule: IsInvalid(text: student.FirstName), Parameter: nameof(Student.FirstName)));
+                (Rule: IsInvalid(text: student.FirstName), Parameter: nameof(Student.FirstName)),
+                (Rule: IsInvalid(text: student.LastName), Parameter: nameof(Student.LastName)));
         }
 
         private void ValidateInput(Student student)
