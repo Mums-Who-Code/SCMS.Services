@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace SMCS.Services.Api.Brokers.Storages
 {
-    public class StorageBroker : EFxceptionsContext, IStorageBroker
+    public partial class StorageBroker : EFxceptionsContext, IStorageBroker
     {
         private readonly IConfiguration configuration;
 
@@ -16,6 +16,11 @@ namespace SMCS.Services.Api.Brokers.Storages
         {
             this.configuration = configuration;
             this.Database.Migrate();
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            SeedUsers(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
