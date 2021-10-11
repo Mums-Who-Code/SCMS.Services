@@ -21,6 +21,7 @@ namespace SMCS.Services.Api.Brokers.Storages
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             SeedUsers(modelBuilder);
+            AddStudentReferences(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
