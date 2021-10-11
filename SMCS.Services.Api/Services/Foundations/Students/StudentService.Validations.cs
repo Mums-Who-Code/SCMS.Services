@@ -16,7 +16,8 @@ namespace SMCS.Services.Api.Services.Foundations.Students
             ValidateInput(student);
 
             Validate(
-                (Rule: IsInvalid(student.Id), Parameter: nameof(Student.Id)));
+                (Rule: IsInvalid(student.Id), Parameter: nameof(Student.Id)),
+                (Rule: IsInvalid(text: student.FirstName), Parameter: nameof(Student.FirstName)));
         }
 
         private void ValidateInput(Student student)
@@ -31,6 +32,12 @@ namespace SMCS.Services.Api.Services.Foundations.Students
         {
             Condition = id == Guid.Empty,
             Message = "Id is required."
+        };
+
+        private static dynamic IsInvalid(string text) => new
+        {
+            Condition = String.IsNullOrWhiteSpace(text),
+            Message = "Text is required."
         };
 
         private void Validate(params (dynamic Rule, string Parameter)[] validations)
