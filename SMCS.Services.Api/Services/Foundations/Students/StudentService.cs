@@ -10,7 +10,7 @@ using SMCS.Services.Api.Models.Foundations.Students;
 
 namespace SMCS.Services.Api.Services.Foundations.Students
 {
-    public class StudentService : IStudentService
+    public partial class StudentService : IStudentService
     {
         private readonly IStorageBroker storageBroker;
         private readonly IDateTimeBroker dateTimeBroker;
@@ -27,6 +27,11 @@ namespace SMCS.Services.Api.Services.Foundations.Students
         }
 
         public ValueTask<Student> AddStudentAsync(Student student) =>
-            this.storageBroker.InsertStudentAsync(student);
+        TryCatch(async () =>
+        {
+            ValidateInput(student);
+
+            return await this.storageBroker.InsertStudentAsync(student);
+        });
     }
 }
