@@ -11,6 +11,7 @@ using SMCS.Services.Api.Brokers.Storages;
 using SMCS.Services.Api.Models.Foundations.Students;
 using SMCS.Services.Api.Services.Foundations.Students;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
 {
@@ -38,6 +39,14 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             return actualException =>
                 actualException.Message == expectedException.Message
                 && actualException.InnerException.Message == expectedException.InnerException.Message;
+        }
+
+        private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message
+                && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
         private static DateTimeOffset GetRandomDateTime() =>

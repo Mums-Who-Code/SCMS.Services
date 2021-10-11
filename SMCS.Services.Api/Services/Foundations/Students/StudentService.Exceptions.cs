@@ -23,6 +23,10 @@ namespace SMCS.Services.Api.Services.Foundations.Students
             {
                 throw CreateAndLogValidationException(nullStudentException);
             }
+            catch (Exception invalidStudentException)
+            {
+                throw CreateAndLogValidationException(invalidStudentException);
+            }
         }
 
         private StudentValidationException CreateAndLogValidationException(Exception exception)

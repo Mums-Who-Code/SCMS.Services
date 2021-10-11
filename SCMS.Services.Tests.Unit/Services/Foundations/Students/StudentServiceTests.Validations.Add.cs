@@ -72,7 +72,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(
-                    SameExceptionAs(expectedStudentValidationException))),
+                    SameValidationExceptionAs(expectedStudentValidationException))),
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>

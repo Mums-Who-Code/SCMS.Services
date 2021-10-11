@@ -29,7 +29,7 @@ namespace SMCS.Services.Api.Services.Foundations.Students
         public ValueTask<Student> AddStudentAsync(Student student) =>
         TryCatch(async () =>
         {
-            ValidateInput(student);
+            ValidateStudentOnAdd(student);
 
             return await this.storageBroker.InsertStudentAsync(student);
         });
