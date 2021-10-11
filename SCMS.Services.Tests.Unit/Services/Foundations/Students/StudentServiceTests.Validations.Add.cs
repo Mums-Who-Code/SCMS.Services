@@ -83,5 +83,47 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("  ")]
+        public async Task ShouldThrowValidationExceptionOnAddIfFirstNameIsInvalidAndLogItAsync(
+            string invalidFirstName)
+        {
+            // given
+            Student randomStudent = CreateRandomStudent();
+            Student invalidStudent = randomStudent;
+            invalidStudent.FirstName = invalidFirstName;
+            var invalidStudentException = new InvalidStudentException();
+
+            invalidStudentException.AddData(
+                key: nameof(Student.FirstName),
+                values: "Text is required.");
+
+            var expectedStudentValidationException =
+                new StudentValidationException(invalidStudentException);
+
+            // when
+            ValueTask<Student> addStudentTask =
+                this.studentService.AddStudentAsync(invalidStudent);
+
+            // then
+            await Assert.ThrowsAsync<StudentValidationException>(() =>
+                addStudentTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(
+                    SameValidationExceptionAs(expectedStudentValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentAsync(It.IsAny<Student>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
