@@ -218,7 +218,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
 
             invalidStudentException.AddData(
                 key: nameof(Student.Status),
-                values: "Status is invalid");
+                values: "Status is invalid.");
 
             var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentException);

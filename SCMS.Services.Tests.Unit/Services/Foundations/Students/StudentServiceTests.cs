@@ -62,6 +62,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             DateTimeOffset date = GetRandomDateTime();
 
             filler.Setup()
+                .OnProperty(student => student.Status).Use(StudentStatus.Active)
                 .OnType<DateTimeOffset>().Use(date)
                 .OnType<Guid>().Use(userId);
 

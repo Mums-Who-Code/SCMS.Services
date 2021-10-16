@@ -19,7 +19,8 @@ namespace SMCS.Services.Api.Services.Foundations.Students
                 (Rule: IsInvalid(student.Id), Parameter: nameof(Student.Id)),
                 (Rule: IsInvalid(text: student.FirstName), Parameter: nameof(Student.FirstName)),
                 (Rule: IsInvalid(text: student.LastName), Parameter: nameof(Student.LastName)),
-                (Rule: IsInvalid(date: student.DateOfBirth), Parameter: nameof(Student.DateOfBirth)));
+                (Rule: IsInvalid(date: student.DateOfBirth), Parameter: nameof(Student.DateOfBirth)),
+                (Rule: IsInvalid(student.Status), Parameter: nameof(Student.Status)));
         }
 
         private void ValidateInput(Student student)
@@ -46,6 +47,12 @@ namespace SMCS.Services.Api.Services.Foundations.Students
         {
             Condition = date == default,
             Message = "Date is required."
+        };
+
+        private static dynamic IsInvalid(StudentStatus status) => new
+        {
+            Condition = status != StudentStatus.Active,
+            Message = "Status is invalid."
         };
 
         private void Validate(params (dynamic Rule, string Parameter)[] validations)
