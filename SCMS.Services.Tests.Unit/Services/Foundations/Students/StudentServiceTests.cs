@@ -69,18 +69,20 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private static Student CreateRandomStudent() =>
-            CreateStudentFiller().Create();
+        private static Student CreateRandomStudent(DateTimeOffset dateTime) =>
+            CreateStudentFiller(dateTime).Create();
 
-        private static Filler<Student> CreateStudentFiller()
+        private static Student CreateRandomStudent() =>
+            CreateStudentFiller(dateTime: GetRandomDateTime()).Create();
+
+        private static Filler<Student> CreateStudentFiller(DateTimeOffset dateTime)
         {
             var filler = new Filler<Student>();
             Guid userId = Guid.NewGuid();
-            DateTimeOffset date = GetRandomDateTime();
 
             filler.Setup()
                 .OnProperty(student => student.Status).Use(StudentStatus.Active)
-                .OnType<DateTimeOffset>().Use(date)
+                .OnType<DateTimeOffset>().Use(dateTime)
                 .OnType<Guid>().Use(userId);
 
             return filler;

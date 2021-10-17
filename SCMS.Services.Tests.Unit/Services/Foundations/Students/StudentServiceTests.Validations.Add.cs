@@ -70,6 +70,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             await Assert.ThrowsAsync<StudentValidationException>(() =>
                 addStudentTask.AsTask());
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(
                     SameValidationExceptionAs(expectedStudentValidationException))),
@@ -111,6 +115,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             // then
             await Assert.ThrowsAsync<StudentValidationException>(() =>
                 addStudentTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(
@@ -154,6 +162,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             await Assert.ThrowsAsync<StudentValidationException>(() =>
                 addStudentTask.AsTask());
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(
                     SameValidationExceptionAs(expectedStudentValidationException))),
@@ -174,6 +186,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             // given
             DateTimeOffset invalidDate = default;
             Student randomStudent = CreateRandomStudent();
+
             Student invalidStudent = randomStudent;
             invalidStudent.DateOfBirth = invalidDate;
             var invalidStudentException = new InvalidStudentException();
@@ -192,6 +205,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             // then
             await Assert.ThrowsAsync<StudentValidationException>(() =>
                 addStudentTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(
@@ -231,6 +248,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             await Assert.ThrowsAsync<StudentValidationException>(() =>
                 addStudentTask.AsTask());
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(
                     SameValidationExceptionAs(expectedStudentValidationException))),
@@ -250,9 +271,11 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
         {
             // given
             DateTimeOffset invalidDate = default;
-            Student randomStudent = CreateRandomStudent();
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Student randomStudent = CreateRandomStudent(randomDateTime);
             Student invalidStudent = randomStudent;
             invalidStudent.CreatedDate = invalidDate;
+            invalidStudent.UpdateDate = invalidDate;
             var invalidStudentException = new InvalidStudentException();
 
             invalidStudentException.AddData(
@@ -269,6 +292,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             // then
             await Assert.ThrowsAsync<StudentValidationException>(() =>
                 addStudentTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(
@@ -309,6 +336,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             await Assert.ThrowsAsync<StudentValidationException>(() =>
                 addStudentTask.AsTask());
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(
                     SameValidationExceptionAs(expectedStudentValidationException))),
@@ -347,6 +378,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             await Assert.ThrowsAsync<StudentValidationException>(() =>
                 addStudentTask.AsTask());
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(
                     SameValidationExceptionAs(expectedStudentValidationException))),
@@ -384,6 +419,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             // then
             await Assert.ThrowsAsync<StudentValidationException>(() =>
                 addStudentTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(
@@ -425,6 +464,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             // then
             await Assert.ThrowsAsync<StudentValidationException>(() =>
                 addStudentTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(

@@ -23,6 +23,7 @@ namespace SMCS.Services.Api.Services.Foundations.Students
                 (Rule: IsInvalid(student.Status), Parameter: nameof(Student.Status)),
                 (Rule: IsInvalid(date: student.CreatedDate), Parameter: nameof(Student.CreatedDate)),
                 (Rule: IsInvalid(id: student.CreatedBy), Parameter: nameof(Student.CreatedBy)),
+                (Rule: IsNotRecent(student.CreatedDate), Parameter: nameof(Student.CreatedDate)),
 
                 (Rule: IsNotSame(
                     firstDate: student.UpdateDate,
@@ -86,6 +87,21 @@ namespace SMCS.Services.Api.Services.Foundations.Students
                 Condition = firstId != secondId,
                 Message = $"Id is not same as {secondIdName}."
             };
+
+        private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
+        {
+            Condition = IsDateNotRecent(dateTimeOffset),
+            Message = "Date is not recent."
+        };
+
+        private bool IsDateNotRecent(DateTimeOffset dateTime)
+        {
+            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            int oneMinute = 1;
+            TimeSpan difference = now.Subtract(dateTime);
+
+            return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
 
         private void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
