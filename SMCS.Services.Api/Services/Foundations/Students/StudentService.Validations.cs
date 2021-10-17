@@ -28,7 +28,13 @@ namespace SMCS.Services.Api.Services.Foundations.Students
                     firstDate: student.UpdateDate,
                     secondDate: student.CreatedDate,
                     secondDateName: nameof(Student.CreatedDate)),
-                Parameter: nameof(Student.UpdateDate)));
+                Parameter: nameof(Student.UpdateDate)),
+
+                 (Rule: IsNotSame(
+                    firstId: student.UpdatedBy,
+                    secondId: student.CreatedBy,
+                    secondIdName: nameof(Student.CreatedBy)),
+                Parameter: nameof(Student.UpdatedBy)));
         }
 
         private void ValidateInput(Student student)
@@ -70,6 +76,15 @@ namespace SMCS.Services.Api.Services.Foundations.Students
             {
                 Condition = firstDate != secondDate,
                 Message = $"Date is not same as {secondDateName}."
+            };
+
+        private static dynamic IsNotSame(
+            Guid firstId,
+            Guid secondId,
+            string secondIdName) => new
+            {
+                Condition = firstId != secondId,
+                Message = $"Id is not same as {secondIdName}."
             };
 
         private void Validate(params (dynamic Rule, string Parameter)[] validations)
