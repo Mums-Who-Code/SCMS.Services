@@ -21,7 +21,8 @@ namespace SMCS.Services.Api.Services.Foundations.Students
                 (Rule: IsInvalid(text: student.LastName), Parameter: nameof(Student.LastName)),
                 (Rule: IsInvalid(date: student.DateOfBirth), Parameter: nameof(Student.DateOfBirth)),
                 (Rule: IsInvalid(student.Status), Parameter: nameof(Student.Status)),
-                (Rule: IsInvalid(date: student.CreatedDate), Parameter: nameof(Student.CreatedDate)));
+                (Rule: IsInvalid(date: student.CreatedDate), Parameter: nameof(Student.CreatedDate)),
+                (Rule: IsInvalid(id: student.CreatedBy), Parameter: nameof(Student.CreatedBy)));
         }
 
         private void ValidateInput(Student student)
