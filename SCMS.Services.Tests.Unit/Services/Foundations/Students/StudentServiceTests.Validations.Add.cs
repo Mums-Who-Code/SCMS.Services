@@ -4,7 +4,6 @@
 
 using System;
 using System.Threading.Tasks;
-using EFxceptions.Models.Exceptions;
 using Moq;
 using SMCS.Services.Api.Models.Foundations.Students;
 using SMCS.Services.Api.Models.Foundations.Students.Exceptions;
@@ -482,57 +481,6 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public async void ShouldThrowValidationExceptionOnAddIfStudentAlreadyExistsAndLogItAsync()
-        {
-            // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Student randomStudent = CreateRandomStudent(dateTime);
-            Student alreadyExistsStudent = randomStudent;
-            string randomMessage = GetRandomMessage();
-            string exceptionMessage = randomMessage;
-            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
-
-            var alreadyExistsStudentException =
-                new AlreadyExistsStudentException(duplicateKeyException);
-
-            var expectedStudentValidationException =
-                new StudentValidationException(alreadyExistsStudentException);
-
-            this.dateTimeBrokerMock.Setup(broker =>
-                broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertStudentAsync(alreadyExistsStudent))
-                    .ThrowsAsync(duplicateKeyException);
-
-            // when
-            ValueTask<Student> addStudentTask =
-                this.studentService.AddStudentAsync(alreadyExistsStudent);
-
-            // then
-            await Assert.ThrowsAsync<StudentValidationException>(() =>
-                addStudentTask.AsTask());
-
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentAsync(alreadyExistsStudent),
-                    Times.Once);
-
-            this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(
-                   SameExceptionAs(expectedStudentValidationException))),
-                    Times.Once);
-
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

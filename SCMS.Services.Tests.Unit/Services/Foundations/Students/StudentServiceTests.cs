@@ -64,7 +64,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
 
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
-        private static string GetRandomMessage() => new MnemonicString().GetValue();
+
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
