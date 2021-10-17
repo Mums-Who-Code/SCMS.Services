@@ -45,6 +45,10 @@ namespace SMCS.Services.Api.Services.Foundations.Students
             {
                 throw CreateAndLogDependencyException(dbUpdateException);
             }
+            catch (Exception exception)
+            {
+                throw CreateAndLogServiceException(exception);
+            }
         }
 
         private StudentValidationException CreateAndLogValidationException(Exception exception)
@@ -77,6 +81,14 @@ namespace SMCS.Services.Api.Services.Foundations.Students
             this.loggingBroker.LogError(studentDependencyException);
 
             return studentDependencyException;
+        }
+
+        private StudentServiceException CreateAndLogServiceException(Exception exception)
+        {
+            var studentServiceException = new StudentServiceException(exception);
+            this.loggingBroker.LogError(studentServiceException);
+
+            return studentServiceException;
         }
     }
 }
