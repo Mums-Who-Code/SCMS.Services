@@ -70,8 +70,8 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             var alreadyExistsStudentException =
                 new AlreadyExistsStudentException(duplicateKeyException);
 
-            var expectedStudentValidationException =
-                new StudentValidationException(alreadyExistsStudentException);
+            var expectedStudentDepdendencyValidationException =
+                new StudentDependencyValidationException(alreadyExistsStudentException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -86,7 +86,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
                 this.studentService.AddStudentAsync(alreadyExistsStudent);
 
             // then
-            await Assert.ThrowsAsync<StudentValidationException>(() =>
+            await Assert.ThrowsAsync<StudentDependencyValidationException>(() =>
                 addStudentTask.AsTask());
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -99,7 +99,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
 
             this.loggingBrokerMock.Verify(broker =>
                broker.LogError(It.Is(
-                   SameExceptionAs(expectedStudentValidationException))),
+                   SameExceptionAs(expectedStudentDepdendencyValidationException))),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
