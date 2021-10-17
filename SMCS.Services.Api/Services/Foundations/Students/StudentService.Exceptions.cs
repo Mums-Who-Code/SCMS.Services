@@ -6,6 +6,7 @@ using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using SMCS.Services.Api.Models.Foundations.Students;
 using SMCS.Services.Api.Models.Foundations.Students.Exceptions;
 
@@ -40,6 +41,10 @@ namespace SMCS.Services.Api.Services.Foundations.Students
 
                 throw CreateAndLogDependencyValidationException(alreadyExistsStudentException);
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                throw CreateAndLogDependencyException(dbUpdateException);
+            }
         }
 
         private StudentValidationException CreateAndLogValidationException(Exception exception)
@@ -64,6 +69,14 @@ namespace SMCS.Services.Api.Services.Foundations.Students
             this.loggingBroker.LogError(studentDependencyValidationException);
 
             return studentDependencyValidationException;
+        }
+
+        private StudentDependencyException CreateAndLogDependencyException(Exception exception)
+        {
+            var studentDependencyException = new StudentDependencyException(exception);
+            this.loggingBroker.LogError(studentDependencyException);
+
+            return studentDependencyException;
         }
     }
 }

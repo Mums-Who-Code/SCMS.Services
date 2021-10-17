@@ -135,7 +135,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
                 this.studentService.AddStudentAsync(inputStudent);
 
             // then
-            await Assert.ThrowsAsync<StudentDependencyValidationException>(() =>
+            await Assert.ThrowsAsync<StudentDependencyException>(() =>
                 addStudentTask.AsTask());
 
             this.dateTimeBrokerMock.Verify(broker =>
