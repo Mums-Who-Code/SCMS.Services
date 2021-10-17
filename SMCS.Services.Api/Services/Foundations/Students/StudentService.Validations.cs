@@ -22,7 +22,13 @@ namespace SMCS.Services.Api.Services.Foundations.Students
                 (Rule: IsInvalid(date: student.DateOfBirth), Parameter: nameof(Student.DateOfBirth)),
                 (Rule: IsInvalid(student.Status), Parameter: nameof(Student.Status)),
                 (Rule: IsInvalid(date: student.CreatedDate), Parameter: nameof(Student.CreatedDate)),
-                (Rule: IsInvalid(id: student.CreatedBy), Parameter: nameof(Student.CreatedBy)));
+                (Rule: IsInvalid(id: student.CreatedBy), Parameter: nameof(Student.CreatedBy)),
+
+                (Rule: IsNotSame(
+                    firstDate: student.UpdateDate,
+                    secondDate: student.CreatedDate,
+                    secondDateName: nameof(Student.CreatedDate)),
+                Parameter: nameof(Student.UpdateDate)));
         }
 
         private void ValidateInput(Student student)
@@ -56,6 +62,15 @@ namespace SMCS.Services.Api.Services.Foundations.Students
             Condition = status != StudentStatus.Active,
             Message = "Status is invalid."
         };
+
+        private static dynamic IsNotSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate != secondDate,
+                Message = $"Date is not same as {secondDateName}."
+            };
 
         private void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
