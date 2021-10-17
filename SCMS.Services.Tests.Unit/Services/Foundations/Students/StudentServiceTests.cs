@@ -5,6 +5,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
+using Microsoft.Data.SqlClient;
 using Moq;
 using SMCS.Services.Api.Brokers.DateTimes;
 using SMCS.Services.Api.Brokers.Loggings;
@@ -64,10 +66,14 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
 
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
+        private static string GetRandomMessage() => new MnemonicString().GetValue();
 
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+        private static SqlException GetSqlException() =>
+           (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         private static Student CreateRandomStudent(DateTimeOffset dateTime) =>
             CreateStudentFiller(dateTime).Create();
