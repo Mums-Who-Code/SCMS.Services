@@ -5,6 +5,7 @@
 using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using SMCS.Services.Api.Models.Foundations.Students;
 using SMCS.Services.Api.Models.Foundations.Students.Exceptions;
@@ -57,7 +58,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
         }
 
         [Fact]
-        public async void ShouldThrowValidationExceptionOnAddIfStudentAlreadyExistsAndLogItAsync()
+        public async void ShouldThrowDependencyValidationExceptionOnAddIfStudentAlreadyExistsAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();
@@ -100,6 +101,54 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             this.loggingBrokerMock.Verify(broker =>
                broker.LogError(It.Is(
                    SameExceptionAs(expectedStudentDepdendencyValidationException))),
+                    Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowDependencyExceptionOnAddIfDbExceptionOccursAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Student randomStudent = CreateRandomStudent(dateTime);
+            Student inputStudent = randomStudent;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var dbUpdateException = new DbUpdateException(exceptionMessage);
+
+            var expectedStudentDepdendencyException =
+                new StudentDependencyException(dbUpdateException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(dateTime);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertStudentAsync(inputStudent))
+                    .ThrowsAsync(dbUpdateException);
+
+            // when
+            ValueTask<Student> addStudentTask =
+                this.studentService.AddStudentAsync(inputStudent);
+
+            // then
+            await Assert.ThrowsAsync<StudentDependencyValidationException>(() =>
+                addStudentTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentAsync(inputStudent),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(
+                   SameExceptionAs(expectedStudentDepdendencyException))),
                     Times.Once);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
