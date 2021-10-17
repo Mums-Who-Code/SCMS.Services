@@ -23,7 +23,7 @@ namespace SMCS.Services.Api.Services.Foundations.Students
             {
                 throw CreateAndLogValidationException(nullStudentException);
             }
-            catch (Exception invalidStudentException)
+            catch (InvalidStudentException invalidStudentException)
             {
                 throw CreateAndLogValidationException(invalidStudentException);
             }
