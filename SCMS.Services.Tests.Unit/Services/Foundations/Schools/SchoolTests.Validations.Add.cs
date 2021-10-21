@@ -39,7 +39,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertSchoolAsync(It.IsAny<School>()),
-                    Times.Once);
+                    Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();

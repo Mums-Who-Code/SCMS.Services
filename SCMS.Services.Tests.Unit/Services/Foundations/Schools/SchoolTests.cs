@@ -11,6 +11,7 @@ using SMCS.Services.Api.Brokers.Storages;
 using SMCS.Services.Api.Models.Foundations.Schools;
 using SMCS.Services.Api.Services.Foundations.Schools;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
 {
@@ -39,8 +40,9 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
         private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
         {
             return actualException =>
-                actualException.InnerException == expectedException.InnerException
-                && actualException.InnerException.Message == expectedException.InnerException.Message;
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message
+                && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
         private static School CreateRandomSchool() =>
