@@ -45,6 +45,9 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
                 && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
+        private static int GetRandomNumber() =>
+            new IntRange(min: 2, max: 10).GetValue();
+
         private static School CreateRandomSchool() =>
             CreateRandomSchoolFiller().Create();
 

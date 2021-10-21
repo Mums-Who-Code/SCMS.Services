@@ -109,5 +109,47 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnAddIfCreatedDateIsNotSameAsUpdatedDateAndLogItAsync()
+        {
+            // given
+            int minutes = GetRandomNumber();
+            School randomSchool = CreateRandomSchool();
+            School invalidSchool = randomSchool;
+
+            invalidSchool.UpdatedDate =
+                invalidSchool.CreatedDate.AddMinutes(minutes);
+
+            var invalidSchoolException = new InvalidSchoolException();
+
+            invalidSchoolException.AddData(
+                key: nameof(School.UpdatedDate),
+                values: $"Data is not same as {nameof(School.CreatedDate)}");
+
+            var expectedSchoolValidationException =
+                new SchoolValidationException(invalidSchoolException);
+
+            // when
+            ValueTask<School> addSchoolTask =
+                this.schoolService.AddSchoolAsync(invalidSchool);
+
+            // then
+            await Assert.ThrowsAsync<SchoolValidationException>(() =>
+                addSchoolTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedSchoolValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertSchoolAsync(It.IsAny<School>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
