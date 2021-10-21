@@ -26,7 +26,13 @@ namespace SMCS.Services.Api.Services.Foundations.Schools
                     firstDate: school.UpdatedDate,
                     secondDate: school.CreatedDate,
                     secondParameterName: nameof(School.CreatedDate)),
-                Parameter: nameof(School.UpdatedDate)));
+                Parameter: nameof(School.UpdatedDate)),
+
+                (Rule: IsNotSameAs(
+                    firstId: school.UpdatedBy,
+                    secondId: school.CreatedBy,
+                    secondParameterName: nameof(School.CreatedBy)),
+                Parameter: nameof(School.UpdatedBy)));
         }
 
         private static void ValidateSchoolIsNotNull(School school)
@@ -62,6 +68,15 @@ namespace SMCS.Services.Api.Services.Foundations.Schools
             {
                 Condition = firstDate != secondDate,
                 Message = $"Date is not same as {secondParameterName}"
+            };
+
+        private static dynamic IsNotSameAs(
+            Guid firstId,
+            Guid secondId,
+            string secondParameterName) => new
+            {
+                Condition = firstId != secondId,
+                Message = $"Id is not same as {secondParameterName}"
             };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
