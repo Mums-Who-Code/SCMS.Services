@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq.Expressions;
 using Moq;
 using SMCS.Services.Api.Brokers.DateTimes;
 using SMCS.Services.Api.Brokers.Loggings;
@@ -34,6 +35,13 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
 
         private static DateTimeOffset GetRandomDateTimeOffset() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        {
+            return actualException =>
+                actualException.InnerException == expectedException.InnerException
+                && actualException.InnerException.Message == expectedException.InnerException.Message;
+        }
 
         private static School CreateRandomSchool() =>
             CreateRandomSchoolFiller().Create();
