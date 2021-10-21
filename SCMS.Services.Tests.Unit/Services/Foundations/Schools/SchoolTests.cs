@@ -12,6 +12,7 @@ using SMCS.Services.Api.Models.Foundations.Schools;
 using SMCS.Services.Api.Services.Foundations.Schools;
 using Tynamix.ObjectFiller;
 using Xeptions;
+using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
 {
@@ -34,6 +35,18 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
                 loggingBroker: this.loggingBrokerMock.Object);
         }
 
+        public static TheoryData InvalidMinuteCases()
+        {
+            int minutesInFuture = GetRandomNumber();
+            int minutesInPast = GetRandomNegativeNumber();
+
+            return new TheoryData<int>
+            {
+                minutesInFuture,
+                minutesInPast
+            };
+        }
+
         private static DateTimeOffset GetRandomDateTimeOffset() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
@@ -48,13 +61,18 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
         private static int GetRandomNumber() =>
             new IntRange(min: 2, max: 10).GetValue();
 
-        private static School CreateRandomSchool() =>
-            CreateRandomSchoolFiller().Create();
+        private static int GetRandomNegativeNumber() =>
+            -1 * new IntRange(min: 2, max: 10).GetValue();
 
-        private static Filler<School> CreateRandomSchoolFiller()
+        private static School CreateRandomSchool() =>
+            CreateRandomSchoolFiller(dates: GetRandomDateTimeOffset()).Create();
+
+        private static School CreateRandomSchool(DateTimeOffset dates) =>
+            CreateRandomSchoolFiller(dates).Create();
+
+        private static Filler<School> CreateRandomSchoolFiller(DateTimeOffset dates)
         {
             var filler = new Filler<School>();
-            DateTimeOffset dates = GetRandomDateTimeOffset();
 
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dates);
