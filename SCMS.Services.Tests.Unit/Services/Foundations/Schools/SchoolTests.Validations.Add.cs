@@ -125,7 +125,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
 
             invalidSchoolException.AddData(
                 key: nameof(School.UpdatedDate),
-                values: $"Data is not same as {nameof(School.CreatedDate)}");
+                values: $"Date is not same as {nameof(School.CreatedDate)}");
 
             var expectedSchoolValidationException =
                 new SchoolValidationException(invalidSchoolException);
