@@ -27,6 +27,6 @@ namespace SMCS.Services.Api.Services.Foundations.Schools
         }
 
         public ValueTask<School> AddSchoolAsync(School school) =>
-            throw new System.NotImplementedException();
+            this.storageBroker.InsertSchoolAsync(school);
     }
 }
