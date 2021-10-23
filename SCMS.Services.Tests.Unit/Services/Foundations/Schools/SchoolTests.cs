@@ -4,6 +4,8 @@
 
 using System;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
+using Microsoft.Data.SqlClient;
 using Moq;
 using SMCS.Services.Api.Brokers.DateTimes;
 using SMCS.Services.Api.Brokers.Loggings;
@@ -63,6 +65,9 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
 
         private static int GetRandomNegativeNumber() =>
             -1 * new IntRange(min: 2, max: 10).GetValue();
+
+        private static SqlException GetSqlException() =>
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         private static School CreateRandomSchool() =>
             CreateRandomSchoolFiller(dates: GetRandomDateTimeOffset()).Create();
