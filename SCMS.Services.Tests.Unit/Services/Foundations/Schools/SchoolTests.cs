@@ -73,9 +73,11 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
         private static Filler<School> CreateRandomSchoolFiller(DateTimeOffset dates)
         {
             var filler = new Filler<School>();
+            Guid randomGuid = Guid.NewGuid();
 
             filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates);
+                .OnType<DateTimeOffset>().Use(valueToUse: dates)
+                .OnType<Guid>().Use(valueToUse: randomGuid);
 
             return filler;
         }

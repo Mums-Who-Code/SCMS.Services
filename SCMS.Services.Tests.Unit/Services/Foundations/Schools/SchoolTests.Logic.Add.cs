@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
@@ -17,12 +18,22 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
         public async Task ShouldAddSchoolAsync()
         {
             // given
-            School randomSchool = CreateRandomSchool();
+            DateTimeOffset randomDateTime =
+                GetRandomDateTimeOffset();
+
+            School randomSchool =
+                CreateRandomSchool(
+                    dates: randomDateTime);
+
             School inputSchool = randomSchool;
             School storageSchool = inputSchool;
 
             School expectedSchool =
                 storageSchool.DeepClone();
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertSchoolAsync(inputSchool))

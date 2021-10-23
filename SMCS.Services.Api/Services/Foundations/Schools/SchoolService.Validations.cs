@@ -10,7 +10,7 @@ namespace SMCS.Services.Api.Services.Foundations.Schools
 {
     public partial class SchoolService
     {
-        private static void ValidateSchool(School school)
+        private void ValidateSchool(School school)
         {
             ValidateSchoolIsNotNull(school);
 
@@ -32,7 +32,9 @@ namespace SMCS.Services.Api.Services.Foundations.Schools
                     firstId: school.UpdatedBy,
                     secondId: school.CreatedBy,
                     secondParameterName: nameof(School.CreatedBy)),
-                Parameter: nameof(School.UpdatedBy)));
+                Parameter: nameof(School.UpdatedBy)),
+
+                (Rule: IsNotRecent(school.CreatedDate), Parameter: nameof(School.CreatedDate)));
         }
 
         private static void ValidateSchoolIsNotNull(School school)
@@ -78,6 +80,23 @@ namespace SMCS.Services.Api.Services.Foundations.Schools
                 Condition = firstId != secondId,
                 Message = $"Id is not same as {secondParameterName}"
             };
+
+        private dynamic IsNotRecent(DateTimeOffset date) => new
+        {
+            Condition = IsDateNotRecent(date),
+            Message = "Date is not recent"
+        };
+
+        private bool IsDateNotRecent(DateTimeOffset date)
+        {
+            DateTimeOffset currentDateTime =
+                this.dateTimeBroker.GetCurrentDateTime();
+
+            TimeSpan timeDifference = currentDateTime.Subtract(date);
+            TimeSpan oneMinute = TimeSpan.FromMinutes(1);
+
+            return timeDifference.Duration() > oneMinute;
+        }
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {

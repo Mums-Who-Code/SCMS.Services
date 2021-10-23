@@ -116,6 +116,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
         {
             // given
             int minutes = GetRandomNumber();
+            DateTimeOffset randomDateTime = GetRandomDateTimeOffset();
             School randomSchool = CreateRandomSchool();
             School invalidSchool = randomSchool;
 
@@ -131,6 +132,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
             var expectedSchoolValidationException =
                 new SchoolValidationException(invalidSchoolException);
 
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
+
             // when
             ValueTask<School> addSchoolTask =
                 this.schoolService.AddSchoolAsync(invalidSchool);
@@ -138,6 +143,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
             // then
             await Assert.ThrowsAsync<SchoolValidationException>(() =>
                 addSchoolTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
@@ -177,6 +186,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
             // then
             await Assert.ThrowsAsync<SchoolValidationException>(() =>
                 addSchoolTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
