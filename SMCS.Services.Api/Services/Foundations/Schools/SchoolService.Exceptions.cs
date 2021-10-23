@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using SMCS.Services.Api.Models.Foundations.Schools;
 using SMCS.Services.Api.Models.Foundations.Schools.Exceptions;
 using Xeptions;
@@ -27,6 +28,13 @@ namespace SMCS.Services.Api.Services.Foundations.Schools
             {
                 throw CreateAndLogValidationException(invalidSchoolException);
             }
+            catch (SqlException sqlException)
+            {
+                var failedSchoolStorageException =
+                    new FailedSchoolStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedSchoolStorageException);
+            }
         }
 
         private SchoolValidationException CreateAndLogValidationException(Xeption exception)
@@ -35,6 +43,14 @@ namespace SMCS.Services.Api.Services.Foundations.Schools
             this.loggingBroker.LogError(schoolValidationException);
 
             return schoolValidationException;
+        }
+
+        private SchoolDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
+        {
+            var schoolDependencyException = new SchoolDependencyException(exception);
+            this.loggingBroker.LogCritical(schoolDependencyException);
+
+            return schoolDependencyException;
         }
     }
 }
