@@ -12,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using SMCS.Services.Api.Brokers.DateTimes;
 using SMCS.Services.Api.Brokers.Loggings;
 using SMCS.Services.Api.Brokers.Storages;
+using SMCS.Services.Api.Services.Foundations.Schools;
 using SMCS.Services.Api.Services.Foundations.Students;
 
 namespace SMCS.Services.Api
@@ -28,7 +29,7 @@ namespace SMCS.Services.Api
 
             services.AddControllers();
             AddBrokers(services);
-            services.AddTransient<IStudentService, StudentService>();
+            AddServices(services);
 
             services.AddSwaggerGen(options =>
             {
@@ -69,6 +70,12 @@ namespace SMCS.Services.Api
             services.AddScoped<ILogger, Logger<LoggingBroker>>();
             services.AddScoped<ILoggingBroker, LoggingBroker>();
             services.AddScoped<IStorageBroker, StorageBroker>();
+        }
+
+        private void AddServices(IServiceCollection services)
+        {
+            services.AddTransient<IStudentService, StudentService>();
+            services.AddTransient<ISchoolService, SchoolService>();
         }
     }
 }
