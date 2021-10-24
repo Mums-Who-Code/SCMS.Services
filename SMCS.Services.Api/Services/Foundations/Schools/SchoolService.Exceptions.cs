@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -44,12 +45,19 @@ namespace SMCS.Services.Api.Services.Foundations.Schools
 
                 throw CreateAndLogDependencyValidationException(alreadyExistsSchoolException);
             }
-            catch(DbUpdateException databaseUpdateException)
+            catch (DbUpdateException databaseUpdateException)
             {
                 var failedSchoolStorageException =
                     new FailedSchoolStorageException(databaseUpdateException);
 
                 throw CreateAndLogDependencyException(failedSchoolStorageException);
+            }
+            catch (Exception exception)
+            {
+                var failedSchoolServiceException =
+                    new FailedSchoolServiceException(exception);
+
+                throw CreateAndLogServiceException(failedSchoolServiceException);
             }
         }
 
@@ -83,6 +91,14 @@ namespace SMCS.Services.Api.Services.Foundations.Schools
             this.loggingBroker.LogError(schoolDependencyException);
 
             return schoolDependencyException;
+        }
+
+        private SchoolServiceException CreateAndLogServiceException(Xeption exception)
+        {
+            var schoolServiceException = new SchoolServiceException(exception);
+            this.loggingBroker.LogError(schoolServiceException);
+
+            return schoolServiceException;
         }
     }
 }
