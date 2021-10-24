@@ -65,11 +65,11 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
             string someMessage = GetRandomString();
             var duplicateKeyException = new DuplicateKeyException(someMessage);
 
-            var failedSchoolStorageException =
-                new FailedSchoolStorageException(duplicateKeyException);
+            var alreadyExistsSchoolException =
+                new AlreadyExistsSchoolException(duplicateKeyException);
 
-            var expectedSchoolDependencyException =
-                new SchoolDependencyException(failedSchoolStorageException);
+            var expectedSchoolDependencyValidationException =
+                new SchoolDependencyValidationException(alreadyExistsSchoolException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -80,7 +80,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
                 this.schoolService.AddSchoolAsync(someSchool);
 
             // then
-            await Assert.ThrowsAsync<SchoolDependencyException>(() =>
+            await Assert.ThrowsAsync<SchoolDependencyValidationException>(() =>
                 addSchoolTask.AsTask());
 
             this.dateTimeBrokerMock.Verify(broker =>
@@ -89,12 +89,12 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedSchoolDependencyException))),
+                    expectedSchoolDependencyValidationException))),
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertSchoolAsync(It.IsAny<School>()),
-                    Times.Once);
+                    Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

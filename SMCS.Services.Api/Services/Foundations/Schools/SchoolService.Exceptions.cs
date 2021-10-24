@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using SMCS.Services.Api.Models.Foundations.Schools;
 using SMCS.Services.Api.Models.Foundations.Schools.Exceptions;
@@ -35,6 +36,13 @@ namespace SMCS.Services.Api.Services.Foundations.Schools
 
                 throw CreateAndLogCriticalDependencyException(failedSchoolStorageException);
             }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsSchoolException =
+                    new AlreadyExistsSchoolException(duplicateKeyException);
+
+                throw CreateAndLogDependencyValidationException(alreadyExistsSchoolException);
+            }
         }
 
         private SchoolValidationException CreateAndLogValidationException(Xeption exception)
@@ -51,6 +59,14 @@ namespace SMCS.Services.Api.Services.Foundations.Schools
             this.loggingBroker.LogCritical(schoolDependencyException);
 
             return schoolDependencyException;
+        }
+
+        private SchoolDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
+        {
+            var schoolDependencyValidationException = new SchoolDependencyValidationException(exception);
+            this.loggingBroker.LogError(schoolDependencyValidationException);
+
+            return schoolDependencyValidationException;
         }
     }
 }
