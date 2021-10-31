@@ -5,6 +5,7 @@
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using SMCS.Services.Api.Models.Foundations.StudentSchools;
 using SMCS.Services.Api.Models.Foundations.StudentSchools.Exceptions;
 using Xeptions;
@@ -46,6 +47,13 @@ namespace SMCS.Services.Api.Services.Foundations.StudentSchools
 
                 throw CreateAndLogDependencyValidationException(alreadyExistsStudentSchoolException);
             }
+            catch (DbUpdateException databaseUpdateException)
+            {
+                var failedStudentSchoolStorageException =
+                    new FailedStudentSchoolStorageException(databaseUpdateException);
+
+                throw CreateAndLogDependencyException(failedStudentSchoolStorageException);
+            }
         }
 
         private StudentSchoolValidationException CreateAndLogValidationException(Xeption exception)
@@ -77,6 +85,17 @@ namespace SMCS.Services.Api.Services.Foundations.StudentSchools
             this.loggingBroker.LogError(studentSchoolDependencyValidationException);
 
             return studentSchoolDependencyValidationException;
+        }
+
+        private StudentSchoolDependencyException CreateAndLogDependencyException(
+            Xeption exception)
+        {
+            var studentSchoolDependencyException =
+                new StudentSchoolDependencyException(exception);
+
+            this.loggingBroker.LogError(studentSchoolDependencyException);
+
+            return studentSchoolDependencyException;
         }
     }
 }
