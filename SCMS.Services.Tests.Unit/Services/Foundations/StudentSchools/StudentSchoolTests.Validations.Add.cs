@@ -101,5 +101,51 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnAddIfCreatedDateIsNotSameAsUpdatedDateAndLogItAsync()
+        {
+            // given
+            int minutes = GetRandomNumber();
+            StudentSchool randomStudentSchool = CreateRandomStudentSchool();
+            StudentSchool invalidStudentSchool = randomStudentSchool;
+
+            invalidStudentSchool.UpdatedDate =
+                invalidStudentSchool.CreatedDate.AddMinutes(minutes);
+
+            var invalidStudentSchoolException = new InvalidStudentSchoolException();
+
+            invalidStudentSchoolException.AddData(
+                key: nameof(StudentSchool.UpdatedDate),
+                values: $"Date is not same as {nameof(StudentSchool.CreatedDate)}");
+
+            var expectedStudentSchoolValidationException =
+                new StudentSchoolValidationException(invalidStudentSchoolException);
+
+            // when
+            ValueTask<StudentSchool> addStudentSchoolTask =
+                this.studentSchoolService.AddStudentSchool(invalidStudentSchool);
+
+            // then
+            await Assert.ThrowsAsync<StudentSchoolValidationException>(() =>
+                addStudentSchoolTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentSchoolValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentSchoolAsync(It.IsAny<StudentSchool>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
