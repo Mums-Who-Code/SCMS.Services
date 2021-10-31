@@ -17,7 +17,9 @@ namespace SMCS.Services.Api.Services.Foundations.StudentSchools
             Validate(
                 (Rule: IsInvalid(studentSchool.Id), Parameter: nameof(StudentSchool.Id)),
                 (Rule: IsInvalid(studentSchool.StudentId), Parameter: nameof(StudentSchool.StudentId)),
-                (Rule: IsInvalid(studentSchool.SchoolId), Parameter: nameof(StudentSchool.SchoolId)));
+                (Rule: IsInvalid(studentSchool.SchoolId), Parameter: nameof(StudentSchool.SchoolId)),
+                (Rule: IsInvalid(studentSchool.CreatedDate), Parameter: nameof(StudentSchool.CreatedDate)),
+                (Rule: IsInvalid(studentSchool.CreatedBy), Parameter: nameof(StudentSchool.CreatedBy)));
         }
 
         private static void ValidationStudentSchoolIsNull(StudentSchool studentSchool)
@@ -32,6 +34,12 @@ namespace SMCS.Services.Api.Services.Foundations.StudentSchools
         {
             Condition = id == Guid.Empty,
             Message = "Id is required."
+        };
+
+        private static dynamic IsInvalid(DateTimeOffset date) => new
+        {
+            Condition = date == default,
+            Message = "Date is required."
         };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
