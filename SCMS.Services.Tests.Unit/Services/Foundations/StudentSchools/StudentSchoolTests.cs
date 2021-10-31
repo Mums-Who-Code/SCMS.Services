@@ -12,6 +12,7 @@ using SMCS.Services.Api.Models.Foundations.StudentSchools;
 using SMCS.Services.Api.Services.Foundations.StudentSchools;
 using Tynamix.ObjectFiller;
 using Xeptions;
+using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
 {
@@ -38,10 +39,28 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private static StudentSchool CreateRandomStudentSchool() =>
-            CreateStudentSchoolFiller().Create();
+            CreateStudentSchoolFiller(dates: GetRandomDateTime()).Create();
+
+        private static StudentSchool CreateRandomStudentSchool(DateTimeOffset dates) =>
+            CreateStudentSchoolFiller(dates).Create();
 
         private static int GetRandomNumber() =>
             new IntRange(min: 2, max: 10).GetValue();
+
+        private static int GetRandomNegativeNumber() =>
+            -1 * new IntRange(min: 2, max: 10).GetValue();
+
+        public static TheoryData InvalidMinuteCases()
+        {
+            int minutesInFuture = GetRandomNumber();
+            int minutesInPast = GetRandomNegativeNumber();
+
+            return new TheoryData<int>
+            {
+                minutesInFuture,
+                minutesInPast
+            };
+        }
 
         private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
         {
@@ -51,10 +70,9 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
                 && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
-        private static Filler<StudentSchool> CreateStudentSchoolFiller()
+        private static Filler<StudentSchool> CreateStudentSchoolFiller(DateTimeOffset dates)
         {
             var filler = new Filler<StudentSchool>();
-            DateTimeOffset dates = GetRandomDateTime();
             Guid userId = Guid.NewGuid();
 
             filler.Setup()
