@@ -55,9 +55,11 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
         {
             var filler = new Filler<StudentSchool>();
             DateTimeOffset dates = GetRandomDateTime();
+            Guid userId = Guid.NewGuid();
 
             filler.Setup()
-                .OnType<DateTimeOffset>().Use(dates);
+                .OnType<DateTimeOffset>().Use(dates)
+                .OnType<Guid>().Use(userId);
 
             return filler;
         }
