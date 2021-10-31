@@ -52,6 +52,9 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
+        private static string GetRandomString() =>
+            new MnemonicString(wordCount: GetRandomNumber()).GetValue();
+
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
