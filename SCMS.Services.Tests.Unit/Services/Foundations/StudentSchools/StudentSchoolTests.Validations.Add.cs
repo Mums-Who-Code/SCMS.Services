@@ -28,7 +28,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
 
             // when
             ValueTask<StudentSchool> addStudentSchoolTask =
-                this.studentSchoolService.AddStudentSchool(nullStudentSchool);
+                this.studentSchoolService.AddStudentSchoolAsync(nullStudentSchool);
 
             // then
             await Assert.ThrowsAsync<StudentSchoolValidationException>(() =>
@@ -83,7 +83,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
 
             // when
             ValueTask<StudentSchool> addStudentSchoolTask =
-                this.studentSchoolService.AddStudentSchool(invalidStudentSchool);
+                this.studentSchoolService.AddStudentSchoolAsync(invalidStudentSchool);
 
             // then
             await Assert.ThrowsAsync<StudentSchoolValidationException>(() =>
@@ -124,7 +124,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
 
             // when
             ValueTask<StudentSchool> addStudentSchoolTask =
-                this.studentSchoolService.AddStudentSchool(invalidStudentSchool);
+                this.studentSchoolService.AddStudentSchoolAsync(invalidStudentSchool);
 
             // then
             await Assert.ThrowsAsync<StudentSchoolValidationException>(() =>
@@ -167,7 +167,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
 
             // when
             ValueTask<StudentSchool> addStudentSchoolTask =
-                this.studentSchoolService.AddStudentSchool(invalidStudentSchool);
+                this.studentSchoolService.AddStudentSchoolAsync(invalidStudentSchool);
 
             // then
             await Assert.ThrowsAsync<StudentSchoolValidationException>(() =>
@@ -219,7 +219,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
 
             // when
             ValueTask<StudentSchool> addStudentSchoolTask =
-                this.studentSchoolService.AddStudentSchool(invalidStudentSchool);
+                this.studentSchoolService.AddStudentSchoolAsync(invalidStudentSchool);
 
             // then
             await Assert.ThrowsAsync<StudentSchoolValidationException>(() =>

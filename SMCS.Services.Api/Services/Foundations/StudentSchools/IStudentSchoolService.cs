@@ -9,6 +9,6 @@ namespace SMCS.Services.Api.Services.Foundations.StudentSchools
 {
     public interface IStudentSchoolService
     {
-        ValueTask<StudentSchool> AddStudentSchool(StudentSchool studentSchool);
+        ValueTask<StudentSchool> AddStudentSchoolAsync(StudentSchool studentSchool);
     }
 }

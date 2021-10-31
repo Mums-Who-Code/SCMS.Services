@@ -43,7 +43,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
             // when
             StudentSchool actualStudentSchool =
                 await this.studentSchoolService
-                    .AddStudentSchool(inputStudentSchool);
+                    .AddStudentSchoolAsync(inputStudentSchool);
 
             // then
             actualStudentSchool.Should()

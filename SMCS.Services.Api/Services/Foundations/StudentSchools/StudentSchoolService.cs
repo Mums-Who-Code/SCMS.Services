@@ -26,7 +26,7 @@ namespace SMCS.Services.Api.Services.Foundations.StudentSchools
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<StudentSchool> AddStudentSchool(StudentSchool studentSchool) =>
+        public ValueTask<StudentSchool> AddStudentSchoolAsync(StudentSchool studentSchool) =>
         TryCatch(async () =>
         {
             ValidateStudentSchool(studentSchool);
