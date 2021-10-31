@@ -12,6 +12,10 @@ namespace SMCS.Services.Api.Brokers.Storages
         public void AddStudentSchoolReferences(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<StudentSchool>()
+                .HasKey(studentSchool =>
+                    new { studentSchool.StudentId, studentSchool.SchoolId });
+
+            modelBuilder.Entity<StudentSchool>()
                 .HasOne(studentSchool => studentSchool.CreatedByUser)
                 .WithMany(user => user.CreatedStudentSchools)
                 .HasForeignKey(studentSchool => studentSchool.CreatedBy)

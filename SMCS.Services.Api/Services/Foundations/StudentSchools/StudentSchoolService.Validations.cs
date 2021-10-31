@@ -15,7 +15,6 @@ namespace SMCS.Services.Api.Services.Foundations.StudentSchools
             ValidationStudentSchoolIsNull(studentSchool);
 
             Validate(
-                (Rule: IsInvalid(studentSchool.Id), Parameter: nameof(StudentSchool.Id)),
                 (Rule: IsInvalid(studentSchool.StudentId), Parameter: nameof(StudentSchool.StudentId)),
                 (Rule: IsInvalid(studentSchool.SchoolId), Parameter: nameof(StudentSchool.SchoolId)),
                 (Rule: IsInvalid(studentSchool.CreatedDate), Parameter: nameof(StudentSchool.CreatedDate)),
