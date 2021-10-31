@@ -19,7 +19,13 @@ namespace SMCS.Services.Api.Services.Foundations.StudentSchools
                 (Rule: IsInvalid(studentSchool.StudentId), Parameter: nameof(StudentSchool.StudentId)),
                 (Rule: IsInvalid(studentSchool.SchoolId), Parameter: nameof(StudentSchool.SchoolId)),
                 (Rule: IsInvalid(studentSchool.CreatedDate), Parameter: nameof(StudentSchool.CreatedDate)),
-                (Rule: IsInvalid(studentSchool.CreatedBy), Parameter: nameof(StudentSchool.CreatedBy)));
+                (Rule: IsInvalid(studentSchool.CreatedBy), Parameter: nameof(StudentSchool.CreatedBy)),
+
+                (Rule: IsNotSameAs(
+                    firstDate: studentSchool.UpdatedDate,
+                    secondDate: studentSchool.CreatedDate,
+                    secondParameterName: nameof(StudentSchool.CreatedDate)),
+                Parameter: nameof(StudentSchool.UpdatedDate)));
         }
 
         private static void ValidationStudentSchoolIsNull(StudentSchool studentSchool)
@@ -41,6 +47,15 @@ namespace SMCS.Services.Api.Services.Foundations.StudentSchools
             Condition = date == default,
             Message = "Date is required."
         };
+
+        private static dynamic IsNotSameAs(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondParameterName) => new
+            {
+                Condition = firstDate != secondDate,
+                Message = $"Date is not same as {secondParameterName}"
+            };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {

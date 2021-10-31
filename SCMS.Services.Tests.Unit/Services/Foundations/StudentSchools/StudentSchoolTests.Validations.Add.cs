@@ -130,10 +130,6 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
             await Assert.ThrowsAsync<StudentSchoolValidationException>(() =>
                 addStudentSchoolTask.AsTask());
 
-            this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTime(),
-                    Times.Once);
-
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedStudentSchoolValidationException))),
