@@ -143,5 +143,44 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnAddIfCreatedByIsNotSameAsUpdatedByAndLogItAsync()
+        {
+            // given
+            Guid randomGuid = Guid.NewGuid();
+            StudentSchool randomStudentSchool = CreateRandomStudentSchool();
+            StudentSchool invalidStudentSchool = randomStudentSchool;
+            invalidStudentSchool.UpdatedBy = randomGuid;
+            var invalidStudentSchoolException = new InvalidStudentSchoolException();
+
+            invalidStudentSchoolException.AddData(
+                key: nameof(StudentSchool.UpdatedBy),
+                values: $"Id is not same as {nameof(StudentSchool.CreatedBy)}");
+
+            var expectedStudentSchoolValidationException =
+                new StudentSchoolValidationException(invalidStudentSchoolException);
+
+            // when
+            ValueTask<StudentSchool> addStudentSchoolTask =
+                this.studentSchoolService.AddStudentSchool(invalidStudentSchool);
+
+            // then
+            await Assert.ThrowsAsync<StudentSchoolValidationException>(() =>
+                addStudentSchoolTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentSchoolValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentSchoolAsync(It.IsAny<StudentSchool>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
