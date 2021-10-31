@@ -47,6 +47,13 @@ namespace SMCS.Services.Api.Services.Foundations.StudentSchools
 
                 throw CreateAndLogDependencyValidationException(alreadyExistsStudentSchoolException);
             }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidStudentSchoolReferenceException =
+                    new InvalidStudentSchoolReferenceException(foreignKeyConstraintConflictException);
+
+                throw CreateAndLogDependencyException(invalidStudentSchoolReferenceException);
+            }
             catch (DbUpdateException databaseUpdateException)
             {
                 var failedStudentSchoolStorageException =

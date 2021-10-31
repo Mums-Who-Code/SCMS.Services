@@ -104,21 +104,25 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnAddIfDatabaseUpdateErrorOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnAddIfReferenceErrorOccursAndLogItAsync()
         {
             // given
             StudentSchool someStudentSchool = CreateRandomStudentSchool();
-            var databaseUpdateException = new DbUpdateException();
+            string someMessage = GetRandomString();
 
-            var failedStudentSchoolStorageException =
-                new FailedStudentSchoolStorageException(databaseUpdateException);
+            var foreignKeyConstraintConflictException =
+                new ForeignKeyConstraintConflictException(someMessage);
+
+            var invalidStudentSchoolReferenceException =
+                new InvalidStudentSchoolReferenceException(
+                    foreignKeyConstraintConflictException);
 
             var expectedStudentSchoolDependencyException =
-                new StudentSchoolDependencyException(failedStudentSchoolStorageException);
+                new StudentSchoolDependencyException(invalidStudentSchoolReferenceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Throws(databaseUpdateException);
+                    .Throws(foreignKeyConstraintConflictException);
 
             // when
             ValueTask<StudentSchool> addStudentSchoolTask =
@@ -147,25 +151,21 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnAddIfReferenceErrorOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnAddIfDatabaseUpdateErrorOccursAndLogItAsync()
         {
             // given
             StudentSchool someStudentSchool = CreateRandomStudentSchool();
-            string someMessage = GetRandomString();
+            var databaseUpdateException = new DbUpdateException();
 
-            var foreignKeyConstraintConflictException =
-                new ForeignKeyConstraintConflictException(someMessage);
-
-            var invalidStudentSchoolReferenceException =
-                new InvalidStudentSchoolReferenceException(
-                    foreignKeyConstraintConflictException);
+            var failedStudentSchoolStorageException =
+                new FailedStudentSchoolStorageException(databaseUpdateException);
 
             var expectedStudentSchoolDependencyException =
-                new StudentSchoolDependencyException(invalidStudentSchoolReferenceException);
+                new StudentSchoolDependencyException(failedStudentSchoolStorageException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Throws(foreignKeyConstraintConflictException);
+                    .Throws(databaseUpdateException);
 
             // when
             ValueTask<StudentSchool> addStudentSchoolTask =
