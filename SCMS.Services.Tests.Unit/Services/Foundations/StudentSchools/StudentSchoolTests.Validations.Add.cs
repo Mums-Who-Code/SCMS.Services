@@ -58,10 +58,6 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
                 new InvalidStudentSchoolException();
 
             invalidStudentSchoolException.AddData(
-                key: nameof(StudentSchool.Id),
-                values: "Id is required.");
-
-            invalidStudentSchoolException.AddData(
                 key: nameof(StudentSchool.StudentId),
                 values: "Id is required.");
 

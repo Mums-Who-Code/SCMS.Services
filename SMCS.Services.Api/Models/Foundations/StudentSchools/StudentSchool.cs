@@ -9,7 +9,6 @@ namespace SMCS.Services.Api.Models.Foundations.StudentSchools
 {
     public class StudentSchool
     {
-        public Guid Id { get; set; }
         public Guid StudentId { get; set; }
         public Guid SchoolId { get; set; }
         public DateTimeOffset CreatedDate { get; set; }
