@@ -13,7 +13,8 @@ namespace SMCS.Services.Api.Services.Foundations.StudentSchools
     {
         private delegate ValueTask<StudentSchool> ReturningStudentSchoolFunction();
 
-        private async ValueTask<StudentSchool> TryCatch(
+        private
+            async ValueTask<StudentSchool> TryCatch(
             ReturningStudentSchoolFunction returningStudentSchoolFunction)
         {
             try
@@ -23,6 +24,10 @@ namespace SMCS.Services.Api.Services.Foundations.StudentSchools
             catch (NullStudentSchoolException nullStudentSchoolException)
             {
                 throw CreateAndLogValidationException(nullStudentSchoolException);
+            }
+            catch (InvalidStudentSchoolException invalidStudentSchoolException)
+            {
+                throw CreateAndLogValidationException(invalidStudentSchoolException);
             }
         }
 
