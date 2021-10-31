@@ -14,6 +14,7 @@ using SMCS.Services.Api.Brokers.Loggings;
 using SMCS.Services.Api.Brokers.Storages;
 using SMCS.Services.Api.Services.Foundations.Schools;
 using SMCS.Services.Api.Services.Foundations.Students;
+using SMCS.Services.Api.Services.Foundations.StudentSchools;
 
 namespace SMCS.Services.Api
 {
@@ -76,6 +77,7 @@ namespace SMCS.Services.Api
         {
             services.AddTransient<IStudentService, StudentService>();
             services.AddTransient<ISchoolService, SchoolService>();
+            services.AddTransient<IStudentSchoolService, StudentSchoolService>();
         }
     }
 }
