@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using FluentAssertions;
 using Force.DeepCloner;
 using Moq;
@@ -16,8 +17,11 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
         public async void ShouldAddStudentSchoolAsync()
         {
             // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+
             StudentSchool randomStudentSchool =
-                CreateRandomStudentSchool();
+                CreateRandomStudentSchool(
+                    dates: randomDateTime);
 
             StudentSchool inputStudentSchool =
                 randomStudentSchool;
@@ -27,6 +31,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
 
             StudentSchool expectedStudentSchool =
                 storageStudentSchool.DeepClone();
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertStudentSchoolAsync(inputStudentSchool))
@@ -41,13 +49,17 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
             actualStudentSchool.Should()
                 .BeEquivalentTo(expectedStudentSchool);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentSchoolAsync(
                     It.IsAny<StudentSchool>()),
                         Times.Once);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
