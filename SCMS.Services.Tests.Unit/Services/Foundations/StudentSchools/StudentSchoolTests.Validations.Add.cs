@@ -52,28 +52,30 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
         {
             // given
             Guid invalidId = Guid.Empty;
-
-            var invalidStudentSchool = new StudentSchool
-            {
-                Id = invalidId,
-                StudentId = invalidId,
-                SchoolId = invalidId
-            };
+            var invalidStudentSchool = new StudentSchool();
 
             var invalidStudentSchoolException =
                 new InvalidStudentSchoolException();
 
             invalidStudentSchoolException.AddData(
                 key: nameof(StudentSchool.Id),
-                values: "Id is required");
+                values: "Id is required.");
 
             invalidStudentSchoolException.AddData(
                 key: nameof(StudentSchool.StudentId),
-                values: "Id is required");
+                values: "Id is required.");
 
             invalidStudentSchoolException.AddData(
                 key: nameof(StudentSchool.SchoolId),
-                values: "Id is required");
+                values: "Id is required.");
+
+            invalidStudentSchoolException.AddData(
+                key: nameof(StudentSchool.CreatedDate),
+                values: "Date is required.");
+
+            invalidStudentSchoolException.AddData(
+                key: nameof(StudentSchool.CreatedBy),
+                values: "Id is required.");
 
             var expectedStudentSchoolValidationException =
                 new StudentSchoolValidationException(

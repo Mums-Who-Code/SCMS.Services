@@ -45,7 +45,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
             return actualException =>
                 actualException.Message == expectedException.Message
                 && actualException.InnerException.Message == expectedException.InnerException.Message
-                && (actualException.InnerException as Xeption).DataEquals(expectedException.Data);
+                && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
         private static Filler<StudentSchool> CreateStudentSchoolFiller()
