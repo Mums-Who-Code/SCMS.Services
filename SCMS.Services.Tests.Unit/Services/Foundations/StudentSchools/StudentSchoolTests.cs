@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq.Expressions;
 using Moq;
 using SMCS.Services.Api.Brokers.DateTimes;
 using SMCS.Services.Api.Brokers.Loggings;
@@ -10,6 +11,7 @@ using SMCS.Services.Api.Brokers.Storages;
 using SMCS.Services.Api.Models.Foundations.StudentSchools;
 using SMCS.Services.Api.Services.Foundations.StudentSchools;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
 {
@@ -37,6 +39,14 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
 
         private static StudentSchool CreateRandomStudentSchool() =>
             CreateStudentSchoolFiller().Create();
+
+        private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
+        {
+            return actualException =>
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message
+                && (actualException.InnerException as Xeption).DataEquals(expectedException.Data);
+        }
 
         private static Filler<StudentSchool> CreateStudentSchoolFiller()
         {
