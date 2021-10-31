@@ -4,6 +4,8 @@
 
 using System;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
+using Microsoft.Data.SqlClient;
 using Moq;
 using SMCS.Services.Api.Brokers.DateTimes;
 using SMCS.Services.Api.Brokers.Loggings;
@@ -35,6 +37,21 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
                 loggingBroker: this.loggingBrokerMock.Object);
         }
 
+        public static TheoryData InvalidMinuteCases()
+        {
+            int minutesInFuture = GetRandomNumber();
+            int minutesInPast = GetRandomNegativeNumber();
+
+            return new TheoryData<int>
+            {
+                minutesInFuture,
+                minutesInPast
+            };
+        }
+
+        private static SqlException GetSqlException() =>
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
@@ -49,18 +66,6 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
 
         private static int GetRandomNegativeNumber() =>
             -1 * new IntRange(min: 2, max: 10).GetValue();
-
-        public static TheoryData InvalidMinuteCases()
-        {
-            int minutesInFuture = GetRandomNumber();
-            int minutesInPast = GetRandomNegativeNumber();
-
-            return new TheoryData<int>
-            {
-                minutesInFuture,
-                minutesInPast
-            };
-        }
 
         private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
         {
