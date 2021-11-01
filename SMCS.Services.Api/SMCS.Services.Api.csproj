@@ -16,4 +16,8 @@
     <PackageReference Include="Xeption" Version="1.6.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

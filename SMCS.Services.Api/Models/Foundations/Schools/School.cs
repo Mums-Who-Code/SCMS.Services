@@ -3,6 +3,9 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using SMCS.Services.Api.Models.Foundations.StudentSchools;
 using SMCS.Services.Api.Models.Foundations.Users;
 
 namespace SMCS.Services.Api.Models.Foundations.Schools
@@ -19,5 +22,8 @@ namespace SMCS.Services.Api.Models.Foundations.Schools
 
         public Guid UpdatedBy { get; set; }
         public User UpdatedByUser { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<StudentSchool> EnrolledStudents { get; set; }
     }
 }
