@@ -16,6 +16,18 @@ namespace SMCS.Services.Api.Brokers.Storages
                     new { studentSchool.StudentId, studentSchool.SchoolId });
 
             modelBuilder.Entity<StudentSchool>()
+                .HasOne(studentSchool => studentSchool.StudyingSchool)
+                .WithMany(school => school.EnrolledStudents)
+                .HasForeignKey(studentSchool => studentSchool.SchoolId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<StudentSchool>()
+                .HasOne(studentSchool => studentSchool.StudingStudent)
+                .WithOne(student => student.EnrolledSchool)
+                .HasForeignKey<StudentSchool>(studentSchool => studentSchool.StudentId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<StudentSchool>()
                 .HasOne(studentSchool => studentSchool.CreatedByUser)
                 .WithMany(user => user.CreatedStudentSchools)
                 .HasForeignKey(studentSchool => studentSchool.CreatedBy)
