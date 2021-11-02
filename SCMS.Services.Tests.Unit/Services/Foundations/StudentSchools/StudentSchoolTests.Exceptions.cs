@@ -105,7 +105,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnAddIfReferenceErrorOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyValidationExceptionOnAddIfReferenceErrorOccursAndLogItAsync()
         {
             // given
             StudentSchool someStudentSchool = CreateRandomStudentSchool();
@@ -119,7 +119,8 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
                     foreignKeyConstraintConflictException);
 
             var expectedStudentSchoolDependencyException =
-                new StudentSchoolDependencyException(invalidStudentSchoolReferenceException);
+                new StudentSchoolDependencyValidationException(
+                    invalidStudentSchoolReferenceException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -130,7 +131,55 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools
                 this.studentSchoolService.AddStudentSchoolAsync(someStudentSchool);
 
             // then
-            await Assert.ThrowsAsync<StudentSchoolDependencyException>(() =>
+            await Assert.ThrowsAsync<StudentSchoolDependencyValidationException>(() =>
+                addStudentSchoolTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentSchoolDependencyException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentSchoolAsync(It.IsAny<StudentSchool>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyValidationExceptionOnAddIfUnquieKeyAlreadyExistsAndLogItAsync()
+        {
+            // given
+            StudentSchool someStudentSchool = CreateRandomStudentSchool();
+            string someMessage = GetRandomString();
+
+            var duplicateKeyWithUniqueIndexException =
+                new DuplicateKeyWithUniqueIndexException(someMessage);
+
+            var repeatedStudentSchoolException =
+                new RepeatedStudentSchoolException(
+                    duplicateKeyWithUniqueIndexException);
+
+            var expectedStudentSchoolDependencyException =
+                new StudentSchoolDependencyValidationException(
+                    repeatedStudentSchoolException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Throws(duplicateKeyWithUniqueIndexException);
+
+            // when
+            ValueTask<StudentSchool> addStudentSchoolTask =
+                this.studentSchoolService.AddStudentSchoolAsync(someStudentSchool);
+
+            // then
+            await Assert.ThrowsAsync<StudentSchoolDependencyValidationException>(() =>
                 addStudentSchoolTask.AsTask());
 
             this.dateTimeBrokerMock.Verify(broker =>
