@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using SMCS.Services.Api.Models.Foundations.Guardians;
 using SMCS.Services.Api.Models.Foundations.Guardians.Exceptions;
@@ -36,6 +37,14 @@ namespace SMCS.Services.Api.Services.Foundations.Guardians
                 throw CreateAndLogCriticalDependencyException(
                     failedGuardianStorageException);
             }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsGuardianException =
+                    new AlreadyExistsGuardianException(duplicateKeyException);
+
+                throw CreateAndLogDependencyValidationException(
+                    alreadyExistsGuardianException);
+            }
         }
 
         private GuardianValidationException CreateAndLogValidationException(Xeption exception)
@@ -52,6 +61,14 @@ namespace SMCS.Services.Api.Services.Foundations.Guardians
             this.loggingBroker.LogCritical(guardianDependencyException);
 
             return guardianDependencyException;
+        }
+
+        private GuardianDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
+        {
+            var guardianDependencyValidationException = new GuardianDependencyValidationException(exception);
+            this.loggingBroker.LogError(guardianDependencyValidationException);
+
+            return guardianDependencyValidationException;
         }
     }
 }
