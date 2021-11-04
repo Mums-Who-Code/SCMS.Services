@@ -76,6 +76,9 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
+        private static string GetRandomMessage() =>
+            new MnemonicString(wordCount: GetRandomNumber()).GetValue();
+
         public static int GetRandomNumber() =>
             new IntRange(min: 2, max: 10).GetValue();
 
