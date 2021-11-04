@@ -5,6 +5,7 @@
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using SMCS.Services.Api.Models.Foundations.Guardians;
 using SMCS.Services.Api.Models.Foundations.Guardians.Exceptions;
 using Xeptions;
@@ -53,6 +54,14 @@ namespace SMCS.Services.Api.Services.Foundations.Guardians
                 throw CreateAndLogDependencyValidationException(
                     invalidGuardianReferenceException);
             }
+            catch (DbUpdateException databaseUpdateException)
+            {
+                var failedGuardianStorageException =
+                    new FailedGuardianStorageException(databaseUpdateException);
+
+                throw CreateAndLogDependencyException(
+                    failedGuardianStorageException);
+            }
         }
 
         private GuardianValidationException CreateAndLogValidationException(Xeption exception)
@@ -77,6 +86,14 @@ namespace SMCS.Services.Api.Services.Foundations.Guardians
             this.loggingBroker.LogError(guardianDependencyValidationException);
 
             return guardianDependencyValidationException;
+        }
+
+        private GuardianDependencyException CreateAndLogDependencyException(Xeption exception)
+        {
+            var guardianDependencyException = new GuardianDependencyException(exception);
+            this.loggingBroker.LogError(guardianDependencyException);
+
+            return guardianDependencyException;
         }
     }
 }
