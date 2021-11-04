@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -186,6 +187,52 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
             this.loggingBrokerMock.Verify(broker =>
                broker.LogError(It.Is(SameExceptionAs(
                    expectedGuardianDepdendencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertGuardianAsync(inputGuardian),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowServiceExceptionOnAddIfServiceErrorOccursAndLogItAsync()
+        {
+            // given
+            Guardian randomGuardian = CreateRandomGuardian();
+            Guardian inputGuardian = randomGuardian;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+            var serviceException = new Exception(exceptionMessage);
+
+            var failedGuardianServiceException =
+                new FailedGuardianServiceException(serviceException);
+
+            var expectedGuardianServiceException =
+                new GuardianServiceException(failedGuardianServiceException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Throws(serviceException);
+
+            // when
+            ValueTask<Guardian> addGuardianTask =
+                this.guardianService.AddGuardianAsync(inputGuardian);
+
+            // then
+            await Assert.ThrowsAsync<GuardianServiceException>(() =>
+                addGuardianTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedGuardianServiceException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
