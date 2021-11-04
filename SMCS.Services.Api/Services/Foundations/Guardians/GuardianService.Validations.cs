@@ -21,7 +21,13 @@ namespace SMCS.Services.Api.Services.Foundations.Guardians
                 (Rule: IsInvalid(text: guardian.FirstName), Parameter: nameof(Guardian.FirstName)),
                 (Rule: IsInvalid(text: guardian.LastName), Parameter: nameof(Guardian.LastName)),
                 (Rule: IsInvalid(date: guardian.CreatedDate), Parameter: nameof(Guardian.CreatedDate)),
-                (Rule: IsInvalid(id: guardian.CreatedBy), Parameter: nameof(Guardian.CreatedBy)));
+                (Rule: IsInvalid(id: guardian.CreatedBy), Parameter: nameof(Guardian.CreatedBy)),
+
+                (Rule: IsNotSame(
+                    firstDate: guardian.UpdateDate,
+                    secondDate: guardian.CreatedDate,
+                    secondDateName: nameof(Guardian.CreatedDate)),
+                Parameter: nameof(Guardian.UpdateDate)));
         }
 
         private void ValidateGuardianIsNotNull(Guardian guardian)
@@ -55,6 +61,15 @@ namespace SMCS.Services.Api.Services.Foundations.Guardians
             Condition = Enum.IsDefined(typeof(T), enumValue) is false,
             Message = "Value is required."
         };
+
+        private static dynamic IsNotSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate != secondDate,
+                Message = $"Date is not same as {secondDateName}."
+            };
 
         private void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
