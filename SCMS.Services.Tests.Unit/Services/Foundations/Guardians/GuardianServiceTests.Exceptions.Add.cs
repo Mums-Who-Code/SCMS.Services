@@ -2,7 +2,6 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -62,8 +61,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
         public async void ShouldThrowDependencyValidationExceptionOnAddIfGuardianAlreadyExistsAndLogItAsync()
         {
             // given
-            DateTimeOffset dateTime = GetRandomDateTime();
-            Guardian randomGuardian = CreateRandomGuardian(dateTime);
+            Guardian randomGuardian = CreateRandomGuardian();
             Guardian alreadyExistsGuardian = randomGuardian;
             string randomMessage = GetRandomMessage();
             string exceptionMessage = randomMessage;
@@ -77,11 +75,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertGuardianAsync(alreadyExistsGuardian))
-                    .ThrowsAsync(duplicateKeyException);
+                    .Throws(duplicateKeyException);
 
             // when
             ValueTask<Guardian> addGuardianTask =
@@ -95,18 +89,65 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
                 broker.GetCurrentDateTime(),
                     Times.Once);
 
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedGuardianDepdendencyValidationException))),
+                    Times.Once);
+
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertGuardianAsync(alreadyExistsGuardian),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowDependencyValidationExceptionOnAddIfReferenceErrorOccursAndLogItAsync()
+        {
+            // given
+            Guardian randomGuardian = CreateRandomGuardian();
+            Guardian alreadyExistsGuardian = randomGuardian;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+
+            var foreignKeyConstraintConflictException =
+                new ForeignKeyConstraintConflictException(exceptionMessage);
+
+            var invalidGuardianReferenceException =
+                new InvalidGuardianReferenceException(foreignKeyConstraintConflictException);
+
+            var expectedGuardianDepdendencyValidationException =
+                new GuardianDependencyValidationException(invalidGuardianReferenceException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Throws(foreignKeyConstraintConflictException);
+            // when
+            ValueTask<Guardian> addGuardianTask =
+                this.guardianService.AddGuardianAsync(alreadyExistsGuardian);
+
+            // then
+            await Assert.ThrowsAsync<GuardianDependencyValidationException>(() =>
+                addGuardianTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(
-                   SameExceptionAs(expectedGuardianDepdendencyValidationException))),
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedGuardianDepdendencyValidationException))),
                     Times.Once);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertGuardianAsync(alreadyExistsGuardian),
+                    Times.Never);
+
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
