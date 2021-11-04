@@ -12,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using SMCS.Services.Api.Brokers.DateTimes;
 using SMCS.Services.Api.Brokers.Loggings;
 using SMCS.Services.Api.Brokers.Storages;
+using SMCS.Services.Api.Services.Foundations.Guardians;
 using SMCS.Services.Api.Services.Foundations.Schools;
 using SMCS.Services.Api.Services.Foundations.Students;
 using SMCS.Services.Api.Services.Foundations.StudentSchools;
@@ -79,6 +80,7 @@ namespace SMCS.Services.Api
             services.AddTransient<IStudentService, StudentService>();
             services.AddTransient<ISchoolService, SchoolService>();
             services.AddTransient<IStudentSchoolService, StudentSchoolService>();
+            services.AddTransient<IGuardianService, GuardianService>();
         }
     }
 }
