@@ -24,6 +24,7 @@ namespace SMCS.Services.Api.Brokers.Storages
             AddStudentReferences(modelBuilder);
             AddSchoolReferences(modelBuilder);
             AddStudentSchoolReferences(modelBuilder);
+            AddGuardianReferences(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
