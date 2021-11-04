@@ -110,5 +110,43 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnAddIfCreatedDateIsNotSameAsUpdatedDateAndLogItAsync()
+        {
+            // given
+            Guardian randomGuardian = CreateRandomGuardian();
+            Guardian invalidGuardian = randomGuardian;
+            invalidGuardian.UpdateDate = invalidGuardian.CreatedDate.AddDays(1);
+            var invalidGuardianException = new InvalidGuardianException();
+
+            invalidGuardianException.AddData(
+                key: nameof(Guardian.UpdateDate),
+                values: $"Date is not same as {nameof(Guardian.CreatedDate)}.");
+
+            var expectedGuardianValidationException =
+                new GuardianValidationException(invalidGuardianException);
+
+            // when
+            ValueTask<Guardian> addGuardianTask =
+                this.guardianService.AddGuardianAsync(invalidGuardian);
+
+            // then
+            await Assert.ThrowsAsync<GuardianValidationException>(() =>
+                addGuardianTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertGuardianAsync(It.IsAny<Guardian>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
