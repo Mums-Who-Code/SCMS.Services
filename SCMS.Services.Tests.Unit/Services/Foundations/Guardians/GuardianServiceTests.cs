@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using Moq;
 using SMCS.Services.Api.Brokers.DateTimes;
@@ -42,6 +43,18 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
                 && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
+        public static IEnumerable<object[]> InvalidMinuteCases()
+        {
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+            return new List<object[]>
+            {
+                new object[] { randomMoreThanMinuteFromNow },
+                new object[] { randomMoreThanMinuteBeforeNow }
+            };
+        }
+
         private static T GetInvalidEnum<T>()
         {
             int randomNumber = GetLocalRandomNumber();
@@ -58,16 +71,24 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
                     .GetValue();
         }
 
+        public static int GetRandomNumber() =>
+            new IntRange(min: 2, max: 10).GetValue();
+
+        public static int GetNegativeRandomNumber() =>
+            -1 * GetRandomNumber();
+
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private static Guardian CreateRandomGuardian() =>
-            CreateGuardianFiller().Create();
+        private static Guardian CreateRandomGuardian(DateTimeOffset date) =>
+            CreateGuardianFiller(date).Create();
 
-        private static Filler<Guardian> CreateGuardianFiller()
+        private static Guardian CreateRandomGuardian() =>
+            CreateGuardianFiller(date: GetRandomDateTime()).Create();
+
+        private static Filler<Guardian> CreateGuardianFiller(DateTimeOffset date)
         {
             var filler = new Filler<Guardian>();
-            DateTimeOffset date = GetRandomDateTime();
 
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(date);

@@ -188,5 +188,55 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Theory]
+        [MemberData(nameof(InvalidMinuteCases))]
+        public async void ShouldThrowValidationExceptionOnCreateIfCreatedDateIsNotRecentAndLogItAsync(
+            int minutes)
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Guardian randomGuardian = CreateRandomGuardian(date: randomDateTime);
+            Guardian invalidGuardian = randomGuardian;
+            invalidGuardian.CreatedDate = invalidGuardian.CreatedDate.AddMinutes(minutes);
+            invalidGuardian.UpdateDate = invalidGuardian.CreatedDate;
+            var invalidGuardianException = new InvalidGuardianException();
+
+            invalidGuardianException.AddData(
+                key: nameof(Guardian.CreatedDate),
+                values: $"Date is not recent.");
+
+            var expectedGuardianValidationException =
+                new GuardianValidationException(invalidGuardianException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
+
+            // when
+            ValueTask<Guardian> addGuardianTask =
+                this.guardianService.AddGuardianAsync(invalidGuardian);
+
+            // then
+            await Assert.ThrowsAsync<GuardianValidationException>(() =>
+                addGuardianTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertGuardianAsync(It.IsAny<Guardian>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
