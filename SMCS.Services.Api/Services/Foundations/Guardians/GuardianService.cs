@@ -27,6 +27,6 @@ namespace SMCS.Services.Api.Services.Foundations.Guardians
         }
 
         public ValueTask<Guardian> AddGuardianAsync(Guardian guardian) =>
-            throw new System.NotImplementedException();
+            this.storageBroker.InsertGuardianAsync(guardian);
     }
 }
