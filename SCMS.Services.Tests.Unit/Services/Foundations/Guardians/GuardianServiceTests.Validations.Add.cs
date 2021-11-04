@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using Moq;
 using SMCS.Services.Api.Models.Foundations.Guardians;
@@ -123,6 +124,45 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
             invalidGuardianException.AddData(
                 key: nameof(Guardian.UpdateDate),
                 values: $"Date is not same as {nameof(Guardian.CreatedDate)}.");
+
+            var expectedGuardianValidationException =
+                new GuardianValidationException(invalidGuardianException);
+
+            // when
+            ValueTask<Guardian> addGuardianTask =
+                this.guardianService.AddGuardianAsync(invalidGuardian);
+
+            // then
+            await Assert.ThrowsAsync<GuardianValidationException>(() =>
+                addGuardianTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertGuardianAsync(It.IsAny<Guardian>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnAddIfCreatedByIsNotSameAsByAndLogItAsync()
+        {
+            // given
+            Guid randomGuid = Guid.NewGuid();
+            Guardian randomGuardian = CreateRandomGuardian();
+            Guardian invalidGuardian = randomGuardian;
+            invalidGuardian.UpdatedBy = randomGuid;
+            var invalidGuardianException = new InvalidGuardianException();
+
+            invalidGuardianException.AddData(
+                key: nameof(Guardian.UpdatedBy),
+                values: $"Id is not same as {nameof(Guardian.CreatedBy)}.");
 
             var expectedGuardianValidationException =
                 new GuardianValidationException(invalidGuardianException);
