@@ -27,7 +27,13 @@ namespace SMCS.Services.Api.Services.Foundations.Guardians
                     firstDate: guardian.UpdateDate,
                     secondDate: guardian.CreatedDate,
                     secondDateName: nameof(Guardian.CreatedDate)),
-                Parameter: nameof(Guardian.UpdateDate)));
+                Parameter: nameof(Guardian.UpdateDate)),
+
+                (Rule: IsNotSame(
+                    firstId: guardian.UpdatedBy,
+                    secondId: guardian.CreatedBy,
+                    secondIdName: nameof(Guardian.CreatedBy)),
+                Parameter: nameof(Guardian.UpdatedBy)));
         }
 
         private void ValidateGuardianIsNotNull(Guardian guardian)
@@ -69,6 +75,15 @@ namespace SMCS.Services.Api.Services.Foundations.Guardians
             {
                 Condition = firstDate != secondDate,
                 Message = $"Date is not same as {secondDateName}."
+            };
+
+        private static dynamic IsNotSame(
+            Guid firstId,
+            Guid secondId,
+            string secondIdName) => new
+            {
+                Condition = firstId != secondId,
+                Message = $"Id is not same as {secondIdName}."
             };
 
         private void Validate(params (dynamic Rule, string Parameter)[] validations)
