@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using SMCS.Services.Api.Models.Foundations.Guardians;
 using SMCS.Services.Api.Models.Foundations.Guardians.Exceptions;
 using Xeptions;
@@ -27,14 +28,30 @@ namespace SMCS.Services.Api.Services.Foundations.Guardians
             {
                 throw CreateAndLogValidationException(invalidGuardianException);
             }
+            catch (SqlException sqlException)
+            {
+                var failedGuardianStorageException =
+                    new FailedGuardianStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(
+                    failedGuardianStorageException);
+            }
         }
 
         private GuardianValidationException CreateAndLogValidationException(Xeption exception)
         {
-            var studentValidationException = new GuardianValidationException(exception);
-            this.loggingBroker.LogError(studentValidationException);
+            var guardianValidationException = new GuardianValidationException(exception);
+            this.loggingBroker.LogError(guardianValidationException);
 
-            return studentValidationException;
+            return guardianValidationException;
+        }
+
+        private GuardianDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
+        {
+            var guardianDependencyException = new GuardianDependencyException(exception);
+            this.loggingBroker.LogCritical(guardianDependencyException);
+
+            return guardianDependencyException;
         }
     }
 }
