@@ -45,6 +45,14 @@ namespace SMCS.Services.Api.Services.Foundations.Guardians
                 throw CreateAndLogDependencyValidationException(
                     alreadyExistsGuardianException);
             }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidGuardianReferenceException =
+                    new InvalidGuardianReferenceException(foreignKeyConstraintConflictException);
+
+                throw CreateAndLogDependencyValidationException(
+                    invalidGuardianReferenceException);
+            }
         }
 
         private GuardianValidationException CreateAndLogValidationException(Xeption exception)
