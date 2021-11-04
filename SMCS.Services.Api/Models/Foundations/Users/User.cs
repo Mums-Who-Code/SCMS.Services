@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using SMCS.Services.Api.Models.Foundations.Guardians;
 using SMCS.Services.Api.Models.Foundations.Schools;
 using SMCS.Services.Api.Models.Foundations.Students;
 using SMCS.Services.Api.Models.Foundations.StudentSchools;
@@ -33,5 +34,11 @@ namespace SMCS.Services.Api.Models.Foundations.Users
 
         [JsonIgnore]
         public IEnumerable<StudentSchool> UpdatedStudentSchools { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<Guardian> CreatedGuardians { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<Guardian> UpdatedGuardians { get; set; }
     }
 }
