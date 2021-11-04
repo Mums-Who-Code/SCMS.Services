@@ -33,7 +33,9 @@ namespace SMCS.Services.Api.Services.Foundations.Guardians
                     firstId: guardian.UpdatedBy,
                     secondId: guardian.CreatedBy,
                     secondIdName: nameof(Guardian.CreatedBy)),
-                Parameter: nameof(Guardian.UpdatedBy)));
+                Parameter: nameof(Guardian.UpdatedBy)),
+
+                (Rule: IsNotRecent(guardian.CreatedDate), Parameter: nameof(Guardian.CreatedDate)));
         }
 
         private void ValidateGuardianIsNotNull(Guardian guardian)
@@ -85,6 +87,23 @@ namespace SMCS.Services.Api.Services.Foundations.Guardians
                 Condition = firstId != secondId,
                 Message = $"Id is not same as {secondIdName}."
             };
+
+        private dynamic IsNotRecent(DateTimeOffset date) => new
+        {
+            Condition = IsDateNotRecent(date),
+            Message = "Date is not recent."
+        };
+
+        private bool IsDateNotRecent(DateTimeOffset date)
+        {
+            DateTimeOffset currentDateTime =
+                this.dateTimeBroker.GetCurrentDateTime();
+
+            TimeSpan timeDifference = currentDateTime.Subtract(date);
+            TimeSpan oneMinute = TimeSpan.FromMinutes(1);
+
+            return timeDifference.Duration() > oneMinute;
+        }
 
         private void Validate(params (dynamic Rule, string Parameter)[] validations)
         {

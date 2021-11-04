@@ -89,9 +89,11 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
         private static Filler<Guardian> CreateGuardianFiller(DateTimeOffset date)
         {
             var filler = new Filler<Guardian>();
+            Guid userId = Guid.NewGuid();
 
             filler.Setup()
-                .OnType<DateTimeOffset>().Use(date);
+                .OnType<DateTimeOffset>().Use(date)
+                .OnType<Guid>().Use(userId);
 
             return filler;
         }

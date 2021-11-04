@@ -136,6 +136,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
             await Assert.ThrowsAsync<GuardianValidationException>(() =>
                 addGuardianTask.AsTask());
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedGuardianValidationException))),
@@ -174,6 +178,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
             // then
             await Assert.ThrowsAsync<GuardianValidationException>(() =>
                 addGuardianTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
