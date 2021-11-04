@@ -10,7 +10,7 @@ using SMCS.Services.Api.Models.Foundations.Guardians;
 
 namespace SMCS.Services.Api.Services.Foundations.Guardians
 {
-    public class GuardianService : IGuardianService
+    public partial class GuardianService : IGuardianService
     {
         private readonly IStorageBroker storageBroker;
         private readonly IDateTimeBroker dateTimeBroker;
@@ -27,6 +27,12 @@ namespace SMCS.Services.Api.Services.Foundations.Guardians
         }
 
         public ValueTask<Guardian> AddGuardianAsync(Guardian guardian) =>
-            this.storageBroker.InsertGuardianAsync(guardian);
+        TryCatch(async () =>
+        {
+            ValidateGuardianOnAdd(guardian);
+
+            return await this.storageBroker.InsertGuardianAsync(guardian);
+        });
+            
     }
 }
