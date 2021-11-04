@@ -83,15 +83,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
                 values: "Date is required.");
 
             invalidGuardianException.AddData(
-                key: nameof(Guardian.UpdateDate),
-                values: "Date is required.");
-
-            invalidGuardianException.AddData(
                 key: nameof(Guardian.CreatedBy),
-                values: "Id is required.");
-
-            invalidGuardianException.AddData(
-                key: nameof(Guardian.UpdatedBy),
                 values: "Id is required.");
 
             var expectedGuardianValidationException =

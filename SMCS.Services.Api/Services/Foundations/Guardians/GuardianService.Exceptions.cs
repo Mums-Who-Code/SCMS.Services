@@ -2,7 +2,6 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
 using System.Threading.Tasks;
 using SMCS.Services.Api.Models.Foundations.Guardians;
 using SMCS.Services.Api.Models.Foundations.Guardians.Exceptions;
@@ -23,6 +22,10 @@ namespace SMCS.Services.Api.Services.Foundations.Guardians
             catch (NullGuardianException nullGuardianException)
             {
                 throw CreateAndLogValidationException(nullGuardianException);
+            }
+            catch (InvalidGuardianException invalidGuardianException)
+            {
+                throw CreateAndLogValidationException(invalidGuardianException);
             }
         }
 
