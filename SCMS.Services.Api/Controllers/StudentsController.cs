@@ -43,6 +43,11 @@ namespace SCMS.Services.Api.Controllers
             {
                 return Conflict(studentDependencyValidationException.InnerException);
             }
+            catch (StudentDependencyValidationException studentDependencyValidationException)
+                when (studentDependencyValidationException.InnerException is InvalidStudentReferenceException)
+            {
+                return FailedDependency(studentDependencyValidationException.InnerException);
+            }
             catch (StudentServiceException studentServiceException)
             {
                 return InternalServerError(studentServiceException);
