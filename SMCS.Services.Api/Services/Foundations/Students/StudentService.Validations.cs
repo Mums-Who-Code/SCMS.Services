@@ -26,10 +26,10 @@ namespace SMCS.Services.Api.Services.Foundations.Students
                 (Rule: IsNotRecent(student.CreatedDate), Parameter: nameof(Student.CreatedDate)),
 
                 (Rule: IsNotSame(
-                    firstDate: student.UpdateDate,
+                    firstDate: student.UpdatedDate,
                     secondDate: student.CreatedDate,
                     secondDateName: nameof(Student.CreatedDate)),
-                Parameter: nameof(Student.UpdateDate)),
+                Parameter: nameof(Student.UpdatedDate)),
 
                  (Rule: IsNotSame(
                     firstId: student.UpdatedBy,

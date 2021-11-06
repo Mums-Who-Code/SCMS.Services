@@ -109,11 +109,11 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             // given
             Student randomStudent = CreateRandomStudent();
             Student invalidStudent = randomStudent;
-            invalidStudent.UpdateDate = invalidStudent.CreatedDate.AddDays(1);
+            invalidStudent.UpdatedDate = invalidStudent.CreatedDate.AddDays(1);
             var invalidStudentException = new InvalidStudentException();
 
             invalidStudentException.AddData(
-                key: nameof(Student.UpdateDate),
+                key: nameof(Student.UpdatedDate),
                 values: $"Date is not same as {nameof(Student.CreatedDate)}.");
 
             var expectedStudentValidationException =
@@ -196,7 +196,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             Student randomStudent = CreateRandomStudent();
             Student invalidStudent = randomStudent;
             invalidStudent.CreatedDate = invalidStudent.CreatedDate.AddMinutes(minutes);
-            invalidStudent.UpdateDate = invalidStudent.CreatedDate;
+            invalidStudent.UpdatedDate = invalidStudent.CreatedDate;
             var invalidStudentException = new InvalidStudentException();
 
             invalidStudentException.AddData(

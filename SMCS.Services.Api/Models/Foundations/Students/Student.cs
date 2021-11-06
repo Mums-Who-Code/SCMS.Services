@@ -17,7 +17,7 @@ namespace SMCS.Services.Api.Models.Foundations.Students
         public DateTimeOffset DateOfBirth { get; set; }
         public StudentStatus Status { get; set; }
         public DateTimeOffset CreatedDate { get; set; }
-        public DateTimeOffset UpdateDate { get; set; }
+        public DateTimeOffset UpdatedDate { get; set; }
 
         public Guid CreatedBy { get; set; }
         public User CreatedByUser { get; set; }
