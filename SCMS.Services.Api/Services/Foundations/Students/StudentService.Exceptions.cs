@@ -47,6 +47,15 @@ namespace SCMS.Services.Api.Services.Foundations.Students
                 throw CreateAndLogDependencyValidationException(
                     alreadyExistsStudentException);
             }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidStudentReferenceException =
+                    new InvalidStudentReferenceException(
+                        foreignKeyConstraintConflictException);
+
+                throw CreateAndLogDependencyValidationException(
+                    invalidStudentReferenceException);
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 var failedStudentStorageException =
