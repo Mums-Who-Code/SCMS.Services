@@ -3,12 +3,12 @@
 // -----------------------------------------------------------------------
 
 using System.Threading.Tasks;
-using SMCS.Services.Api.Brokers.DateTimes;
-using SMCS.Services.Api.Brokers.Loggings;
-using SMCS.Services.Api.Brokers.Storages;
-using SMCS.Services.Api.Models.Foundations.Schools;
+using SCMS.Services.Api.Brokers.DateTimes;
+using SCMS.Services.Api.Brokers.Loggings;
+using SCMS.Services.Api.Brokers.Storages;
+using SCMS.Services.Api.Models.Foundations.Schools;
 
-namespace SMCS.Services.Api.Services.Foundations.Schools
+namespace SCMS.Services.Api.Services.Foundations.Schools
 {
     public partial class SchoolService : ISchoolService
     {

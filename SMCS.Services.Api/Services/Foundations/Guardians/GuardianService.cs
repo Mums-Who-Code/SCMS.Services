@@ -3,12 +3,12 @@
 // -----------------------------------------------------------------------
 
 using System.Threading.Tasks;
-using SMCS.Services.Api.Brokers.DateTimes;
-using SMCS.Services.Api.Brokers.Loggings;
-using SMCS.Services.Api.Brokers.Storages;
-using SMCS.Services.Api.Models.Foundations.Guardians;
+using SCMS.Services.Api.Brokers.DateTimes;
+using SCMS.Services.Api.Brokers.Loggings;
+using SCMS.Services.Api.Brokers.Storages;
+using SCMS.Services.Api.Models.Foundations.Guardians;
 
-namespace SMCS.Services.Api.Services.Foundations.Guardians
+namespace SCMS.Services.Api.Services.Foundations.Guardians
 {
     public partial class GuardianService : IGuardianService
     {

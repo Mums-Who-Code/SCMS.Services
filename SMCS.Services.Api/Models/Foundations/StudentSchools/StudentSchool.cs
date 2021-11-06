@@ -3,11 +3,11 @@
 // -----------------------------------------------------------------------
 
 using System;
-using SMCS.Services.Api.Models.Foundations.Schools;
-using SMCS.Services.Api.Models.Foundations.Students;
-using SMCS.Services.Api.Models.Foundations.Users;
+using SCMS.Services.Api.Models.Foundations.Schools;
+using SCMS.Services.Api.Models.Foundations.Students;
+using SCMS.Services.Api.Models.Foundations.Users;
 
-namespace SMCS.Services.Api.Models.Foundations.StudentSchools
+namespace SCMS.Services.Api.Models.Foundations.StudentSchools
 {
     public class StudentSchool
     {

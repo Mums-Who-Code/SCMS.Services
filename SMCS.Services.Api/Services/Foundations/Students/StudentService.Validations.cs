@@ -3,10 +3,10 @@
 // -----------------------------------------------------------------------
 
 using System;
-using SMCS.Services.Api.Models.Foundations.Students;
-using SMCS.Services.Api.Models.Foundations.Students.Exceptions;
+using SCMS.Services.Api.Models.Foundations.Students;
+using SCMS.Services.Api.Models.Foundations.Students.Exceptions;
 
-namespace SMCS.Services.Api.Services.Foundations.Students
+namespace SCMS.Services.Api.Services.Foundations.Students
 {
     public partial class StudentService
     {

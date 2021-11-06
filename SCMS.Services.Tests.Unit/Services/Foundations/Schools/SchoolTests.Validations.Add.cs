@@ -5,8 +5,6 @@
 using System;
 using System.Threading.Tasks;
 using Moq;
-using SMCS.Services.Api.Models.Foundations.Schools;
-using SMCS.Services.Api.Models.Foundations.Schools.Exceptions;
 using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools

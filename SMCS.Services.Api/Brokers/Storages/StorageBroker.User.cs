@@ -3,9 +3,9 @@
 // -----------------------------------------------------------------------
 
 using Microsoft.EntityFrameworkCore;
-using SMCS.Services.Api.Models.Foundations.Users;
+using SCMS.Services.Api.Models.Foundations.Users;
 
-namespace SMCS.Services.Api.Brokers.Storages
+namespace SCMS.Services.Api.Brokers.Storages
 {
     public partial class StorageBroker
     {

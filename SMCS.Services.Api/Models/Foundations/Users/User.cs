@@ -5,12 +5,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using SMCS.Services.Api.Models.Foundations.Guardians;
-using SMCS.Services.Api.Models.Foundations.Schools;
-using SMCS.Services.Api.Models.Foundations.Students;
-using SMCS.Services.Api.Models.Foundations.StudentSchools;
+using SCMS.Services.Api.Models.Foundations.Guardians;
+using SCMS.Services.Api.Models.Foundations.Schools;
+using SCMS.Services.Api.Models.Foundations.Students;
+using SCMS.Services.Api.Models.Foundations.StudentSchools;
 
-namespace SMCS.Services.Api.Models.Foundations.Users
+namespace SCMS.Services.Api.Models.Foundations.Users
 {
     public class User
     {

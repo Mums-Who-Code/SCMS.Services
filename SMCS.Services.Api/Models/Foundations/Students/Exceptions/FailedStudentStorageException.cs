@@ -5,12 +5,12 @@
 using System;
 using Xeptions;
 
-namespace SMCS.Services.Api.Models.Foundations.Students.Exceptions
+namespace SCMS.Services.Api.Models.Foundations.Students.Exceptions
 {
     public class FailedStudentStorageException : Xeption
     {
         public FailedStudentStorageException(Exception innerException)
-            : base (message: "Failed student storage error occurred, contact support.", innerException)
+            : base(message: "Failed student storage error occurred, contact support.", innerException)
         { }
     }
 }

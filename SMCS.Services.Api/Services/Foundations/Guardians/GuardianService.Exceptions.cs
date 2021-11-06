@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using SMCS.Services.Api.Models.Foundations.Guardians;
-using SMCS.Services.Api.Models.Foundations.Guardians.Exceptions;
+using SCMS.Services.Api.Models.Foundations.Guardians;
+using SCMS.Services.Api.Models.Foundations.Guardians.Exceptions;
 using Xeptions;
 
-namespace SMCS.Services.Api.Services.Foundations.Guardians
+namespace SCMS.Services.Api.Services.Foundations.Guardians
 {
     public partial class GuardianService
     {

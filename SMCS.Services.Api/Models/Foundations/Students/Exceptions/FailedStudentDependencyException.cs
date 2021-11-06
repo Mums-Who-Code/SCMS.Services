@@ -5,7 +5,7 @@
 using System;
 using Xeptions;
 
-namespace SMCS.Services.Api.Models.Foundations.Students.Exceptions
+namespace SCMS.Services.Api.Models.Foundations.Students.Exceptions
 {
     public class FailedStudentDependencyException : Xeption
     {

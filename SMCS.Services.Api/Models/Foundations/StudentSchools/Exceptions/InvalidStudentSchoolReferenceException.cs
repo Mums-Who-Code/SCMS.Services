@@ -5,7 +5,7 @@
 using System;
 using Xeptions;
 
-namespace SMCS.Services.Api.Models.Foundations.StudentSchools.Exceptions
+namespace SCMS.Services.Api.Models.Foundations.StudentSchools.Exceptions
 {
     public class InvalidStudentSchoolReferenceException : Xeption
     {

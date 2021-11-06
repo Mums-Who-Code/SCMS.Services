@@ -6,15 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
-using Microsoft.Data.SqlClient;
 using Moq;
-using SMCS.Services.Api.Brokers.DateTimes;
-using SMCS.Services.Api.Brokers.Loggings;
-using SMCS.Services.Api.Brokers.Storages;
-using SMCS.Services.Api.Models.Foundations.Students;
-using SMCS.Services.Api.Services.Foundations.Students;
 using Tynamix.ObjectFiller;
-using Xeptions;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
 {

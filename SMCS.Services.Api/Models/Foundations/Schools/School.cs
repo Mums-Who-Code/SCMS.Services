@@ -5,10 +5,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using SMCS.Services.Api.Models.Foundations.StudentSchools;
-using SMCS.Services.Api.Models.Foundations.Users;
+using SCMS.Services.Api.Models.Foundations.StudentSchools;
+using SCMS.Services.Api.Models.Foundations.Users;
 
-namespace SMCS.Services.Api.Models.Foundations.Schools
+namespace SCMS.Services.Api.Models.Foundations.Schools
 {
     public class School
     {

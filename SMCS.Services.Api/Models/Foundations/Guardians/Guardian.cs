@@ -3,9 +3,9 @@
 // -----------------------------------------------------------------------
 
 using System;
-using SMCS.Services.Api.Models.Foundations.Users;
+using SCMS.Services.Api.Models.Foundations.Users;
 
-namespace SMCS.Services.Api.Models.Foundations.Guardians
+namespace SCMS.Services.Api.Models.Foundations.Guardians
 {
     public class Guardian
     {

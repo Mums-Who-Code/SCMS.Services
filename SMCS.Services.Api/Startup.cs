@@ -7,17 +7,16 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using SMCS.Services.Api.Brokers.DateTimes;
-using SMCS.Services.Api.Brokers.Loggings;
-using SMCS.Services.Api.Brokers.Storages;
-using SMCS.Services.Api.Services.Foundations.Guardians;
-using SMCS.Services.Api.Services.Foundations.Schools;
-using SMCS.Services.Api.Services.Foundations.Students;
-using SMCS.Services.Api.Services.Foundations.StudentSchools;
+using SCMS.Services.Api.Brokers.DateTimes;
+using SCMS.Services.Api.Brokers.Loggings;
+using SCMS.Services.Api.Brokers.Storages;
+using SCMS.Services.Api.Services.Foundations.Guardians;
+using SCMS.Services.Api.Services.Foundations.Schools;
+using SCMS.Services.Api.Services.Foundations.Students;
+using SCMS.Services.Api.Services.Foundations.StudentSchools;
 
-namespace SMCS.Services.Api
+namespace SCMS.Services.Api
 {
     public class Startup
     {
@@ -38,7 +37,7 @@ namespace SMCS.Services.Api
             {
                 var openApiInfo = new OpenApiInfo
                 {
-                    Title = "SMCS.Services.Api",
+                    Title = "SCMS.Services.Api",
                     Version = "v1"
                 };
 
@@ -58,7 +57,7 @@ namespace SMCS.Services.Api
                 app.UseSwaggerUI(options =>
                     options.SwaggerEndpoint(
                         name: "/swagger/v1/swagger.json",
-                        url: "SMCS.Services.Api v1"));
+                        url: "SCMS.Services.Api v1"));
             }
 
             app.UseHttpsRedirection();

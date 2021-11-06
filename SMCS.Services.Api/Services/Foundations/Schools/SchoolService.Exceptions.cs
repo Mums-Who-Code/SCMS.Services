@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using SMCS.Services.Api.Models.Foundations.Schools;
-using SMCS.Services.Api.Models.Foundations.Schools.Exceptions;
+using SCMS.Services.Api.Models.Foundations.Schools;
+using SCMS.Services.Api.Models.Foundations.Schools.Exceptions;
 using Xeptions;
 
-namespace SMCS.Services.Api.Services.Foundations.Schools
+namespace SCMS.Services.Api.Services.Foundations.Schools
 {
     public partial class SchoolService
     {

@@ -4,7 +4,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace SMCS.Services.Api.Controllers
+namespace SCMS.Services.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

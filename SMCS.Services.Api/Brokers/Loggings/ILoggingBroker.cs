@@ -4,7 +4,7 @@
 
 using System;
 
-namespace SMCS.Services.Api.Brokers.Loggings
+namespace SCMS.Services.Api.Brokers.Loggings
 {
     public interface ILoggingBroker
     {

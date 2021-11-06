@@ -3,10 +3,10 @@
 // -----------------------------------------------------------------------
 
 using System;
-using SMCS.Services.Api.Models.Foundations.Guardians;
-using SMCS.Services.Api.Models.Foundations.Guardians.Exceptions;
+using SCMS.Services.Api.Models.Foundations.Guardians;
+using SCMS.Services.Api.Models.Foundations.Guardians.Exceptions;
 
-namespace SMCS.Services.Api.Services.Foundations.Guardians
+namespace SCMS.Services.Api.Services.Foundations.Guardians
 {
     public partial class GuardianService
     {

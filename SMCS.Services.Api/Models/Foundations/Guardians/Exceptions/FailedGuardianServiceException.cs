@@ -5,7 +5,7 @@
 using System;
 using Xeptions;
 
-namespace SMCS.Services.Api.Models.Foundations.Guardians.Exceptions
+namespace SCMS.Services.Api.Models.Foundations.Guardians.Exceptions
 {
     public class FailedGuardianServiceException : Xeption
     {

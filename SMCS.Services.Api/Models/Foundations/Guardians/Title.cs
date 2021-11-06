@@ -2,7 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-namespace SMCS.Services.Api.Models.Foundations.Guardians
+namespace SCMS.Services.Api.Models.Foundations.Guardians
 {
     public enum Title
     {

@@ -3,9 +3,9 @@
 // -----------------------------------------------------------------------
 
 using System.Threading.Tasks;
-using SMCS.Services.Api.Models.Foundations.Schools;
+using SCMS.Services.Api.Models.Foundations.Schools;
 
-namespace SMCS.Services.Api.Brokers.Storages
+namespace SCMS.Services.Api.Brokers.Storages
 {
     public partial interface IStorageBroker
     {

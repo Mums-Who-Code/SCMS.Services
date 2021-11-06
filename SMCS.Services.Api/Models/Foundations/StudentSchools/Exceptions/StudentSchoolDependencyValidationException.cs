@@ -4,7 +4,7 @@
 
 using Xeptions;
 
-namespace SMCS.Services.Api.Models.Foundations.StudentSchools.Exceptions
+namespace SCMS.Services.Api.Models.Foundations.StudentSchools.Exceptions
 {
     public class StudentSchoolDependencyValidationException : Xeption
     {

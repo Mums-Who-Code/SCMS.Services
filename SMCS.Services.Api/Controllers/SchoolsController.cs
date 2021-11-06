@@ -5,11 +5,11 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
-using SMCS.Services.Api.Models.Foundations.Schools;
-using SMCS.Services.Api.Models.Foundations.Schools.Exceptions;
-using SMCS.Services.Api.Services.Foundations.Schools;
+using SCMS.Services.Api.Models.Foundations.Schools;
+using SCMS.Services.Api.Models.Foundations.Schools.Exceptions;
+using SCMS.Services.Api.Services.Foundations.Schools;
 
-namespace SMCS.Services.Api.Controllers
+namespace SCMS.Services.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

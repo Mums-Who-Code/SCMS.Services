@@ -5,13 +5,11 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
-using SMCS.Services.Api.Models.Foundations.Guardians;
-using SMCS.Services.Api.Models.Foundations.Guardians;
-using SMCS.Services.Api.Models.Foundations.Guardians.Exceptions;
-using SMCS.Services.Api.Services.Foundations.Guardians;
-using SMCS.Services.Api.Services.Foundations.Guardians;
+using SCMS.Services.Api.Models.Foundations.Guardians;
+using SCMS.Services.Api.Models.Foundations.Guardians.Exceptions;
+using SCMS.Services.Api.Services.Foundations.Guardians;
 
-namespace SMCS.Services.Api.Controllers
+namespace SCMS.Services.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SMCS.Services.Api.Brokers.Storages;
+using SCMS.Services.Api.Brokers.Storages;
 
 #nullable disable
 
-namespace SMCS.Services.Api.Migrations
+namespace SCMS.Services.Api.Migrations
 {
     [DbContext(typeof(StorageBroker))]
     [Migration("20211011004219_SeedUsers")]
@@ -24,7 +24,7 @@ namespace SMCS.Services.Api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("SMCS.Services.Api.Models.Foundations.Users.User", b =>
+            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

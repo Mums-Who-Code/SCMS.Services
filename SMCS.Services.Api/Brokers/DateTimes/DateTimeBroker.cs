@@ -4,7 +4,7 @@
 
 using System;
 
-namespace SMCS.Services.Api.Brokers.DateTimes
+namespace SCMS.Services.Api.Brokers.DateTimes
 {
     public class DateTimeBroker : IDateTimeBroker
     {

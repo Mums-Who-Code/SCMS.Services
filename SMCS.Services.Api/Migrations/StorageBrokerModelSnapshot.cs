@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SMCS.Services.Api.Brokers.Storages;
+using SCMS.Services.Api.Brokers.Storages;
 
 #nullable disable
 
-namespace SMCS.Services.Api.Migrations
+namespace SCMS.Services.Api.Migrations
 {
     [DbContext(typeof(StorageBroker))]
     partial class StorageBrokerModelSnapshot : ModelSnapshot
@@ -22,7 +22,7 @@ namespace SMCS.Services.Api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("SMCS.Services.Api.Models.Foundations.Guardians.Guardian", b =>
+            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Guardians.Guardian", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -58,7 +58,7 @@ namespace SMCS.Services.Api.Migrations
                     b.ToTable("Guardians");
                 });
 
-            modelBuilder.Entity("SMCS.Services.Api.Models.Foundations.Schools.School", b =>
+            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Schools.School", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -88,7 +88,7 @@ namespace SMCS.Services.Api.Migrations
                     b.ToTable("Schools");
                 });
 
-            modelBuilder.Entity("SMCS.Services.Api.Models.Foundations.Students.Student", b =>
+            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Students.Student", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -127,7 +127,7 @@ namespace SMCS.Services.Api.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("SMCS.Services.Api.Models.Foundations.StudentSchools.StudentSchool", b =>
+            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.StudentSchools.StudentSchool", b =>
                 {
                     b.Property<Guid>("StudentId")
                         .HasColumnType("uniqueidentifier");
@@ -161,7 +161,7 @@ namespace SMCS.Services.Api.Migrations
                     b.ToTable("StudentSchools");
                 });
 
-            modelBuilder.Entity("SMCS.Services.Api.Models.Foundations.Users.User", b =>
+            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -182,15 +182,15 @@ namespace SMCS.Services.Api.Migrations
                         });
                 });
 
-            modelBuilder.Entity("SMCS.Services.Api.Models.Foundations.Guardians.Guardian", b =>
+            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Guardians.Guardian", b =>
                 {
-                    b.HasOne("SMCS.Services.Api.Models.Foundations.Users.User", "CreatedByUser")
+                    b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "CreatedByUser")
                         .WithMany("CreatedGuardians")
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("SMCS.Services.Api.Models.Foundations.Users.User", "UpdatedByUser")
+                    b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "UpdatedByUser")
                         .WithMany("UpdatedGuardians")
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -201,15 +201,15 @@ namespace SMCS.Services.Api.Migrations
                     b.Navigation("UpdatedByUser");
                 });
 
-            modelBuilder.Entity("SMCS.Services.Api.Models.Foundations.Schools.School", b =>
+            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Schools.School", b =>
                 {
-                    b.HasOne("SMCS.Services.Api.Models.Foundations.Users.User", "CreatedByUser")
+                    b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "CreatedByUser")
                         .WithMany("CreatedSchools")
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("SMCS.Services.Api.Models.Foundations.Users.User", "UpdatedByUser")
+                    b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "UpdatedByUser")
                         .WithMany("UpdatedSchools")
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -220,15 +220,15 @@ namespace SMCS.Services.Api.Migrations
                     b.Navigation("UpdatedByUser");
                 });
 
-            modelBuilder.Entity("SMCS.Services.Api.Models.Foundations.Students.Student", b =>
+            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Students.Student", b =>
                 {
-                    b.HasOne("SMCS.Services.Api.Models.Foundations.Users.User", "CreatedByUser")
+                    b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "CreatedByUser")
                         .WithMany("CreatedStudents")
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("SMCS.Services.Api.Models.Foundations.Users.User", "UpdatedByUser")
+                    b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "UpdatedByUser")
                         .WithMany("UpdatedStudents")
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -239,27 +239,27 @@ namespace SMCS.Services.Api.Migrations
                     b.Navigation("UpdatedByUser");
                 });
 
-            modelBuilder.Entity("SMCS.Services.Api.Models.Foundations.StudentSchools.StudentSchool", b =>
+            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.StudentSchools.StudentSchool", b =>
                 {
-                    b.HasOne("SMCS.Services.Api.Models.Foundations.Users.User", "CreatedByUser")
+                    b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "CreatedByUser")
                         .WithMany("CreatedStudentSchools")
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("SMCS.Services.Api.Models.Foundations.Schools.School", "StudyingSchool")
+                    b.HasOne("SCMS.Services.Api.Models.Foundations.Schools.School", "StudyingSchool")
                         .WithMany("EnrolledStudents")
                         .HasForeignKey("SchoolId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("SMCS.Services.Api.Models.Foundations.Students.Student", "StudingStudent")
+                    b.HasOne("SCMS.Services.Api.Models.Foundations.Students.Student", "StudingStudent")
                         .WithOne("EnrolledSchool")
-                        .HasForeignKey("SMCS.Services.Api.Models.Foundations.StudentSchools.StudentSchool", "StudentId")
+                        .HasForeignKey("SCMS.Services.Api.Models.Foundations.StudentSchools.StudentSchool", "StudentId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("SMCS.Services.Api.Models.Foundations.Users.User", "UpdatedByUser")
+                    b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "UpdatedByUser")
                         .WithMany("UpdatedStudentSchools")
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -274,17 +274,17 @@ namespace SMCS.Services.Api.Migrations
                     b.Navigation("UpdatedByUser");
                 });
 
-            modelBuilder.Entity("SMCS.Services.Api.Models.Foundations.Schools.School", b =>
+            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Schools.School", b =>
                 {
                     b.Navigation("EnrolledStudents");
                 });
 
-            modelBuilder.Entity("SMCS.Services.Api.Models.Foundations.Students.Student", b =>
+            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Students.Student", b =>
                 {
                     b.Navigation("EnrolledSchool");
                 });
 
-            modelBuilder.Entity("SMCS.Services.Api.Models.Foundations.Users.User", b =>
+            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Users.User", b =>
                 {
                     b.Navigation("CreatedGuardians");
 

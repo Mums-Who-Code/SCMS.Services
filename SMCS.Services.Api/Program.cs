@@ -5,7 +5,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace SMCS.Services.Api
+namespace SCMS.Services.Api
 {
     public class Program
     {

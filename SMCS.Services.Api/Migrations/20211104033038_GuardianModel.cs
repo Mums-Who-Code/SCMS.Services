@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace SMCS.Services.Api.Migrations
+namespace SCMS.Services.Api.Migrations
 {
     public partial class GuardianModel : Migration
     {

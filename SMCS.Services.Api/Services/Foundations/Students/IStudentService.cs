@@ -3,9 +3,9 @@
 // -----------------------------------------------------------------------
 
 using System.Threading.Tasks;
-using SMCS.Services.Api.Models.Foundations.Students;
+using SCMS.Services.Api.Models.Foundations.Students;
 
-namespace SMCS.Services.Api.Services.Foundations.Students
+namespace SCMS.Services.Api.Services.Foundations.Students
 {
     public interface IStudentService
     {

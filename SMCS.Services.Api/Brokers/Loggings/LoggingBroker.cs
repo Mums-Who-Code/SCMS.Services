@@ -5,7 +5,7 @@
 using System;
 using Microsoft.Extensions.Logging;
 
-namespace SMCS.Services.Api.Brokers.Loggings
+namespace SCMS.Services.Api.Brokers.Loggings
 {
     public class LoggingBroker : ILoggingBroker
     {

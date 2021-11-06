@@ -2,7 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-namespace SMCS.Services.Api.Models.Foundations.Students
+namespace SCMS.Services.Api.Models.Foundations.Students
 {
     public enum StudentStatus
     {
