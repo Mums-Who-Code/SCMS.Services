@@ -49,6 +49,9 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
             };
         }
 
+        private static string GetRandomMessage() =>
+            new MnemonicString().GetValue();
+
         private static DateTimeOffset GetRandomDateTimeOffset() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
