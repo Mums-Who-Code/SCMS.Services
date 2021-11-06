@@ -14,7 +14,7 @@ namespace SCMS.Services.Api.Models.Foundations.Guardians
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTimeOffset CreatedDate { get; set; }
-        public DateTimeOffset UpdateDate { get; set; }
+        public DateTimeOffset UpdatedDate { get; set; }
 
         public Guid CreatedBy { get; set; }
         public User CreatedByUser { get; set; }
