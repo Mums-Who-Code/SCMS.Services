@@ -48,10 +48,15 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
             actualSchool.Should()
                 .BeEquivalentTo(expectedSchool);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertSchoolAsync(inputSchool),
                     Times.Once);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
