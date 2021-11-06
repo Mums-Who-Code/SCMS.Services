@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using SMCS.Services.Api.Models.Foundations.Students;
-using SMCS.Services.Api.Models.Foundations.Students.Exceptions;
+using SCMS.Services.Api.Models.Foundations.Students;
+using SCMS.Services.Api.Models.Foundations.Students.Exceptions;
 using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.Students

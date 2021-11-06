@@ -1,0 +1,84 @@
+// -----------------------------------------------------------------------
+// Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
+// -----------------------------------------------------------------------
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using SCMS.Services.Api.Brokers.DateTimes;
+using SCMS.Services.Api.Brokers.Loggings;
+using SCMS.Services.Api.Brokers.Storages;
+using SCMS.Services.Api.Services.Foundations.Guardians;
+using SCMS.Services.Api.Services.Foundations.Schools;
+using SCMS.Services.Api.Services.Foundations.Students;
+using SCMS.Services.Api.Services.Foundations.StudentSchools;
+
+namespace SCMS.Services.Api
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration) =>
+            Configuration = configuration;
+
+        public IConfiguration Configuration { get; }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllers();
+            services.AddLogging();
+            services.AddDbContext<StorageBroker>();
+            AddBrokers(services);
+            AddServices(services);
+
+            services.AddSwaggerGen(options =>
+            {
+                var openApiInfo = new OpenApiInfo
+                {
+                    Title = "SCMS.Services.Api",
+                    Version = "v1"
+                };
+
+                options.SwaggerDoc(
+                    name: "v1",
+                    info: openApiInfo);
+            });
+        }
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+
+                app.UseSwaggerUI(options =>
+                    options.SwaggerEndpoint(
+                        name: "/swagger/v1/swagger.json",
+                        url: "SCMS.Services.Api v1"));
+            }
+
+            app.UseHttpsRedirection();
+            app.UseRouting();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
+        }
+
+        private void AddBrokers(IServiceCollection services)
+        {
+            services.AddScoped<IDateTimeBroker, DateTimeBroker>();
+            services.AddScoped<ILoggingBroker, LoggingBroker>();
+            services.AddTransient<IStorageBroker, StorageBroker>();
+        }
+
+        private void AddServices(IServiceCollection services)
+        {
+            services.AddTransient<IStudentService, StudentService>();
+            services.AddTransient<ISchoolService, SchoolService>();
+            services.AddTransient<IStudentSchoolService, StudentSchoolService>();
+            services.AddTransient<IGuardianService, GuardianService>();
+        }
+    }
+}

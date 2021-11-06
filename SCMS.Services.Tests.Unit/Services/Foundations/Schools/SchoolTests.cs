@@ -7,11 +7,11 @@ using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
 using Moq;
-using SMCS.Services.Api.Brokers.DateTimes;
-using SMCS.Services.Api.Brokers.Loggings;
-using SMCS.Services.Api.Brokers.Storages;
-using SMCS.Services.Api.Models.Foundations.Schools;
-using SMCS.Services.Api.Services.Foundations.Schools;
+using SCMS.Services.Api.Brokers.DateTimes;
+using SCMS.Services.Api.Brokers.Loggings;
+using SCMS.Services.Api.Brokers.Storages;
+using SCMS.Services.Api.Models.Foundations.Schools;
+using SCMS.Services.Api.Services.Foundations.Schools;
 using Tynamix.ObjectFiller;
 using Xeptions;
 using Xunit;
@@ -52,7 +52,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
         private static DateTimeOffset GetRandomDateTimeOffset() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
+        private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
         {
             return actualException =>
                 actualException.Message == expectedException.Message

@@ -5,8 +5,8 @@
 using System;
 using System.Threading.Tasks;
 using Moq;
-using SMCS.Services.Api.Models.Foundations.Guardians;
-using SMCS.Services.Api.Models.Foundations.Guardians.Exceptions;
+using SCMS.Services.Api.Models.Foundations.Guardians;
+using SCMS.Services.Api.Models.Foundations.Guardians.Exceptions;
 using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
