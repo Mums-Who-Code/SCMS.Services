@@ -4,7 +4,11 @@
 
 using System;
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
+using Microsoft.EntityFrameworkCore;
 using Moq;
+using SCMS.Services.Api.Models.Foundations.Students;
+using SCMS.Services.Api.Models.Foundations.Students.Exceptions;
 using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.Students

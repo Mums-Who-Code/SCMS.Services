@@ -6,6 +6,7 @@ using System;
 using FluentAssertions;
 using Force.DeepCloner;
 using Moq;
+using SCMS.Services.Api.Models.Foundations.StudentSchools;
 using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentSchools

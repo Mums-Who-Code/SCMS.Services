@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
 using Moq;
+using SCMS.Services.Api.Models.Foundations.Schools;
 using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools

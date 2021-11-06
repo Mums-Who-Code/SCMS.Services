@@ -5,6 +5,7 @@
 using System.Net.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 using RESTFulSense.Clients;
+using SCMS.Services.Api;
 
 namespace SCMS.Services.Tests.Acceptance.Brokers
 {

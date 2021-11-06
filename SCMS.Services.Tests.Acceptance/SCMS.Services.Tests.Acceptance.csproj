@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SCMS.Services.Api\SCMS.Services.Api.csproj" />
+    <ProjectReference Include="..\SCMS.Services.Api\SCMS.Services.Api.csproj" />
   </ItemGroup>
 
 </Project>

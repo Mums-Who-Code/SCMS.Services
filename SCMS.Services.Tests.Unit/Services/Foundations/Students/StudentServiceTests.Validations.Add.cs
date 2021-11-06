@@ -5,6 +5,8 @@
 using System;
 using System.Threading.Tasks;
 using Moq;
+using SCMS.Services.Api.Models.Foundations.Students;
+using SCMS.Services.Api.Models.Foundations.Students.Exceptions;
 using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
@@ -30,8 +32,8 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
                 addStudentTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(
-                    SameExceptionAs(expectedStudentValidationException))),
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentValidationException))),
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
