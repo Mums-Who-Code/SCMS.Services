@@ -18,14 +18,14 @@ using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
 {
-    public partial class SchoolTests
+    public partial class SchoolServiceTests
     {
         private readonly Mock<IStorageBroker> storageBrokerMock;
         private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly ISchoolService schoolService;
 
-        public SchoolTests()
+        public SchoolServiceTests()
         {
             this.storageBrokerMock = new Mock<IStorageBroker>();
             this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
