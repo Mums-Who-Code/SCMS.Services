@@ -37,14 +37,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
                 loggingBroker: this.loggingBrokerMock.Object);
         }
 
-        private static Expression<Func<Exception, bool>> SameExceptionAs(Exception expectedException)
-        {
-            return actualException =>
-                actualException.Message == expectedException.Message
-                && actualException.InnerException.Message == expectedException.InnerException.Message;
-        }
-
-        private static Expression<Func<Exception, bool>> SameValidationExceptionAs(Exception expectedException)
+        private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
         {
             return actualException =>
                 actualException.Message == expectedException.Message
@@ -67,7 +60,6 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
         private static int GetNegativeRandomNumber() => -1 * GetRandomNumber();
         private static int GetRandomNumber() => new IntRange(min: 2, max: 10).GetValue();
         private static string GetRandomMessage() => new MnemonicString().GetValue();
-
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();

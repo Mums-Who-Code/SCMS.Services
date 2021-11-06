@@ -9,7 +9,7 @@ namespace SMCS.Services.Api.Models.Foundations.Students.Exceptions
 {
     public class StudentValidationException : Xeption
     {
-        public StudentValidationException(Exception innerException)
+        public StudentValidationException(Xeption innerException)
             : base(message: "Invalid input, contact support.", innerException)
         { }
     }

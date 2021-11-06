@@ -9,6 +9,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SMCS.Services.Api.Models.Foundations.Students;
 using SMCS.Services.Api.Models.Foundations.Students.Exceptions;
+using Xeptions;
 
 namespace SMCS.Services.Api.Services.Foundations.Students
 {
@@ -32,26 +33,41 @@ namespace SMCS.Services.Api.Services.Foundations.Students
             }
             catch (SqlException sqlException)
             {
-                throw CreateAndLogCriticalDependencyException(sqlException);
+                var failedStudentStorageException =
+                    new FailedStudentStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(
+                    failedStudentStorageException);
             }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistsStudentException =
                     new AlreadyExistsStudentException(duplicateKeyException);
 
-                throw CreateAndLogDependencyValidationException(alreadyExistsStudentException);
+                throw CreateAndLogDependencyValidationException(
+                    alreadyExistsStudentException);
             }
             catch (DbUpdateException dbUpdateException)
             {
-                throw CreateAndLogDependencyException(dbUpdateException);
+                var failedStudentStorageException =
+                    new FailedStudentStorageException(
+                        dbUpdateException);
+
+                throw CreateAndLogDependencyException(
+                    failedStudentStorageException);
             }
             catch (Exception exception)
             {
-                throw CreateAndLogServiceException(exception);
+                var failedStudentServiceException =
+                    new FailedStudentServiceException(
+                        exception);
+
+                throw CreateAndLogServiceException(
+                    failedStudentServiceException);
             }
         }
 
-        private StudentValidationException CreateAndLogValidationException(Exception exception)
+        private StudentValidationException CreateAndLogValidationException(Xeption exception)
         {
             var studentValidationException = new StudentValidationException(exception);
             this.loggingBroker.LogError(studentValidationException);
@@ -59,7 +75,7 @@ namespace SMCS.Services.Api.Services.Foundations.Students
             return studentValidationException;
         }
 
-        private StudentDependencyException CreateAndLogCriticalDependencyException(Exception exception)
+        private StudentDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
         {
             var studentDependencyException = new StudentDependencyException(exception);
             this.loggingBroker.LogCritical(studentDependencyException);
@@ -67,7 +83,7 @@ namespace SMCS.Services.Api.Services.Foundations.Students
             return studentDependencyException;
         }
 
-        private StudentDependencyValidationException CreateAndLogDependencyValidationException(Exception exception)
+        private StudentDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
         {
             var studentDependencyValidationException = new StudentDependencyValidationException(exception);
             this.loggingBroker.LogError(studentDependencyValidationException);
@@ -75,7 +91,7 @@ namespace SMCS.Services.Api.Services.Foundations.Students
             return studentDependencyValidationException;
         }
 
-        private StudentDependencyException CreateAndLogDependencyException(Exception exception)
+        private StudentDependencyException CreateAndLogDependencyException(Xeption exception)
         {
             var studentDependencyException = new StudentDependencyException(exception);
             this.loggingBroker.LogError(studentDependencyException);
@@ -83,7 +99,7 @@ namespace SMCS.Services.Api.Services.Foundations.Students
             return studentDependencyException;
         }
 
-        private StudentServiceException CreateAndLogServiceException(Exception exception)
+        private StudentServiceException CreateAndLogServiceException(Xeption exception)
         {
             var studentServiceException = new StudentServiceException(exception);
             this.loggingBroker.LogError(studentServiceException);

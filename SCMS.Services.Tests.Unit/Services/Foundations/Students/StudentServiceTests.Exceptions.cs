@@ -24,8 +24,13 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             Student inputStudent = randomStudent;
             Exception sqlException = GetSqlException();
 
+            var failedStudentDependencyException =
+                new FailedStudentStorageException(
+                    sqlException);
+
             var expectedStudentDependencyException =
-                new StudentDependencyException(sqlException);
+                new StudentDependencyException(
+                    failedStudentDependencyException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
@@ -44,8 +49,8 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-               broker.LogCritical(It.Is(
-                   SameExceptionAs(expectedStudentDependencyException))),
+               broker.LogCritical(It.Is(SameExceptionAs(
+                   expectedStudentDependencyException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
@@ -76,11 +81,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertStudentAsync(alreadyExistsStudent))
-                    .ThrowsAsync(duplicateKeyException);
+                    .Throws(duplicateKeyException);
 
             // when
             ValueTask<Student> addStudentTask =
@@ -94,18 +95,18 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
                 broker.GetCurrentDateTime(),
                     Times.Once);
 
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedStudentDepdendencyValidationException))),
+                    Times.Once);
+
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentAsync(alreadyExistsStudent),
-                    Times.Once);
-
-            this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(
-                   SameExceptionAs(expectedStudentDepdendencyValidationException))),
-                    Times.Once);
+                    Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -119,16 +120,15 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             string exceptionMessage = randomMessage;
             var dbUpdateException = new DbUpdateException(exceptionMessage);
 
+            var failedStudentStorageException =
+                new FailedStudentStorageException(dbUpdateException);
+
             var expectedStudentDepdendencyException =
-                new StudentDependencyException(dbUpdateException);
+                new StudentDependencyException(failedStudentStorageException);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertStudentAsync(inputStudent))
-                    .ThrowsAsync(dbUpdateException);
+                    .Throws(dbUpdateException);
 
             // when
             ValueTask<Student> addStudentTask =
@@ -142,18 +142,18 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
                 broker.GetCurrentDateTime(),
                     Times.Once);
 
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedStudentDepdendencyException))),
+                    Times.Once);
+
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentAsync(inputStudent),
-                    Times.Once);
-
-            this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(
-                   SameExceptionAs(expectedStudentDepdendencyException))),
-                    Times.Once);
+                    Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -167,16 +167,15 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             string exceptionMessage = randomMessage;
             var serviceException = new Exception(exceptionMessage);
 
+            var failedStudentServiceExceptio =
+                new FailedStudentServiceException(serviceException);
+
             var expectedStudentServiceException =
-                new StudentServiceException(serviceException);
+                new StudentServiceException(failedStudentServiceExceptio);
 
             this.dateTimeBrokerMock.Setup(broker =>
                 broker.GetCurrentDateTime())
-                    .Returns(dateTime);
-
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertStudentAsync(inputStudent))
-                    .ThrowsAsync(serviceException);
+                    .Throws(serviceException);
 
             // when
             ValueTask<Student> addStudentTask =
@@ -190,18 +189,18 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
                 broker.GetCurrentDateTime(),
                     Times.Once);
 
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedStudentServiceException))),
+                    Times.Once);
+
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertStudentAsync(inputStudent),
-                    Times.Once);
-
-            this.loggingBrokerMock.Verify(broker =>
-               broker.LogError(It.Is(
-                   SameExceptionAs(expectedStudentServiceException))),
-                    Times.Once);
+                    Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

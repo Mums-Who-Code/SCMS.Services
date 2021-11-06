@@ -55,8 +55,8 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
                     It.IsAny<Student>()),
                         Times.Once);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
