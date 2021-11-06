@@ -7,10 +7,10 @@ using Xeptions;
 
 namespace SMCS.Services.Api.Models.Foundations.Students.Exceptions
 {
-    public class AlreadyExistsStudentException : Xeption
+    public class FailedStudentServiceException : Xeption
     {
-        public AlreadyExistsStudentException(Exception innerException)
-            : base(message: "Student with the same id already exists.", innerException)
+        public FailedStudentServiceException(Exception innerException)
+            : base(message: "Failed student service error occurred, contact support.", innerException)
         { }
     }
 }

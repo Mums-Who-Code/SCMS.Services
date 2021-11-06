@@ -3,12 +3,13 @@
 // -----------------------------------------------------------------------
 
 using System;
+using Xeptions;
 
 namespace SMCS.Services.Api.Models.Foundations.Students.Exceptions
 {
-    public class StudentDependencyValidationException : Exception
+    public class StudentDependencyValidationException : Xeption
     {
-        public StudentDependencyValidationException(Exception innerException)
+        public StudentDependencyValidationException(Xeption innerException)
             : base(message: "Student dependency validation failure, contact support.", innerException)
         { }
     }

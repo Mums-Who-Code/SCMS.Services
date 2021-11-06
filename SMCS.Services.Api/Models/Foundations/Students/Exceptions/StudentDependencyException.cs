@@ -3,12 +3,13 @@
 // -----------------------------------------------------------------------
 
 using System;
+using Xeptions;
 
 namespace SMCS.Services.Api.Models.Foundations.Students.Exceptions
 {
-    public class StudentDependencyException : Exception
+    public class StudentDependencyException : Xeption
     {
-        public StudentDependencyException(Exception innerException)
+        public StudentDependencyException(Xeption innerException)
             : base(message: "Service dependency error occurred, contact support.", innerException)
         { }
     }
