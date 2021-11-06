@@ -28,8 +28,8 @@ namespace SMCS.Services.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
+            services.AddLogging();
             services.AddDbContext<StorageBroker>();
             AddBrokers(services);
             AddServices(services);
@@ -70,7 +70,6 @@ namespace SMCS.Services.Api
         private void AddBrokers(IServiceCollection services)
         {
             services.AddScoped<IDateTimeBroker, DateTimeBroker>();
-            services.AddScoped<ILogger, Logger<LoggingBroker>>();
             services.AddScoped<ILoggingBroker, LoggingBroker>();
             services.AddTransient<IStorageBroker, StorageBroker>();
         }
