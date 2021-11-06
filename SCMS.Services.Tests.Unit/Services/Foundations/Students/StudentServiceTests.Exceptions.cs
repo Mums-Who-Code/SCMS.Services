@@ -110,6 +110,55 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
         }
 
         [Fact]
+        public async void ShouldThrowDependencyValidationExceptionOnAddIfReferenceErrorOccursAndLogItAsync()
+        {
+            // given
+            DateTimeOffset dateTime = GetRandomDateTime();
+            Student randomStudent = CreateRandomStudent(dateTime);
+            Student alreadyExistsStudent = randomStudent;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+
+            var foreignKeyConstraintConflictException =
+                new ForeignKeyConstraintConflictException(exceptionMessage);
+
+            var invalidStudentReferenceException =
+                new InvalidStudentReferenceException(foreignKeyConstraintConflictException);
+
+            var expectedStudentDepdendencyValidationException =
+                new StudentDependencyValidationException(invalidStudentReferenceException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Throws(foreignKeyConstraintConflictException);
+
+            // when
+            ValueTask<Student> addStudentTask =
+                this.studentService.AddStudentAsync(alreadyExistsStudent);
+
+            // then
+            await Assert.ThrowsAsync<StudentDependencyValidationException>(() =>
+                addStudentTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedStudentDepdendencyValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentAsync(alreadyExistsStudent),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
         public async void ShouldThrowDependencyExceptionOnAddIfDbExceptionOccursAndLogItAsync()
         {
             // given
