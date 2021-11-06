@@ -45,6 +45,13 @@ namespace SCMS.Services.Api.Services.Foundations.Schools
 
                 throw CreateAndLogDependencyValidationException(alreadyExistsSchoolException);
             }
+            catch(ForeignKeyConstraintConflictException foreignKeyConstraintConflicException)
+            {
+                var invalidSchoolReferenceException =
+                    new InvalidSchoolReferenceException(foreignKeyConstraintConflicException);
+
+                throw CreateAndLogDependencyValidationException(invalidSchoolReferenceException);
+            }
             catch (DbUpdateException databaseUpdateException)
             {
                 var failedSchoolStorageException =
