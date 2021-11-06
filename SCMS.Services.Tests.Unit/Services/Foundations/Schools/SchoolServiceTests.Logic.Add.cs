@@ -12,7 +12,7 @@ using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
 {
-    public partial class SchoolTests
+    public partial class SchoolServiceTests
     {
         [Fact]
         public async Task ShouldAddSchoolAsync()
