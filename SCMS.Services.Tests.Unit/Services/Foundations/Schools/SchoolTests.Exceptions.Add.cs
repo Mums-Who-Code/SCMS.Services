@@ -104,6 +104,53 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
         }
 
         [Fact]
+        public async void ShouldThrowDependencyValidationExceptionOnAddIfReferenceErrorOccursAndLogItAsync()
+        {
+            // given
+            School randomSchool = CreateRandomSchool();
+            School alreadyExistsSchool = randomSchool;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+
+            var foreignKeyConstraintConflictException =
+                new ForeignKeyConstraintConflictException(exceptionMessage);
+
+            var invalidSchoolReferenceException =
+                new InvalidSchoolReferenceException(foreignKeyConstraintConflictException);
+
+            var expectedSchoolDepdendencyValidationException =
+                new SchoolDependencyValidationException(invalidSchoolReferenceException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Throws(foreignKeyConstraintConflictException);
+            // when
+            ValueTask<School> addSchoolTask =
+                this.schoolService.AddSchoolAsync(alreadyExistsSchool);
+
+            // then
+            await Assert.ThrowsAsync<SchoolDependencyValidationException>(() =>
+                addSchoolTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedSchoolDepdendencyValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertSchoolAsync(alreadyExistsSchool),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
         public async Task ShouldThrowDependencyExceptionOnAddIfDatabaseUpdateErrorOccursAndLogItAsync()
         {
             // given
