@@ -15,10 +15,12 @@ namespace SCMS.Services.Api.Brokers.Storages
 
         public async ValueTask<Student> InsertStudentAsync(Student student)
         {
-            EntityEntry<Student> studentEntityEntry =
-                await this.Students.AddAsync(entity: student);
+            using var broker = new StorageBroker(this.configuration);
 
-            await this.SaveChangesAsync();
+            EntityEntry<Student> studentEntityEntry =
+                await broker.Students.AddAsync(entity: student);
+
+            await broker.SaveChangesAsync();
 
             return studentEntityEntry.Entity;
         }
