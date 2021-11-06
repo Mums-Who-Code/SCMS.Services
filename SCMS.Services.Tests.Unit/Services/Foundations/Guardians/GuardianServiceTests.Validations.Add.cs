@@ -122,11 +122,11 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
             // given
             Guardian randomGuardian = CreateRandomGuardian();
             Guardian invalidGuardian = randomGuardian;
-            invalidGuardian.UpdateDate = invalidGuardian.CreatedDate.AddDays(1);
+            invalidGuardian.UpdatedDate = invalidGuardian.CreatedDate.AddDays(1);
             var invalidGuardianException = new InvalidGuardianException();
 
             invalidGuardianException.AddData(
-                key: nameof(Guardian.UpdateDate),
+                key: nameof(Guardian.UpdatedDate),
                 values: $"Date is not same as {nameof(Guardian.CreatedDate)}.");
 
             var expectedGuardianValidationException =
@@ -211,7 +211,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
             Guardian randomGuardian = CreateRandomGuardian(date: randomDateTime);
             Guardian invalidGuardian = randomGuardian;
             invalidGuardian.CreatedDate = invalidGuardian.CreatedDate.AddMinutes(minutes);
-            invalidGuardian.UpdateDate = invalidGuardian.CreatedDate;
+            invalidGuardian.UpdatedDate = invalidGuardian.CreatedDate;
             var invalidGuardianException = new InvalidGuardianException();
 
             invalidGuardianException.AddData(

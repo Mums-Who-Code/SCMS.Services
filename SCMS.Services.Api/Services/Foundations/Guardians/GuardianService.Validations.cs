@@ -24,10 +24,10 @@ namespace SCMS.Services.Api.Services.Foundations.Guardians
                 (Rule: IsInvalid(id: guardian.CreatedBy), Parameter: nameof(Guardian.CreatedBy)),
 
                 (Rule: IsNotSame(
-                    firstDate: guardian.UpdateDate,
+                    firstDate: guardian.UpdatedDate,
                     secondDate: guardian.CreatedDate,
                     secondDateName: nameof(Guardian.CreatedDate)),
-                Parameter: nameof(Guardian.UpdateDate)),
+                Parameter: nameof(Guardian.UpdatedDate)),
 
                 (Rule: IsNotSame(
                     firstId: guardian.UpdatedBy,
