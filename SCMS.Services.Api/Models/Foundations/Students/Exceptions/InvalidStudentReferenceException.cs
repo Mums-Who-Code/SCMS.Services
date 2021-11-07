@@ -10,7 +10,7 @@ namespace SCMS.Services.Api.Models.Foundations.Students.Exceptions
     public class InvalidStudentReferenceException : Xeption
     {
         public InvalidStudentReferenceException(Exception innerException)
-            : base(message:"Invalid student reference error occurred, contact support")
+            : base(message: "Invalid student reference error occurred, contact support")
         { }
     }
 }

@@ -3,12 +3,12 @@
 // -----------------------------------------------------------------------
 
 using Microsoft.EntityFrameworkCore;
-using SCMS.Services.Api.Models.Foundations.Users;
+using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 
 namespace SCMS.Services.Api.Brokers.Storages
 {
     public partial class StorageBroker
     {
-        DbSet<User> Users { get; set; }
+        DbSet<StudentGuardian> StudentGuardians { get; set; }
     }
 }
