@@ -27,6 +27,6 @@ namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
         }
 
         public ValueTask<StudentGuardian> AddStudentGuardianAsync(StudentGuardian studentGuardian) =>
-            throw new System.NotImplementedException();
+            this.storageBroker.InsertStudentGuardianAsync(studentGuardian);
     }
 }
