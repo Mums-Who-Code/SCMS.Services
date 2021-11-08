@@ -33,12 +33,12 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
                 dateTimeBroker: this.dateTimeBrokerMock.Object,
                 loggingBroker: this.loggingBrokerMock.Object);
         }
-        
+
         private static T GetInvalidEnum<T>()
         {
             int randomNumber = GetLocalRandomNumber();
 
-            while(Enum.IsDefined(typeof(T), randomNumber) is true)
+            while (Enum.IsDefined(typeof(T), randomNumber) is true)
             {
                 randomNumber = GetLocalRandomNumber();
             }

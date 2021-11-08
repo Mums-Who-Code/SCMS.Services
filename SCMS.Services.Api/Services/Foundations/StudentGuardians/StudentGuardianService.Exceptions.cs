@@ -24,6 +24,10 @@ namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
             {
                 throw CreateAndLogValidationException(nullStudentGuardianException);
             }
+            catch (InvalidStudentGuardianException invalidStudentGuardianException)
+            {
+                throw CreateAndLogValidationException(invalidStudentGuardianException);
+            }
         }
 
         private StudentGuardianValidationException CreateAndLogValidationException(Xeption exception)
