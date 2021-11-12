@@ -74,6 +74,18 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
                 key: nameof(Student.LastName),
                 values: "Text is required.");
 
+            invalidStudentException.AddData(
+                key: nameof(Student.Status),
+                values: "Value is required.");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.CreatedDate),
+                values: "Date is required.");
+
+            invalidStudentException.AddData(
+                key: nameof(Student.CreatedBy),
+                values: "Id is required.");
+
             var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentException);
 
