@@ -21,10 +21,10 @@ namespace SCMS.Services.Api.Brokers.Storages
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             SeedUsers(modelBuilder);
-            AddStudentReferences(modelBuilder);
-            AddSchoolReferences(modelBuilder);
-            AddStudentSchoolReferences(modelBuilder);
-            AddGuardianReferences(modelBuilder);
+            SetStudentReferences(modelBuilder);
+            SetSchoolReferences(modelBuilder);
+            SetStudentSchoolReferences(modelBuilder);
+            SetGuardianReferences(modelBuilder);
             SetStudentGuardianReferences(modelBuilder);
         }
 

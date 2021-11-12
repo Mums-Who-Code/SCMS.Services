@@ -9,7 +9,7 @@ namespace SCMS.Services.Api.Brokers.Storages
 {
     public partial class StorageBroker
     {
-        public void AddSchoolReferences(ModelBuilder modelBuilder)
+        public void SetSchoolReferences(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<School>()
                 .HasOne(school => school.CreatedByUser)
