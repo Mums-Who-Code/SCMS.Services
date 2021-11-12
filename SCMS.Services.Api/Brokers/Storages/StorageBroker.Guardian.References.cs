@@ -9,7 +9,7 @@ namespace SCMS.Services.Api.Brokers.Storages
 {
     public partial class StorageBroker
     {
-        public void AddGuardianReferences(ModelBuilder modelBuilder)
+        public void SetGuardianReferences(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Guardian>()
                 .HasOne(guardian => guardian.CreatedByUser)
