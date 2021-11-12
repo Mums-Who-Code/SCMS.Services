@@ -201,11 +201,12 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
 
         [Theory]
         [MemberData(nameof(InvalidMinuteCases))]
-        public async void ShouldThrowValidationExceptionOnCreateIfCreatedDateIsNotRecentAndLogItAsync(
+        public async void ShouldThrowValidationExceptionOnAddIfCreatedDateIsNotRecentAndLogItAsync(
             int minutes)
         {
             // given
-            Student randomStudent = CreateRandomStudent();
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Student randomStudent = CreateRandomStudent(randomDateTime);
             Student invalidStudent = randomStudent;
             invalidStudent.CreatedDate = invalidStudent.CreatedDate.AddMinutes(minutes);
             invalidStudent.UpdatedDate = invalidStudent.CreatedDate;
@@ -217,6 +218,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
 
             var expectedStudentValidationException =
                 new StudentValidationException(invalidStudentException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
 
             // when
             ValueTask<Student> addStudentTask =
