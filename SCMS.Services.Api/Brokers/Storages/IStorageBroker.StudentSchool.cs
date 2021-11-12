@@ -12,6 +12,6 @@ namespace SCMS.Services.Api.Brokers.Storages
     public partial interface IStorageBroker
     {
         ValueTask<StudentSchool> InsertStudentSchoolAsync(StudentSchool studentSchool);
-        IQueryable<StudentSchool> SelectAllStudentSchools();
+        IQueryable<StudentSchool> SelectAllStudentSchools(); 
     }
 }
