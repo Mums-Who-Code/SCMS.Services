@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -24,5 +25,8 @@ namespace SCMS.Services.Api.Brokers.Storages
 
             return entityEntry.Entity;
         }
+
+        public IQueryable<StudentGuardian> SelectAllStudentGuardians() 
+            => this.StudentGuardians.AsQueryable();
     }
 }
