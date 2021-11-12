@@ -23,7 +23,6 @@ namespace SCMS.Services.Api.Services.Foundations.Students
                 (Rule: IsInvalid(student.Status), Parameter: nameof(Student.Status)),
                 (Rule: IsInvalid(student.CreatedDate), Parameter: nameof(Student.CreatedDate)),
                 (Rule: IsInvalid(id: student.CreatedBy), Parameter: nameof(Student.CreatedBy)),
-                (Rule: IsNotRecent(student.CreatedDate), Parameter: nameof(Student.CreatedDate)),
 
                 (Rule: IsNotSame(
                     firstDate: student.UpdatedDate,
@@ -35,7 +34,10 @@ namespace SCMS.Services.Api.Services.Foundations.Students
                     firstId: student.UpdatedBy,
                     secondId: student.CreatedBy,
                     secondIdName: nameof(Student.CreatedBy)),
-                Parameter: nameof(Student.UpdatedBy)));
+                Parameter: nameof(Student.UpdatedBy)),
+
+                (Rule: IsNotRecent(student.CreatedDate), Parameter: nameof(Student.CreatedDate))
+            );
         }
 
         private void ValidateInput(Student student)
@@ -67,7 +69,7 @@ namespace SCMS.Services.Api.Services.Foundations.Students
         private static dynamic IsInvalid(StudentStatus status) => new
         {
             Condition = status != StudentStatus.Active,
-            Message = "Status is invalid."
+            Message = "Value is invalid."
         };
 
         private static dynamic IsNotSame(
