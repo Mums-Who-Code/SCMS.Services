@@ -27,6 +27,6 @@ namespace SCMS.Services.Api.Brokers.Storages
             return entityEntry.Entity;
         }
 
-        public IQueryable<School> SelectAllSchools() => this.Schools.AsQueryable();
+        public IQueryable<School> SelectAllSchools() => this.Schools;
     }
 }

@@ -36,5 +36,14 @@ namespace SCMS.Services.Api.Brokers.Storages
 
             return await broker.Students.FindAsync(studentId);
         }
+
+        public async ValueTask<Student> UpdateStudentAsync(Student student)
+        {
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Student> studentEntityEntry = broker.Students.Update(entity: student);
+            await broker.SaveChangesAsync();
+
+            return studentEntityEntry.Entity;
+        }
     }
 }
