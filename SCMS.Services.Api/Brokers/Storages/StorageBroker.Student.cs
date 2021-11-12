@@ -26,9 +26,9 @@ namespace SCMS.Services.Api.Brokers.Storages
 
             return studentEntityEntry.Entity;
         }
-      
+
         public IQueryable<Student> SelectAllStudents() => this.Students.AsQueryable();
-      
+
         public async ValueTask<Student> SelectStudentByIdAsync(Guid studentId)
         {
             using var broker = new StorageBroker(this.configuration);
@@ -41,6 +41,15 @@ namespace SCMS.Services.Api.Brokers.Storages
         {
             using var broker = new StorageBroker(this.configuration);
             EntityEntry<Student> studentEntityEntry = broker.Students.Update(entity: student);
+            await broker.SaveChangesAsync();
+
+            return studentEntityEntry.Entity;
+        }
+
+        public async ValueTask<Student> DeleteStudentAsync(Student student)
+        {
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Student> studentEntityEntry = broker.Students.Remove(entity: student);
             await broker.SaveChangesAsync();
 
             return studentEntityEntry.Entity;
