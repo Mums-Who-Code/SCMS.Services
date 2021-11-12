@@ -68,8 +68,8 @@ namespace SCMS.Services.Api
 
         private void AddBrokers(IServiceCollection services)
         {
-            services.AddScoped<IDateTimeBroker, DateTimeBroker>();
-            services.AddScoped<ILoggingBroker, LoggingBroker>();
+            services.AddTransient<IDateTimeBroker, DateTimeBroker>();
+            services.AddTransient<ILoggingBroker, LoggingBroker>();
             services.AddTransient<IStorageBroker, StorageBroker>();
         }
 
