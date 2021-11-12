@@ -5,6 +5,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
+using SCMS.Services.Api.Models.Foundations.Students;
 
 namespace SCMS.Services.Api.Brokers.Storages
 {
