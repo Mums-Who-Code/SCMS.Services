@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using Moq;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
@@ -119,6 +120,44 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
             invalidStudentGuardianException.AddData(
                 key: nameof(StudentGuardian.CreatedDate),
                 values: $"Date is not same as {nameof(StudentGuardian.UpdatedDate)}.");
+
+            var expectedStudentGuardianValidationException =
+                new StudentGuardianValidationException(invalidStudentGuardianException);
+
+            // when
+            ValueTask<StudentGuardian> addStudentGuardianTask =
+                this.studentGuardianService.AddStudentGuardianAsync(invalidStudentGuardian);
+
+            // then
+            await Assert.ThrowsAsync<StudentGuardianValidationException>(() =>
+                addStudentGuardianTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentGuardianValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentGuardianAsync(It.IsAny<StudentGuardian>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnAddIfCreatedByIsNotSameAsUpdatedByAndLogItAsync()
+        {
+            // given
+            StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian();
+            StudentGuardian invalidStudentGuardian = randomStudentGuardian;
+            invalidStudentGuardian.UpdatedBy = Guid.NewGuid();
+            var invalidStudentGuardianException = new InvalidStudentGuardianException();
+
+            invalidStudentGuardianException.AddData(
+                key: nameof(StudentGuardian.CreatedBy),
+                values: $"Id is not same as {nameof(StudentGuardian.UpdatedBy)}.");
 
             var expectedStudentGuardianValidationException =
                 new StudentGuardianValidationException(invalidStudentGuardianException);
