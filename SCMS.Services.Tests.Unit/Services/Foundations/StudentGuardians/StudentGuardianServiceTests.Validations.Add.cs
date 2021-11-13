@@ -117,8 +117,8 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
             var invalidStudentGuardianException = new InvalidStudentGuardianException();
 
             invalidStudentGuardianException.AddData(
-                key: nameof(StudentGuardian.UpdatedDate),
-                values: $"Date is not same as {nameof(StudentGuardian.CreatedDate)}.");
+                key: nameof(StudentGuardian.CreatedDate),
+                values: $"Date is not same as {nameof(StudentGuardian.UpdatedDate)}.");
 
             var expectedStudentGuardianValidationException =
                 new StudentGuardianValidationException(invalidStudentGuardianException);

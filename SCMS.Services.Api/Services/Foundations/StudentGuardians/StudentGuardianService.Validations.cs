@@ -20,7 +20,14 @@ namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
                 (Rule: IsInvalid(studentGuardian.Relation), Parameter: nameof(StudentGuardian.Relation)),
                 (Rule: IsInvalid(studentGuardian.Level), Parameter: nameof(StudentGuardian.Level)),
                 (Rule: IsInvalid(studentGuardian.CreatedBy), Parameter: nameof(StudentGuardian.CreatedBy)),
-                (Rule: IsInvalid(studentGuardian.CreatedDate), Parameter: nameof(StudentGuardian.CreatedDate)));
+                (Rule: IsInvalid(studentGuardian.CreatedDate), Parameter: nameof(StudentGuardian.CreatedDate)),
+
+                (Rule: IsInvalid(
+                    firstDate: studentGuardian.CreatedDate,
+                    secondDate: studentGuardian.UpdatedDate,
+                    secondDateName: nameof(StudentGuardian.UpdatedDate)),
+                Parameter: nameof(StudentGuardian.CreatedDate))
+            );
         }
 
         private static void ValidateStudentGuardianIsNull(StudentGuardian studentGuardian)
@@ -49,6 +56,15 @@ namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
             Condition = date == default,
             Message = "Date is required."
         };
+
+        private static dynamic IsInvalid(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate != secondDate,
+                Message = $"Date is not same as {secondDateName}."
+            };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
