@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
@@ -17,14 +18,28 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
         public async Task ShouldAddStudentGuardianAsync()
         {
             // given
-            StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian();
-            StudentGuardian inputStudentGuardian = randomStudentGuardian;
-            StudentGuardian storageStudentGuardian = inputStudentGuardian;
-            StudentGuardian expectedStudentGuardian = storageStudentGuardian.DeepClone();
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+
+            StudentGuardian randomStudentGuardian =
+                CreateRandomStudentGuardian(randomDateTime);
+
+            StudentGuardian inputStudentGuardian = 
+                randomStudentGuardian;
+
+            StudentGuardian storageStudentGuardian =
+                inputStudentGuardian;
+
+            StudentGuardian expectedStudentGuardian =
+                storageStudentGuardian.DeepClone();
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertStudentGuardianAsync(inputStudentGuardian))
-                    .ReturnsAsync(storageStudentGuardian);
+                broker.InsertStudentGuardianAsync(
+                    inputStudentGuardian))
+                        .ReturnsAsync(storageStudentGuardian);
 
             // when
             StudentGuardian actualStudentGuardian =
@@ -35,13 +50,18 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
             actualStudentGuardian.Should()
                 .BeEquivalentTo(expectedStudentGuardian);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertStudentGuardianAsync(inputStudentGuardian),
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
                     Times.Once);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentGuardianAsync(
+                    inputStudentGuardian),
+                        Times.Once);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

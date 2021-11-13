@@ -10,7 +10,7 @@ namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
 {
     public partial class StudentGuardianService : IStudentGuardianService
     {
-        private static void ValidateStudentGuardian(StudentGuardian studentGuardian)
+        private void ValidateStudentGuardian(StudentGuardian studentGuardian)
         {
             ValidateStudentGuardianIsNull(studentGuardian);
 
@@ -32,7 +32,9 @@ namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
                     firstId: studentGuardian.CreatedBy,
                     secondId: studentGuardian.UpdatedBy,
                     secondIdName: nameof(StudentGuardian.UpdatedBy)),
-                Parameter: nameof(StudentGuardian.CreatedBy))
+                Parameter: nameof(StudentGuardian.CreatedBy)),
+
+                (Rule: IsNotRecent(studentGuardian.CreatedDate), Parameter: nameof(studentGuardian.CreatedDate))
             );
         }
 
@@ -80,6 +82,21 @@ namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
                 Condition = firstId != secondId,
                 Message = $"Id is not same as {secondIdName}."
             };
+
+        private dynamic IsNotRecent(DateTimeOffset date) => new
+        {
+            Condition = IsDateNotRecent(date),
+            Message = "Date is not recent"
+        };
+
+        private bool IsDateNotRecent(DateTimeOffset date)
+        {
+            DateTimeOffset currentDate = this.dateTimeBroker.GetCurrentDateTime();
+            TimeSpan oneMinute = TimeSpan.FromMinutes(1);
+            TimeSpan timeDifference = currentDate.Subtract(date);
+
+            return timeDifference.Duration() > oneMinute;
+        }
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {

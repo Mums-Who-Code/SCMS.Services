@@ -94,6 +94,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
             await Assert.ThrowsAsync<StudentGuardianValidationException>(() =>
                 addStudentGuardianTask.AsTask());
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedStudentGuardianValidationException))),
@@ -103,16 +107,17 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
                 broker.InsertStudentGuardianAsync(It.IsAny<StudentGuardian>()),
                     Times.Never);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
         public async Task ShouldThrowValidationExceptionOnAddIfCreatedDateIsNotSameAsUpdatedDateAndLogItAsync()
         {
             // given
-            StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian();
+            DateTimeOffset randomDate = GetRandomDateTime();
+            StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian(randomDate);
             StudentGuardian invalidStudentGuardian = randomStudentGuardian;
             invalidStudentGuardian.UpdatedDate = invalidStudentGuardian.CreatedDate.AddDays(1);
             var invalidStudentGuardianException = new InvalidStudentGuardianException();
@@ -124,6 +129,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
             var expectedStudentGuardianValidationException =
                 new StudentGuardianValidationException(invalidStudentGuardianException);
 
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDate);
+
             // when
             ValueTask<StudentGuardian> addStudentGuardianTask =
                 this.studentGuardianService.AddStudentGuardianAsync(invalidStudentGuardian);
@@ -131,6 +140,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
             // then
             await Assert.ThrowsAsync<StudentGuardianValidationException>(() =>
                 addStudentGuardianTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
@@ -141,9 +154,9 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
                 broker.InsertStudentGuardianAsync(It.IsAny<StudentGuardian>()),
                     Times.Never);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -170,6 +183,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
             await Assert.ThrowsAsync<StudentGuardianValidationException>(() =>
                 addStudentGuardianTask.AsTask());
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedStudentGuardianValidationException))),
@@ -179,9 +196,9 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
                 broker.InsertStudentGuardianAsync(It.IsAny<StudentGuardian>()),
                     Times.Never);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Theory]
@@ -197,6 +214,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
             invalidStudentGuardian.CreatedDate =
                 invalidStudentGuardian.CreatedDate.AddMinutes(invalidMinutes);
 
+            invalidStudentGuardian.UpdatedDate = invalidStudentGuardian.CreatedDate;
             var invalidStudentGuardianException = new InvalidStudentGuardianException();
 
             invalidStudentGuardianException.AddData(
