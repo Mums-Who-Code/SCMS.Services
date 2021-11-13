@@ -12,6 +12,7 @@ using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 using SCMS.Services.Api.Services.Foundations.StudentGuardians;
 using Tynamix.ObjectFiller;
 using Xeptions;
+using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
 {
@@ -32,6 +33,18 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
                 storageBroker: this.storageBrokerMock.Object,
                 dateTimeBroker: this.dateTimeBrokerMock.Object,
                 loggingBroker: this.loggingBrokerMock.Object);
+        }
+
+        public static TheoryData InvalidMinuteCases()
+        {
+            int minutesInFuture = GetRandomNumber();
+            int minutesInPast = GetRandomNegativeNumber();
+
+            return new TheoryData<int>
+            {
+                minutesInFuture,
+                minutesInPast
+            };
         }
 
         private static T GetInvalidEnum<T>()
@@ -63,20 +76,28 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
                 && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
+        private static int GetRandomNumber() =>
+            new IntRange(min: 1, max: 10).GetValue();
+
+        private static int GetRandomNegativeNumber() =>
+            -1 * GetRandomNumber();
+
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
         private static StudentGuardian CreateRandomStudentGuardian() =>
-            CreateStudentGuardianFiller().Create();
+            CreateStudentGuardianFiller(dates: GetRandomDateTime()).Create();
 
-        private static Filler<StudentGuardian> CreateStudentGuardianFiller()
+        private static StudentGuardian CreateRandomStudentGuardian(DateTimeOffset dates) =>
+            CreateStudentGuardianFiller(dates).Create();
+
+        private static Filler<StudentGuardian> CreateStudentGuardianFiller(DateTimeOffset dates)
         {
             var filler = new Filler<StudentGuardian>();
-            DateTimeOffset date = GetRandomDateTime();
             Guid userId = Guid.NewGuid();
 
             filler.Setup()
-                .OnType<DateTimeOffset>().Use(date)
+                .OnType<DateTimeOffset>().Use(dates)
                 .OnType<Guid>().Use(userId);
 
             return filler;
