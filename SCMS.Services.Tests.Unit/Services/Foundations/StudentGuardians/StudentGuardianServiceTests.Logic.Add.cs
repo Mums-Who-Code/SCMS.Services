@@ -23,7 +23,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
             StudentGuardian randomStudentGuardian =
                 CreateRandomStudentGuardian(randomDateTime);
 
-            StudentGuardian inputStudentGuardian = 
+            StudentGuardian inputStudentGuardian =
                 randomStudentGuardian;
 
             StudentGuardian storageStudentGuardian =
