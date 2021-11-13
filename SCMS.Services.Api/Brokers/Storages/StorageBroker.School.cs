@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -27,6 +28,8 @@ namespace SCMS.Services.Api.Brokers.Storages
             return entityEntry.Entity;
         }
 
+        public IQueryable<School> SelectAllSchools() => this.Schools;
+      
         public async ValueTask<School> SelectSchoolByIdAsync(Guid schoolId)
         {
             using var broker = new StorageBroker(this.configuration);
