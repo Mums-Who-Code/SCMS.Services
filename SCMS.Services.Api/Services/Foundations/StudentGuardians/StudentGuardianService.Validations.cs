@@ -41,7 +41,7 @@ namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
         private static dynamic IsInvalid<T>(T enumValue) => new
         {
             Condition = Enum.IsDefined(typeof(T), enumValue) is false,
-            Message = "Value is invalid."
+            Message = "Value is not recognized."
         };
 
         private static dynamic IsInvalid(DateTimeOffset date) => new

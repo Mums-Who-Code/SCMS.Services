@@ -68,11 +68,11 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
 
             invalidStudentGuardianException.AddData(
                 key: nameof(StudentGuardian.Relation),
-                values: "Value is invalid.");
+                values: "Value is not recognized.");
 
             invalidStudentGuardianException.AddData(
                 key: nameof(StudentGuardian.Level),
-                values: "Value is invalid.");
+                values: "Value is not recognized.");
 
             invalidStudentGuardianException.AddData(
                 key: nameof(StudentGuardian.CreatedBy),
@@ -81,6 +81,44 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
             invalidStudentGuardianException.AddData(
                 key: nameof(StudentGuardian.CreatedDate),
                 values: "Date is required.");
+
+            var expectedStudentGuardianValidationException =
+                new StudentGuardianValidationException(invalidStudentGuardianException);
+
+            // when
+            ValueTask<StudentGuardian> addStudentGuardianTask =
+                this.studentGuardianService.AddStudentGuardianAsync(invalidStudentGuardian);
+
+            // then
+            await Assert.ThrowsAsync<StudentGuardianValidationException>(() =>
+                addStudentGuardianTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentGuardianValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentGuardianAsync(It.IsAny<StudentGuardian>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnAddIfCreatedDateIsNotSameAsUpdatedDateAndLogItAsync()
+        {
+            // given
+            StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian();
+            StudentGuardian invalidStudentGuardian = randomStudentGuardian;
+            invalidStudentGuardian.UpdatedDate = invalidStudentGuardian.CreatedDate.AddDays(1);
+            var invalidStudentGuardianException = new InvalidStudentGuardianException();
+
+            invalidStudentGuardianException.AddData(
+                key: nameof(StudentGuardian.UpdatedDate),
+                values: $"Date is not same as {nameof(StudentGuardian.CreatedDate)}.");
 
             var expectedStudentGuardianValidationException =
                 new StudentGuardianValidationException(invalidStudentGuardianException);
