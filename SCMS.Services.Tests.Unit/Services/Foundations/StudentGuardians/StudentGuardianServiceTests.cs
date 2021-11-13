@@ -73,9 +73,11 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
         {
             var filler = new Filler<StudentGuardian>();
             DateTimeOffset date = GetRandomDateTime();
+            Guid userId = Guid.NewGuid();
 
             filler.Setup()
-                .OnType<DateTimeOffset>().Use(date);
+                .OnType<DateTimeOffset>().Use(date)
+                .OnType<Guid>().Use(userId);
 
             return filler;
         }

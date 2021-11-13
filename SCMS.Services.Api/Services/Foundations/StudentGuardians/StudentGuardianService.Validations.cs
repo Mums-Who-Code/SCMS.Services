@@ -26,7 +26,13 @@ namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
                     firstDate: studentGuardian.CreatedDate,
                     secondDate: studentGuardian.UpdatedDate,
                     secondDateName: nameof(StudentGuardian.UpdatedDate)),
-                Parameter: nameof(StudentGuardian.CreatedDate))
+                Parameter: nameof(StudentGuardian.CreatedDate)),
+
+                (Rule: IsInvalid(
+                    firstId: studentGuardian.CreatedBy,
+                    secondId: studentGuardian.UpdatedBy,
+                    secondIdName: nameof(StudentGuardian.UpdatedBy)),
+                Parameter: nameof(StudentGuardian.CreatedBy))
             );
         }
 
@@ -64,6 +70,15 @@ namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
             {
                 Condition = firstDate != secondDate,
                 Message = $"Date is not same as {secondDateName}."
+            };
+
+        private static dynamic IsInvalid(
+            Guid firstId,
+            Guid secondId,
+            string secondIdName) => new
+            {
+                Condition = firstId != secondId,
+                Message = $"Id is not same as {secondIdName}."
             };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
