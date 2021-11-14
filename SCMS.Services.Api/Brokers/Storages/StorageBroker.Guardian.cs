@@ -2,11 +2,13 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SCMS.Services.Api.Models.Foundations.Guardians;
+using SCMS.Services.Api.Models.Foundations.Students;
 
 namespace SCMS.Services.Api.Brokers.Storages
 {
@@ -27,5 +29,13 @@ namespace SCMS.Services.Api.Brokers.Storages
         }
 
         public IQueryable<Guardian> SelectAllGuardians() => this.Guardians; 
+
+        public async ValueTask<Guardian> SelectGuardianByIdAsync(Guid guardianId)
+        {
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
+            return await broker.Guardians.FindAsync(guardianId);
+        }
     }
 }
