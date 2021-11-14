@@ -15,5 +15,6 @@ namespace SCMS.Services.Api.Brokers.Storages
         ValueTask<StudentSchool> InsertStudentSchoolAsync(StudentSchool studentSchool);
         IQueryable<StudentSchool> SelectAllStudentSchools();
         ValueTask<StudentSchool> SelectStudentSchoolByIdAsync(Guid studentSchoolId);
+        ValueTask<StudentSchool> DeleteStudentSchoolAsync(StudentSchool studentSchool);
     }
 }
