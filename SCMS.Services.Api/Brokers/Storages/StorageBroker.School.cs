@@ -37,5 +37,14 @@ namespace SCMS.Services.Api.Brokers.Storages
 
             return await broker.Schools.FindAsync(schoolId);
         }
+
+        public async ValueTask<School> DeleteSchoolAsync(School school)
+        {
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<School> schoolEntityEntry = broker.Schools.Remove(entity: school);
+            await broker.SaveChangesAsync();
+
+            return schoolEntityEntry.Entity;
+        }
     }
 }
