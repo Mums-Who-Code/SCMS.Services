@@ -26,6 +26,15 @@ namespace SCMS.Services.Api.Brokers.Storages
             return entityEntry.Entity;
         }
 
-        public IQueryable<Guardian> SelectAllGuardians() => this.Guardians; 
+        public IQueryable<Guardian> SelectAllGuardians() => this.Guardians;
+
+        public async ValueTask<Guardian> UpdateGuardianAsync(Guardian guardian)
+        {
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Guardian> guardianEntityEntry = broker.Guardians.Update(entity: guardian);
+            await broker.SaveChangesAsync();
+
+            return guardianEntityEntry.Entity;
+        }
     }
 }
