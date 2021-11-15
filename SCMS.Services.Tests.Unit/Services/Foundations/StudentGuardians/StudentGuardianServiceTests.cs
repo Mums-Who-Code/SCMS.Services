@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -98,6 +99,9 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
 
         private static StudentGuardian CreateRandomStudentGuardian(DateTimeOffset dates) =>
             CreateStudentGuardianFiller(dates).Create();
+
+        private static IQueryable<StudentGuardian> CreateRandomStudentGuardians() =>
+            CreateStudentGuardianFiller(dates: GetRandomDateTime()).Create(count: GetRandomNumber()).AsQueryable();
 
         private static Filler<StudentGuardian> CreateStudentGuardianFiller(DateTimeOffset dates)
         {
