@@ -13,6 +13,7 @@ using SCMS.Services.Api.Brokers.Loggings;
 using SCMS.Services.Api.Brokers.Storages;
 using SCMS.Services.Api.Services.Foundations.Guardians;
 using SCMS.Services.Api.Services.Foundations.Schools;
+using SCMS.Services.Api.Services.Foundations.StudentGuardians;
 using SCMS.Services.Api.Services.Foundations.Students;
 using SCMS.Services.Api.Services.Foundations.StudentSchools;
 
@@ -79,6 +80,7 @@ namespace SCMS.Services.Api
             services.AddTransient<ISchoolService, SchoolService>();
             services.AddTransient<IStudentSchoolService, StudentSchoolService>();
             services.AddTransient<IGuardianService, GuardianService>();
+            services.AddTransient<IStudentGuardianService, StudentGuardianService>();
         }
     }
 }
