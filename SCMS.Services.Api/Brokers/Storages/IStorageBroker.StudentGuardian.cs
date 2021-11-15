@@ -5,6 +5,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
+using SCMS.Services.Api.Models.Foundations.Students;
 
 namespace SCMS.Services.Api.Brokers.Storages
 {
@@ -12,5 +13,6 @@ namespace SCMS.Services.Api.Brokers.Storages
     {
         ValueTask<StudentGuardian> InsertStudentGuardianAsync(StudentGuardian studentGuardian);
         IQueryable<StudentGuardian> SelectAllStudentGuardians();
+        ValueTask<StudentGuardian> UpdateStudentGuardianAsync(StudentGuardian studentGuardian);
     }
 }
