@@ -3,9 +3,9 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Data.SqlClient;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
+using Microsoft.Data.SqlClient;
 using Moq;
 using SCMS.Services.Api.Brokers.DateTimes;
 using SCMS.Services.Api.Brokers.Loggings;
@@ -82,7 +82,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         private static int GetRandomNumber() =>
-            new IntRange(min: 1, max: 10).GetValue();
+            new IntRange(min: 2, max: 10).GetValue();
 
         private static int GetRandomNegativeNumber() =>
             -1 * GetRandomNumber();
