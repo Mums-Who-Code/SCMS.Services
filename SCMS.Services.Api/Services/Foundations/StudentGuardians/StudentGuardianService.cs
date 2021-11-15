@@ -37,6 +37,6 @@ namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
         });
 
         public IQueryable<StudentGuardian> RetrieveAllStudentGuardians() =>
-            throw new NotImplementedException();
+            this.storageBroker.SelectAllStudentGuardians();
     }
 }
