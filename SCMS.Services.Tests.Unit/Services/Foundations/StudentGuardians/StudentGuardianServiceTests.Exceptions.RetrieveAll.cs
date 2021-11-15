@@ -48,5 +48,42 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public void ShouldThrowsServiceExceptionOnRetrieveAllIfServiceErrorOccursAndLogIt()
+        {
+            // given
+            var serviceException = new Exception();
+
+            var failedStudentGuardianServiceException =
+                new FailedStudentGuardianServiceException(serviceException);
+
+            var expectedStudentGuardianServiceException =
+                new StudentGuardianServiceException(failedStudentGuardianServiceException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllStudentGuardians())
+                    .Throws(serviceException);
+
+            // when
+            Action retrieveAllStudentGuardiansTask = () =>
+                this.studentGuardianService.RetrieveAllStudentGuardians();
+
+            // then
+            Assert.Throws<StudentGuardianServiceException>(retrieveAllStudentGuardiansTask);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllStudentGuardians(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogCritical(It.Is(SameExceptionAs(
+                    expectedStudentGuardianServiceException))),
+                        Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
