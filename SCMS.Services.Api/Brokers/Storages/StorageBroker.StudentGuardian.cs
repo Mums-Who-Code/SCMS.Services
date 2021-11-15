@@ -31,7 +31,7 @@ namespace SCMS.Services.Api.Brokers.Storages
         public async ValueTask<StudentGuardian> UpdateStudentGuardianAsync(StudentGuardian studentGuardian)
         {
             using var broker = new StorageBroker(this.configuration);
-            EntityEntry<StudentGuardian> entityEntry = broker.StudentGuardians.Update(studentGuardian);
+            EntityEntry<StudentGuardian> entityEntry = broker.StudentGuardians.Update(entity: studentGuardian);
             await broker.SaveChangesAsync();
 
             return entityEntry.Entity;
