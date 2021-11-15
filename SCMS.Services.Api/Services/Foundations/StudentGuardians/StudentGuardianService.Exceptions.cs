@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians.Exceptions;
@@ -37,6 +38,14 @@ namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
                 throw CreateAndLogCriticalDependencyException(
                     failedStudentGuardianStorageException);
             }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsStudentGuardianException =
+                    new AlreadyExistsStudentGuardianException(duplicateKeyException);
+
+                throw CreateAndLogDependencyValidationException(
+                    alreadyExistsStudentGuardianException);
+            }
         }
 
         private StudentGuardianValidationException CreateAndLogValidationException(Xeption exception)
@@ -57,6 +66,17 @@ namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
             this.loggingBroker.LogCritical(studentGuardianDependencyException);
 
             return studentGuardianDependencyException;
+        }
+
+        private StudentGuardianDependencyValidationException CreateAndLogDependencyValidationException(
+            Xeption exception)
+        {
+            var studentGuardianDependencyValidationException =
+                new StudentGuardianDependencyValidationException(exception);
+
+            this.loggingBroker.LogError(studentGuardianDependencyValidationException);
+
+            return studentGuardianDependencyValidationException;
         }
     }
 }
