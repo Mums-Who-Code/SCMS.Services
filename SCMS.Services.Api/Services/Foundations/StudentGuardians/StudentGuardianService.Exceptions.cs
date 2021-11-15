@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -65,6 +66,14 @@ namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
                 throw CreateAndLogDependencyException(
                     failedStudentGuardianStorageException);
             }
+            catch (Exception exception)
+            {
+                var failedStudentGuardianServiceException =
+                    new FailedStudentGuardianServiceException(exception);
+
+                throw CreateAndLogServiceException(
+                    failedStudentGuardianServiceException);
+            }
         }
 
         private StudentGuardianValidationException CreateAndLogValidationException(Xeption exception)
@@ -106,6 +115,16 @@ namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
             this.loggingBroker.LogError(studentGuardianDependencyException);
 
             return studentGuardianDependencyException;
+        }
+
+        private StudentGuardianServiceException CreateAndLogServiceException(Xeption exception)
+        {
+            var studentGuardianServiceException =
+                new StudentGuardianServiceException(exception);
+
+            this.loggingBroker.LogError(studentGuardianServiceException);
+
+            return studentGuardianServiceException;
         }
     }
 }
