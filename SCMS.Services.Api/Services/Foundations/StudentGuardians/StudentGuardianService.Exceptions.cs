@@ -46,6 +46,15 @@ namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
                 throw CreateAndLogDependencyValidationException(
                     alreadyExistsStudentGuardianException);
             }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidStudentGuardianReferenceException =
+                    new InvalidStudentGuardianReferenceException(
+                        foreignKeyConstraintConflictException);
+
+                throw CreateAndLogDependencyValidationException(
+                    invalidStudentGuardianReferenceException);
+            }
         }
 
         private StudentGuardianValidationException CreateAndLogValidationException(Xeption exception)
