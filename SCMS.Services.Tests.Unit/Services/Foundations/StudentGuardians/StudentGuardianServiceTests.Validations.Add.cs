@@ -51,12 +51,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
         public async Task ShouldThrowValidationExceptionOnAddIfStudentGuardianIsInvalidAndLogItAsync()
         {
             // given
-            var invalidStudentGuardian = new StudentGuardian
-            {
-                Relation = GetInvalidEnum<Relationship>(),
-                Level = GetInvalidEnum<ContactLevel>()
-            };
-
+            var invalidStudentGuardian = new StudentGuardian();
             var invalidStudentGuardianException = new InvalidStudentGuardianException();
 
             invalidStudentGuardianException.AddData(
@@ -66,14 +61,6 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
             invalidStudentGuardianException.AddData(
                 key: nameof(StudentGuardian.GuardianId),
                 values: "Id is required.");
-
-            invalidStudentGuardianException.AddData(
-                key: nameof(StudentGuardian.Relation),
-                values: "Value is not recognized.");
-
-            invalidStudentGuardianException.AddData(
-                key: nameof(StudentGuardian.Level),
-                values: "Value is not recognized.");
 
             invalidStudentGuardianException.AddData(
                 key: nameof(StudentGuardian.CreatedBy),
