@@ -93,6 +93,14 @@ namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
                 throw CreateAndLogCriticalDependencyException(
                     failedStudentGuardianStorageException);
             }
+            catch (Exception exception)
+            {
+                var failedStudentGuardianServiceException =
+                    new FailedStudentGuardianServiceException(exception);
+
+                throw CreateAndLogServiceException(
+                    failedStudentGuardianServiceException);
+            }
         }
 
         private StudentGuardianValidationException CreateAndLogValidationException(Xeption exception)

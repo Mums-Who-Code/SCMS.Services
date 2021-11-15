@@ -77,7 +77,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCritical(It.Is(SameExceptionAs(
+                broker.LogError(It.Is(SameExceptionAs(
                     expectedStudentGuardianServiceException))),
                         Times.Once);
 
