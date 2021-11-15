@@ -7,7 +7,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using SCMS.Services.Api.Models.Foundations.Students;
 using SCMS.Services.Api.Models.Foundations.StudentSchools;
 
 namespace SCMS.Services.Api.Brokers.Storages
@@ -41,10 +40,10 @@ namespace SCMS.Services.Api.Brokers.Storages
         public async ValueTask<StudentSchool> UpdateStudentSchoolAsync(StudentSchool studentSchool)
         {
             using var broker = new StorageBroker(this.configuration);
-            
-            EntityEntry<StudentSchool> studentSchoolEntityEntry = 
+
+            EntityEntry<StudentSchool> studentSchoolEntityEntry =
                 broker.StudentSchools.Update(entity: studentSchool);
-            
+
             await broker.SaveChangesAsync();
 
             return studentSchoolEntityEntry.Entity;

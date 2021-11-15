@@ -7,14 +7,13 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using SCMS.Services.Api.Models.Foundations.Schools;
-using SCMS.Services.Api.Models.Foundations.Students;
 
 namespace SCMS.Services.Api.Brokers.Storages
 {
     public partial interface IStorageBroker
     {
         ValueTask<School> InsertSchoolAsync(School school);
-        IQueryable<School> SelectAllSchools(); 
+        IQueryable<School> SelectAllSchools();
         ValueTask<School> SelectSchoolByIdAsync(Guid schoolId);
         ValueTask<School> UpdateSchoolAsync(School school);
     }
