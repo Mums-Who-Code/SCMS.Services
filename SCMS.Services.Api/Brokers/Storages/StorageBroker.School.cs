@@ -55,7 +55,5 @@ namespace SCMS.Services.Api.Brokers.Storages
 
             return schoolEntityEntry.Entity;
         }
-      
-        
     }
 }
