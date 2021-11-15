@@ -5,6 +5,7 @@
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians.Exceptions;
 using Xeptions;
@@ -55,6 +56,15 @@ namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
                 throw CreateAndLogDependencyValidationException(
                     invalidStudentGuardianReferenceException);
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                var failedStudentGuardianStorageException =
+                    new FailedStudentGuardianStorageException(
+                        dbUpdateException);
+
+                throw CreateAndLogDependencyException(
+                    failedStudentGuardianStorageException);
+            }
         }
 
         private StudentGuardianValidationException CreateAndLogValidationException(Xeption exception)
@@ -86,6 +96,16 @@ namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
             this.loggingBroker.LogError(studentGuardianDependencyValidationException);
 
             return studentGuardianDependencyValidationException;
+        }
+
+        private StudentGuardianDependencyException CreateAndLogDependencyException(Xeption exception)
+        {
+            var studentGuardianDependencyException =
+                new StudentGuardianDependencyException(exception);
+
+            this.loggingBroker.LogError(studentGuardianDependencyException);
+
+            return studentGuardianDependencyException;
         }
     }
 }
