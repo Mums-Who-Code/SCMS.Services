@@ -36,6 +36,6 @@ namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
         });
 
         public IQueryable<StudentGuardian> RetrieveAllStudentGuardians() =>
-            this.storageBroker.SelectAllStudentGuardians();
+        TryCatch(() => this.storageBroker.SelectAllStudentGuardians());
     }
 }

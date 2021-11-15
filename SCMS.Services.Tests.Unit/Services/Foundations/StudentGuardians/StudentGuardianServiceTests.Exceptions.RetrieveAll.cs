@@ -35,17 +35,17 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
             // then
             Assert.Throws<StudentGuardianDependencyException>(retrieveAllStudentGuardiansTask);
 
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllStudentGuardians(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(
                     expectedStudentGuardianDependencyException))),
                         Times.Once);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllStudentGuardians(),
-                    Times.Never);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }

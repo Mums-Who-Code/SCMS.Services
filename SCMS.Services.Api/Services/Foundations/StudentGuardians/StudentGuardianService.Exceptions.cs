@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -16,6 +17,7 @@ namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
     public partial class StudentGuardianService : IStudentGuardianService
     {
         private delegate ValueTask<StudentGuardian> ReturningStudentGuardianFunction();
+        private delegate IQueryable<StudentGuardian> ReturningStudentGuardiansFunction();
 
         private async ValueTask<StudentGuardian> TryCatch(ReturningStudentGuardianFunction
             returningStudentGuardianFunction)
@@ -73,6 +75,23 @@ namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
 
                 throw CreateAndLogServiceException(
                     failedStudentGuardianServiceException);
+            }
+        }
+
+        private IQueryable<StudentGuardian> TryCatch(ReturningStudentGuardiansFunction
+            returningStudentGuardiansFunction)
+        {
+            try
+            {
+                return returningStudentGuardiansFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                var failedStudentGuardianStorageException =
+                    new FailedStudentGuardianStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(
+                    failedStudentGuardianStorageException);
             }
         }
 
