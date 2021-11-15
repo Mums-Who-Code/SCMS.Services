@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Moq;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
@@ -45,6 +46,50 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(
                     expectedStudentGuardianDependencyException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentGuardianAsync(It.IsAny<StudentGuardian>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyValidationExceptionOnAddIfStudentGuardianAlreadyExistsAndLogItAsync()
+        {
+            // given
+            StudentGuardian someStudentGuardian = CreateRandomStudentGuardian();
+            string someMessage = GetRandomString();
+            var duplicateKeyException = new DuplicateKeyException(someMessage);
+
+            var alreadyExistsStudentGuardianException =
+                new AlreadyExistsStudentGuardianException(duplicateKeyException);
+
+            var expectedStudentGuardianDependencyValidationException =
+                new StudentGuardianDependencyValidationException(alreadyExistsStudentGuardianException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Throws(duplicateKeyException);
+
+            // when
+            ValueTask<StudentGuardian> addStudentGuardianTask =
+                this.studentGuardianService.AddStudentGuardianAsync(someStudentGuardian);
+
+            // then
+            await Assert.ThrowsAsync<StudentGuardianDependencyValidationException>(() =>
+                addStudentGuardianTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentGuardianDependencyValidationException))),
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
