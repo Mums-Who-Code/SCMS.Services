@@ -81,7 +81,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
-        private static string GetRandomString() =>
+        private static string GetRandomMessage() =>
             new MnemonicString(wordCount: GetRandomNumber()).GetValue();
 
         private static int GetRandomNumber() =>
