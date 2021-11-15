@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -181,6 +182,49 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedStudentGuardianDependencyException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentGuardianAsync(It.IsAny<StudentGuardian>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnAddIfServiceErrorOccursAndLogItAsync()
+        {
+            // given
+            StudentGuardian someStudentGuardian = CreateRandomStudentGuardian();
+            var serviceException = new Exception();
+
+            var failedStudentGuardianServiceException =
+                new FailedStudentGuardianServiceException(serviceException);
+
+            var expectedStudentGuardianServiceException =
+                new StudentGuardianServiceException(failedStudentGuardianServiceException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Throws(serviceException);
+
+            // when
+            ValueTask<StudentGuardian> addStudentGuardianTask =
+                this.studentGuardianService.AddStudentGuardianAsync(someStudentGuardian);
+
+            // then
+            await Assert.ThrowsAsync<StudentGuardianServiceException>(() =>
+                addStudentGuardianTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentGuardianServiceException))),
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
