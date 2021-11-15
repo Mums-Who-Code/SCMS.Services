@@ -6,11 +6,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 
-namespace SCMS.Services.Api.Brokers.Storages
+namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
 {
-    public partial interface IStorageBroker
+    public interface IStudentGuardianService
     {
-        ValueTask<StudentGuardian> InsertStudentGuardianAsync(StudentGuardian studentGuardian);
-        IQueryable<StudentGuardian> SelectAllStudentGuardians();
+        ValueTask<StudentGuardian> AddStudentGuardianAsync(StudentGuardian studentGuardian);
+        IQueryable<StudentGuardian> RetrieveAllStudentGuardians();
     }
 }
