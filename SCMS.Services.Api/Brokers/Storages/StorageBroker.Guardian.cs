@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SCMS.Services.Api.Models.Foundations.Guardians;
-using SCMS.Services.Api.Models.Foundations.Students;
 
 namespace SCMS.Services.Api.Brokers.Storages
 {
