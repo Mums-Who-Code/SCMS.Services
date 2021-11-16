@@ -26,6 +26,6 @@ namespace SCMS.Services.Api.Brokers.Storages
             return entityEntry.Entity;
         }
 
-        public IQueryable<Guardian> SelectAllGuardians() => this.Guardians; 
+        public IQueryable<Guardian> SelectAllGuardians() => this.Guardians;
     }
 }

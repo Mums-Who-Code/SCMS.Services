@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SCMS.Services.Api.Models.Foundations.Schools;
-using SCMS.Services.Api.Models.Foundations.Students;
 
 namespace SCMS.Services.Api.Brokers.Storages
 {
@@ -29,7 +28,7 @@ namespace SCMS.Services.Api.Brokers.Storages
         }
 
         public IQueryable<School> SelectAllSchools() => this.Schools;
-      
+
         public async ValueTask<School> SelectSchoolByIdAsync(Guid schoolId)
         {
             using var broker = new StorageBroker(this.configuration);
@@ -42,6 +41,15 @@ namespace SCMS.Services.Api.Brokers.Storages
         {
             using var broker = new StorageBroker(this.configuration);
             EntityEntry<School> schoolEntityEntry = broker.Schools.Update(entity: school);
+            await broker.SaveChangesAsync();
+
+            return schoolEntityEntry.Entity;
+        }
+      
+        public async ValueTask<School> DeleteSchoolAsync(School school)
+        {
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<School> schoolEntityEntry = broker.Schools.Remove(entity: school);
             await broker.SaveChangesAsync();
 
             return schoolEntityEntry.Entity;
