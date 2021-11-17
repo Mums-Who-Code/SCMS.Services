@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
@@ -14,5 +14,6 @@ namespace SCMS.Services.Api.Brokers.Storages
         ValueTask<Guardian> InsertGuardianAsync(Guardian guardian);
         IQueryable<Guardian> SelectAllGuardians();
         ValueTask<Guardian> SelectGuardianByIdAsync(Guid guardianId);
+        ValueTask<Guardian> UpdateGuardianAsync(Guardian guardian);
     }
 }
