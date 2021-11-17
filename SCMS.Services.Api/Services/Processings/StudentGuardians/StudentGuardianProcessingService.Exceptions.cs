@@ -28,7 +28,7 @@ namespace SCMS.Services.Api.Services.Processings.StudentGuardians
             {
                 throw CreateAndLogValidationException(alreadyPrimaryStudentGurdianExistsException);
             }
-            catch(StudentGuardianDependencyException studentGuardianDependencyException)
+            catch (StudentGuardianDependencyException studentGuardianDependencyException)
             {
                 throw CreateAndLogDependencyException(studentGuardianDependencyException);
             }

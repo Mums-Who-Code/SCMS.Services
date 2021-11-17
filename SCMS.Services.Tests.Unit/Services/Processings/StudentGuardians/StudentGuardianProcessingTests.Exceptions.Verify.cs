@@ -51,5 +51,48 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
             this.studentGuardianServiceMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public void ShouldThrowServiceExceptionOnVerifyIfServiceErrorOccursndLogIt()
+        {
+            // given
+            Guid someStudentId = Guid.NewGuid();
+            Guid someGuardianId = Guid.NewGuid();
+            var serviceException = new Exception();
+
+            var failedStudentGuardianProcessingServiceException =
+                new FailedStudentGuardianProcessingServiceException(
+                    serviceException);
+
+            var expectedStudentGuardianProcessingServiceException =
+                new StudentGuardianProcessingServiceException(
+                    failedStudentGuardianProcessingServiceException);
+
+            this.studentGuardianServiceMock.Setup(service =>
+                service.RetrieveAllStudentGuardians())
+                    .Throws(serviceException);
+
+            // when
+            Action verifyNoPrimaryStudentGuardianExistsTask = () =>
+                this.studentGuardianProcessingService
+                    .VerifyNoPrimaryStudentGuardianExists(
+                        someStudentId,
+                        someGuardianId);
+
+            // then
+            Assert.Throws<StudentGuardianProcessingServiceException>(
+                verifyNoPrimaryStudentGuardianExistsTask);
+
+            this.studentGuardianServiceMock.Verify(service =>
+                service.RetrieveAllStudentGuardians(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentGuardianProcessingServiceException))));
+
+            this.studentGuardianServiceMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
