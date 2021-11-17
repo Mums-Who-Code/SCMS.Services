@@ -44,16 +44,6 @@ namespace SCMS.Services.Api.Brokers.Storages
             await broker.SaveChangesAsync();
 
             return guardianEntityEntry.Entity;
-=========
-        public IQueryable<Guardian> SelectAllGuardians() => this.Guardians; 
-
-        public async ValueTask<Guardian> SelectGuardianByIdAsync(Guid guardianId)
-        {
-            using var broker = new StorageBroker(this.configuration);
-            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-
-            return await broker.Guardians.FindAsync(guardianId);
->>>>>>>>> Temporary merge branch 2
         }
     }
 }
