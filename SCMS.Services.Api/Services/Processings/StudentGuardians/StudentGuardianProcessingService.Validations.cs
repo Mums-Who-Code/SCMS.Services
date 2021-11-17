@@ -20,10 +20,10 @@ namespace SCMS.Services.Api.Services.Processings.StudentGuardians
 
         private static void ValidateStudentGuardian(StudentGuardian studentGuardian)
         {
-            if(studentGuardian is not null)
+            if (studentGuardian is not null)
             {
                 throw new AlreadyPrimaryStudentGuardianExistsException();
-            }    
+            }
         }
 
         private static dynamic IsInvalid(Guid id) => new

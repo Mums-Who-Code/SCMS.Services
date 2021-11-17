@@ -5,7 +5,6 @@
 using System;
 using System.Linq;
 using FluentAssertions;
-using Force.DeepCloner;
 using Moq;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 using Xunit;

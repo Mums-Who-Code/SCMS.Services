@@ -23,7 +23,7 @@ namespace SCMS.Services.Api.Services.Processings.StudentGuardians
             {
                 throw CreateAndLogValidationException(invalidStudentGurdianException);
             }
-            catch(AlreadyPrimaryStudentGuardianExistsException alreadyPrimaryStudentGurdianExistsException)
+            catch (AlreadyPrimaryStudentGuardianExistsException alreadyPrimaryStudentGurdianExistsException)
             {
                 throw CreateAndLogValidationException(alreadyPrimaryStudentGurdianExistsException);
             }
