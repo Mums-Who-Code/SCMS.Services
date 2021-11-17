@@ -10,7 +10,7 @@ using SCMS.Services.Api.Services.Foundations.StudentGuardians;
 
 namespace SCMS.Services.Api.Services.Processings.StudentGuardians
 {
-    public class StudentGuardianProcessingService : IStudentGuardianProcessingService
+    public partial class StudentGuardianProcessingService : IStudentGuardianProcessingService
     {
         private readonly IStudentGuardianService studentGuardianService;
         private readonly ILoggingBroker loggingBroker;
@@ -23,10 +23,18 @@ namespace SCMS.Services.Api.Services.Processings.StudentGuardians
             this.loggingBroker = loggingBroker;
         }
 
-        public StudentGuardian VerifyPrimaryStudentGuardianExists(Guid studentId, Guid guardianId)
+        public StudentGuardian VerifyPrimaryStudentGuardianExists(Guid studentId, Guid guardianId) =>
+        TryCatch(() =>
+        {
+            ValidateIds(studentId, guardianId);
+
+            return RetrieveStudentGuardian(studentId, guardianId);
+        });
+        
+        private StudentGuardian RetrieveStudentGuardian(Guid studentId, Guid guardianId)
         {
             IQueryable<StudentGuardian> retrievedStudentGuardians =
-                this.studentGuardianService.RetrieveAllStudentGuardians();
+                            this.studentGuardianService.RetrieveAllStudentGuardians();
 
             return retrievedStudentGuardians
                 .Where(studentGuardian => studentGuardian.GuardianId == guardianId

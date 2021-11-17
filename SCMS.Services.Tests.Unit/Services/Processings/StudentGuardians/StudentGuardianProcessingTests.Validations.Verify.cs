@@ -24,11 +24,11 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
 
             invalidStudentGuardianException.AddData(
                 key: nameof(StudentGuardian.StudentId),
-                values: "Id is invalid");
+                values: "Id is required");
 
             invalidStudentGuardianException.AddData(
                 key: nameof(StudentGuardian.GuardianId),
-                values: "Id is invalid");
+                values: "Id is required");
 
 
             var expectedStudentGuardianValidationException =
