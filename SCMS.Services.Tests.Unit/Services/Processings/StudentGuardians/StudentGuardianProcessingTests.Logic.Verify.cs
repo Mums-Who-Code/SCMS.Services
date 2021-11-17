@@ -15,25 +15,15 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
     public partial class StudentGuardianProcessingTests
     {
         [Fact]
-        public void ShouldVerifyPrimaryStudentGuardianExists()
+        public void ShouldVerifyNoPrimaryStudentGuardianExists()
         {
             // given
-            StudentGuardian randomStudentGuardian =
-                CreateRandomStudentGuardian();
-
-            StudentGuardian primaryStudentGuardian =
-                randomStudentGuardian;
-
-            primaryStudentGuardian.Level = ContactLevel.Primary;
-            Guid inputStudentId = primaryStudentGuardian.StudentId;
-            Guid inputGuardianId = primaryStudentGuardian.GuardianId;
-
-            StudentGuardian expectedStudentGuardian =
-                primaryStudentGuardian.DeepClone();
+            Guid inputStudentId = Guid.NewGuid();
+            Guid inputGuardianId = Guid.NewGuid();
+            StudentGuardian expectedStudentGuardian = null;
 
             IQueryable<StudentGuardian> randomStudentGuardians =
-                CreateRandomStudentGuardiansWithStudentGuardian(
-                    primaryStudentGuardian);
+                CreateRandomStudentGuardians();
 
             IQueryable<StudentGuardian> storageStudentGuardians =
                 randomStudentGuardians;

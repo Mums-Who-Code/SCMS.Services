@@ -27,19 +27,22 @@ namespace SCMS.Services.Api.Services.Processings.StudentGuardians
         TryCatch(() =>
         {
             ValidateIds(studentId, guardianId);
+            StudentGuardian retrievedStudentGuardian = RetrievePrimaryStudentGuardian(studentId, guardianId);
+            ValidateStudentGuardian(retrievedStudentGuardian);
 
-            return RetrieveStudentGuardian(studentId, guardianId);
+            return retrievedStudentGuardian;
         });
 
-        private StudentGuardian RetrieveStudentGuardian(Guid studentId, Guid guardianId)
+        private StudentGuardian RetrievePrimaryStudentGuardian(Guid studentId, Guid guardianId)
         {
             IQueryable<StudentGuardian> retrievedStudentGuardians =
                             this.studentGuardianService.RetrieveAllStudentGuardians();
 
             return retrievedStudentGuardians
                 .Where(studentGuardian => studentGuardian.GuardianId == guardianId
-                    && studentGuardian.StudentId == studentId).
-                        FirstOrDefault();
+                    && studentGuardian.StudentId == studentId
+                    && studentGuardian.Level == ContactLevel.Primary)
+                        .FirstOrDefault();
         }
     }
 }
