@@ -5,12 +5,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Moq;
 using SCMS.Services.Api.Brokers.Loggings;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 using SCMS.Services.Api.Services.Foundations.StudentGuardians;
 using SCMS.Services.Api.Services.Processings.StudentGuardians;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
 {
@@ -28,6 +30,14 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
             this.studentGuardianProcessingService = new StudentGuardianProcessingService(
                 studentGuardianService: this.studentGuardianServiceMock.Object,
                 loggingBroker: this.loggingBrokerMock.Object);
+        }
+
+        private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
+        {
+            return actualException =>
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message
+                && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
         private static int GetRandomNumber() =>

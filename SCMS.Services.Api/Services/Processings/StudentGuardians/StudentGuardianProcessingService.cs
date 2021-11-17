@@ -29,7 +29,7 @@ namespace SCMS.Services.Api.Services.Processings.StudentGuardians
                 this.studentGuardianService.RetrieveAllStudentGuardians();
 
             return retrievedStudentGuardians
-                .Where(studentGuardian => studentGuardian.GuardianId == guardianId 
+                .Where(studentGuardian => studentGuardian.GuardianId == guardianId
                     && studentGuardian.StudentId == studentId).
                         FirstOrDefault();
         }
