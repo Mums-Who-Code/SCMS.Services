@@ -23,14 +23,14 @@ namespace SCMS.Services.Api.Services.Processings.StudentGuardians
             this.loggingBroker = loggingBroker;
         }
 
-        public StudentGuardian VerifyPrimaryStudentGuardianExists(Guid studentId, Guid guardianId) =>
+        public StudentGuardian VerifyNoPrimaryStudentGuardianExists(Guid studentId, Guid guardianId) =>
         TryCatch(() =>
         {
             ValidateIds(studentId, guardianId);
 
             return RetrieveStudentGuardian(studentId, guardianId);
         });
-        
+
         private StudentGuardian RetrieveStudentGuardian(Guid studentId, Guid guardianId)
         {
             IQueryable<StudentGuardian> retrievedStudentGuardians =

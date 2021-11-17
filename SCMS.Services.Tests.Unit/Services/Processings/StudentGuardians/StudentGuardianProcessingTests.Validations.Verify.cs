@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using Moq;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 using SCMS.Services.Api.Models.Processings.StudentGuardians.Exceptions;
@@ -37,9 +38,10 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
 
             // when
             Action verifyPrimaryStudentGuardianExistsTask = () =>
-                this.studentGuardianProcessingService.VerifyPrimaryStudentGuardianExists(
-                    invalidStudentId,
-                    invalidGuardianId);
+                this.studentGuardianProcessingService
+                    .VerifyNoPrimaryStudentGuardianExists(
+                        invalidStudentId,
+                        invalidGuardianId);
 
             // then
             Assert.Throws<StudentGuardianProcessingValidationException>
@@ -56,6 +58,57 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.studentGuardianServiceMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public void ShouldThrowValidationExceptionOnVerifyIfPrimaryContactAlreadyExistsAndLogIt()
+        {
+            // given
+            StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian();
+            StudentGuardian inputStudentGuardian = randomStudentGuardian;
+            inputStudentGuardian.Level = ContactLevel.Primary;
+
+            IQueryable<StudentGuardian> randomStudentGuardians =
+                CreateRandomStudentGuardiansWithStudentGuardian(inputStudentGuardian);
+
+            IQueryable<StudentGuardian> retrievedStudentGuardians =
+                randomStudentGuardians;
+
+            Guid inputStudentId = inputStudentGuardian.StudentId;
+            Guid inputGuardianId = inputStudentGuardian.GuardianId;
+
+            var alreadyPrimaryStudentGuardianExistsException =
+                new AlreadyPrimaryStudentGuardianExistsException();
+
+            var expectedStudentGuardianValidationException =
+                new StudentGuardianProcessingValidationException(
+                    alreadyPrimaryStudentGuardianExistsException);
+
+            this.studentGuardianServiceMock.Setup(service =>
+                service.RetrieveAllStudentGuardians())
+                    .Returns(retrievedStudentGuardians);
+
+            // when
+            Action verifyPrimaryStudentGuardianExistsTask = () =>
+                this.studentGuardianProcessingService.VerifyNoPrimaryStudentGuardianExists(
+                    inputStudentId,
+                    inputGuardianId);
+
+            // then
+            Assert.Throws<StudentGuardianProcessingValidationException>
+                (verifyPrimaryStudentGuardianExistsTask);
+
+            this.studentGuardianServiceMock.Verify(service =>
+                service.RetrieveAllStudentGuardians(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentGuardianValidationException))),
+                        Times.Once);
+
+            this.studentGuardianServiceMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

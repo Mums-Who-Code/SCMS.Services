@@ -3,13 +3,8 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Data;
-using System.Linq;
-using SCMS.Services.Api.Brokers.Loggings;
-using SCMS.Services.Api.Models.Foundations.Guardians;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 using SCMS.Services.Api.Models.Processings.StudentGuardians.Exceptions;
-using SCMS.Services.Api.Services.Foundations.StudentGuardians;
 
 namespace SCMS.Services.Api.Services.Processings.StudentGuardians
 {
@@ -29,14 +24,14 @@ namespace SCMS.Services.Api.Services.Processings.StudentGuardians
             Message = "Id is required"
         };
 
-        private static void Validate(params(dynamic Rule, string Parameter)[] validations)
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
             var invalidStudentGuardianProcessingException =
                 new InvalidStudentGuardianProcessingException();
 
-            foreach((dynamic rule, string parameter) in validations)
+            foreach ((dynamic rule, string parameter) in validations)
             {
-                if(rule.Condition)
+                if (rule.Condition)
                 {
                     invalidStudentGuardianProcessingException.UpsertDataList(
                         key: parameter,

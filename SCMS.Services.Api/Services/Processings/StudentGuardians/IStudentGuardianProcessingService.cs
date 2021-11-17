@@ -9,6 +9,6 @@ namespace SCMS.Services.Api.Services.Processings.StudentGuardians
 {
     public interface IStudentGuardianProcessingService
     {
-        StudentGuardian VerifyPrimaryStudentGuardianExists(Guid studentId, Guid guardianId);
+        StudentGuardian VerifyNoPrimaryStudentGuardianExists(Guid studentId, Guid guardianId);
     }
 }

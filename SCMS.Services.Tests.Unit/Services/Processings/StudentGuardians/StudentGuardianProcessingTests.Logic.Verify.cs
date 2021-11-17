@@ -45,7 +45,7 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
             // when
             StudentGuardian actualStudentGuardian =
                 this.studentGuardianProcessingService
-                    .VerifyPrimaryStudentGuardianExists(
+                    .VerifyNoPrimaryStudentGuardianExists(
                         inputStudentId,
                         inputGuardianId);
 
