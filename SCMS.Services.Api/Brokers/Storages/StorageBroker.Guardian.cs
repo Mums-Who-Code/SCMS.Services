@@ -50,7 +50,6 @@ namespace SCMS.Services.Api.Brokers.Storages
         {
             using var broker = new StorageBroker(this.configuration);
             EntityEntry<Guardian> guardianEntityEntry = broker.Guardians.Remove(entity: guardian);
-
             await broker.SaveChangesAsync();
 
             return guardianEntityEntry.Entity;
