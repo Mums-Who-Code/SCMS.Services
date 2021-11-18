@@ -36,7 +36,7 @@ namespace SCMS.Services.Api.Brokers.Storages
 
             return await broker.Guardians.FindAsync(guardianId);
         }
-        
+
         public async ValueTask<Guardian> UpdateGuardianAsync(Guardian guardian)
         {
             using var broker = new StorageBroker(this.configuration);
@@ -50,7 +50,7 @@ namespace SCMS.Services.Api.Brokers.Storages
         {
             using var broker = new StorageBroker(this.configuration);
             EntityEntry<Guardian> guardianEntityEntry = broker.Guardians.Remove(entity: guardian);
-  
+
             await broker.SaveChangesAsync();
 
             return guardianEntityEntry.Entity;
