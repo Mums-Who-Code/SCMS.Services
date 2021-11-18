@@ -36,7 +36,7 @@ namespace SCMS.Services.Api.Brokers.Storages
 
             return await broker.Guardians.FindAsync(guardianId);
         }
-      
+        
         public async ValueTask<Guardian> UpdateGuardianAsync(Guardian guardian)
         {
             using var broker = new StorageBroker(this.configuration);
