@@ -53,6 +53,25 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
             };
         }
 
+        public static TheoryData DependencyValidationExceptions()
+        {
+            var someException = new Xeption();
+
+            var studentGuardianValidationException =
+                new StudentGuardianValidationException(
+                    someException);
+
+            var studentGuardianDependencyValidationException =
+                new StudentGuardianDependencyValidationException(
+                    someException);
+
+            return new TheoryData<Xeption>
+            {
+                studentGuardianValidationException,
+                studentGuardianDependencyValidationException
+            };
+        }
+
         private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
         {
             return actualException =>
