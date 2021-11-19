@@ -42,6 +42,14 @@ namespace SCMS.Services.Api.Services.Processings.StudentGuardians
             {
                 throw CreateAndLogDependencyException(studentGuardianServiceException);
             }
+            catch (StudentGuardianValidationException studentGuardianValidationException)
+            {
+                throw CreateAndLogDependencyValidationException(studentGuardianValidationException);
+            }
+            catch (StudentGuardianDependencyValidationException studentGuardianDependencyValidationException)
+            {
+                throw CreateAndLogDependencyValidationException(studentGuardianDependencyValidationException);
+            }
         }
 
         private StudentGuardianProcessingValidationException CreateAndLogValidationException(Xeption exception)
@@ -62,6 +70,17 @@ namespace SCMS.Services.Api.Services.Processings.StudentGuardians
             this.loggingBroker.LogError(studentGuardianProcessingDependencyException);
 
             return studentGuardianProcessingDependencyException;
+        }
+
+        private StudentGuardianProcessingDependencyValidationException CreateAndLogDependencyValidationException(
+            Xeption exception)
+        {
+            var studentGuardianProcessingDependencyValidationException =
+                new StudentGuardianProcessingDependencyValidationException(exception.InnerException as Xeption);
+
+            this.loggingBroker.LogError(studentGuardianProcessingDependencyValidationException);
+
+            return studentGuardianProcessingDependencyValidationException;
         }
     }
 }
