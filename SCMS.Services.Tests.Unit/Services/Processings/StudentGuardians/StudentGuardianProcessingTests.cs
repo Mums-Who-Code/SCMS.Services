@@ -9,10 +9,12 @@ using System.Linq.Expressions;
 using Moq;
 using SCMS.Services.Api.Brokers.Loggings;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
+using SCMS.Services.Api.Models.Foundations.StudentGuardians.Exceptions;
 using SCMS.Services.Api.Services.Foundations.StudentGuardians;
 using SCMS.Services.Api.Services.Processings.StudentGuardians;
 using Tynamix.ObjectFiller;
 using Xeptions;
+using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
 {
@@ -30,6 +32,25 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
             this.studentGuardianProcessingService = new StudentGuardianProcessingService(
                 studentGuardianService: this.studentGuardianServiceMock.Object,
                 loggingBroker: this.loggingBrokerMock.Object);
+        }
+
+        public static TheoryData DependencyApiExceptions()
+        {
+            var someException = new Xeption();
+
+            var studenGuardianDependencyException =
+                new StudentGuardianDependencyException(
+                    someException);
+
+            var studentGuardianServiceException =
+                new StudentGuardianServiceException(
+                    someException);
+
+            return new TheoryData<Xeption>
+            {
+                studenGuardianDependencyException,
+                studentGuardianServiceException
+            };
         }
 
         private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
