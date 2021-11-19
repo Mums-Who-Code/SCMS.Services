@@ -4,6 +4,7 @@
 
 using System.Threading.Tasks;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
+using SCMS.Services.Api.Models.Foundations.StudentGuardians.Exceptions;
 using SCMS.Services.Api.Models.Processings.StudentGuardians.Exceptions;
 using Xeptions;
 
@@ -33,6 +34,14 @@ namespace SCMS.Services.Api.Services.Processings.StudentGuardians
             {
                 throw CreateAndLogValidationException(alreadyExistsPrimaryStudentGuardianProcessingException);
             }
+            catch (StudentGuardianDependencyException studentGuardianDependencyException)
+            {
+                throw CreateAndLogDependencyException(studentGuardianDependencyException);
+            }
+            catch (StudentGuardianServiceException studentGuardianServiceException)
+            {
+                throw CreateAndLogDependencyException(studentGuardianServiceException);
+            }
         }
 
         private StudentGuardianProcessingValidationException CreateAndLogValidationException(Xeption exception)
@@ -43,6 +52,16 @@ namespace SCMS.Services.Api.Services.Processings.StudentGuardians
             this.loggingBroker.LogError(studentGuardianProcessingValidationException);
 
             return studentGuardianProcessingValidationException;
+        }
+
+        private StudentGuardianProcessingDependencyException CreateAndLogDependencyException(Xeption exception)
+        {
+            var studentGuardianProcessingDependencyException =
+                new StudentGuardianProcessingDependencyException(exception);
+
+            this.loggingBroker.LogError(studentGuardianProcessingDependencyException);
+
+            return studentGuardianProcessingDependencyException;
         }
     }
 }
