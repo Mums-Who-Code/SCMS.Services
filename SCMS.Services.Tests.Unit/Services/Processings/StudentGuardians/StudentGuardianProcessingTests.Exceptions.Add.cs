@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using Moq;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
@@ -86,6 +87,50 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedStudentGuardianProcessingDependencyValidationException))));
+
+            this.studentGuardianServiceMock.Verify(service =>
+                service.AddStudentGuardianAsync(It.IsAny<StudentGuardian>()),
+                    Times.Never);
+
+            this.studentGuardianServiceMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public void ShouldThrowServiceExceptionOnVerifyIfServiceErrorOccursndLogItAsync()
+        {
+            // given
+            StudentGuardian someStudentGuardian = CreateRandomStudentGuardian();
+            var serviceException = new Exception();
+
+            var failedStudentGuardianProcessingServiceException =
+                new FailedStudentGuardianProcessingServiceException(
+                    serviceException);
+
+            var expectedStudentGuardianProcessingServiceException =
+                new StudentGuardianProcessingServiceException(
+                    failedStudentGuardianProcessingServiceException);
+
+            this.studentGuardianServiceMock.Setup(service =>
+                service.RetrieveAllStudentGuardians())
+                    .Throws(serviceException);
+
+            // when
+            ValueTask<StudentGuardian> addStudentGuardianTask =
+                this.studentGuardianProcessingService
+                    .AddStudentGuardianAsync(someStudentGuardian);
+
+            // then
+            Assert.ThrowsAsync<StudentGuardianProcessingServiceException>(() =>
+                addStudentGuardianTask.AsTask());
+
+            this.studentGuardianServiceMock.Verify(service =>
+                service.RetrieveAllStudentGuardians(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentGuardianProcessingServiceException))));
 
             this.studentGuardianServiceMock.Verify(service =>
                 service.AddStudentGuardianAsync(It.IsAny<StudentGuardian>()),
