@@ -15,8 +15,10 @@ namespace SCMS.Services.Api.Services.Processings.StudentGuardians
             ValidateStudentGuardianIsNull(studentGuardian);
 
             Validate(
-                (Rule: IsInvalid(studentGuardian.StudentId),
-                Parameter: nameof(StudentGuardian.StudentId)));
+                (Rule: IsInvalid(studentGuardian.StudentId), Parameter: nameof(StudentGuardian.StudentId)),
+                (Rule: IsInvalid(studentGuardian.Level), Parameter: nameof(StudentGuardian.Level)),
+                (Rule: IsInvalid(studentGuardian.Relation), Parameter: nameof(StudentGuardian.Relation))
+            );
         }
 
         private static void ValidateStudentGuardianIsNull(StudentGuardian studentGuardian)
@@ -31,6 +33,12 @@ namespace SCMS.Services.Api.Services.Processings.StudentGuardians
         {
             Condition = id == Guid.Empty,
             Message = "Id is required"
+        };
+
+        private static dynamic IsInvalid<T>(T enumValue) => new
+        {
+            Condition = Enum.IsDefined(typeof(T), enumValue) is false,
+            Message = "Value is required"
         };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)

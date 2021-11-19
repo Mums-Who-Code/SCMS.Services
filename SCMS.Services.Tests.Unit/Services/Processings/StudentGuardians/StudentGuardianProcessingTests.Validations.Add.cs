@@ -89,19 +89,24 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnAddIfLevelIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnAddIfEnumIsInvalidAndLogItAsync()
         {
             // given
             StudentGuardian randomStudentGuadian = CreateRandomStudentGuardian();
             StudentGuardian invalidStudentGuardian = randomStudentGuadian;
             invalidStudentGuardian.Level = GetInvalidEnum<ContactLevel>();
+            invalidStudentGuardian.Relation = GetInvalidEnum<Relationship>();
 
             var invalidStudentGuardianProcessingException =
                 new InvalidStudentGuardianProcessingException();
 
             invalidStudentGuardianProcessingException.AddData(
                 key: nameof(StudentGuardian.Level),
-                values: "Value is invalid");
+                values: "Value is required");
+
+            invalidStudentGuardianProcessingException.AddData(
+                key: nameof(StudentGuardian.Relation),
+                values: "Value is required");
 
             var expectedStudentGuardianProcessingValidationException =
                 new StudentGuardianProcessingValidationException(
