@@ -24,6 +24,10 @@ namespace SCMS.Services.Api.Services.Processings.StudentGuardians
             {
                 throw CreateAndLogValidationException(nullStudentGuardianProcessingException);
             }
+            catch (InvalidStudentGuardianProcessingException invalidStudentGuardianProcessingException)
+            {
+                throw CreateAndLogValidationException(invalidStudentGuardianProcessingException);
+            }
         }
 
         private StudentGuardianProcessingValidationException CreateAndLogValidationException(Xeption exception)
