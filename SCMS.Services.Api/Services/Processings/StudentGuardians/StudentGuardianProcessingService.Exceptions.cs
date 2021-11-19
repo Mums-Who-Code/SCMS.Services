@@ -2,12 +2,9 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
 using System.Threading.Tasks;
-using SCMS.Services.Api.Brokers.Loggings;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 using SCMS.Services.Api.Models.Processings.StudentGuardians.Exceptions;
-using SCMS.Services.Api.Services.Foundations.StudentGuardians;
 using Xeptions;
 
 namespace SCMS.Services.Api.Services.Processings.StudentGuardians
