@@ -21,6 +21,7 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
         {
             // given
             StudentGuardian someStudentGuardian = CreateRandomStudentGuardian();
+            someStudentGuardian.Level = ContactLevel.Primary;
 
             var expectedStudentGuardianProcessingDependencyException =
                 new StudentGuardianProcessingDependencyException(
@@ -62,6 +63,7 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
         {
             // given
             StudentGuardian someStudentGuardian = CreateRandomStudentGuardian();
+            someStudentGuardian.Level = ContactLevel.Primary;
 
             var expectedStudentGuardianProcessingDependencyValidationException =
                 new StudentGuardianProcessingDependencyValidationException(
@@ -101,6 +103,7 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
         {
             // given
             StudentGuardian someStudentGuardian = CreateRandomStudentGuardian();
+            someStudentGuardian.Level = ContactLevel.Primary;
             var serviceException = new Exception();
 
             var failedStudentGuardianProcessingServiceException =
