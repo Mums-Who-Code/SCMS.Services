@@ -168,6 +168,10 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
             await Assert.ThrowsAsync<StudentGuardianProcessingValidationException>(() =>
                 addStudentGuardianTask.AsTask());
 
+            this.studentGuardianServiceMock.Verify(service =>
+                service.RetrieveAllStudentGuardians(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedStudentGuardianProcessingValidationException))));
@@ -176,8 +180,8 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
                 service.AddStudentGuardianAsync(It.IsAny<StudentGuardian>()),
                     Times.Never);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.studentGuardianServiceMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

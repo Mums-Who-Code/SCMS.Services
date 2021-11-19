@@ -36,6 +36,10 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
                 expectedStudentGuardian);
 
             this.studentGuardianServiceMock.Verify(service =>
+                service.RetrieveAllStudentGuardians(),
+                    Times.Once);
+
+            this.studentGuardianServiceMock.Verify(service =>
                 service.AddStudentGuardianAsync(inputStudentGuardian),
                     Times.Once);
 
