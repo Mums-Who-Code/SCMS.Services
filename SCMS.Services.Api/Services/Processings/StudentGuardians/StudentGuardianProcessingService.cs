@@ -24,6 +24,6 @@ namespace SCMS.Services.Api.Services.Processings.StudentGuardians
         }
 
         public ValueTask<StudentGuardian> AddStudentGuardianAsync(StudentGuardian studentGuardian) =>
-            throw new NotImplementedException();
+            this.studentGuardianService.AddStudentGuardianAsync(studentGuardian);
     }
 }
