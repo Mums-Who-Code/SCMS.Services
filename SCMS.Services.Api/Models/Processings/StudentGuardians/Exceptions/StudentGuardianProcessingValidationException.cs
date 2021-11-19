@@ -6,9 +6,9 @@ using Xeptions;
 
 namespace SCMS.Services.Api.Models.Processings.StudentGuardians.Exceptions
 {
-    public class StudentGuardianValidationProcessingException : Xeption
+    public class StudentGuardianProcessingValidationException : Xeption
     {
-        public StudentGuardianValidationProcessingException(Xeption innerException)
+        public StudentGuardianProcessingValidationException(Xeption innerException)
             : base(message: "Student guardian processing validation error occurred, fix the error and try again.",
                   innerException)
         { }

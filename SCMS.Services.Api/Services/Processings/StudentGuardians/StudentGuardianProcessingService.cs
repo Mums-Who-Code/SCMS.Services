@@ -10,7 +10,7 @@ using SCMS.Services.Api.Services.Foundations.StudentGuardians;
 
 namespace SCMS.Services.Api.Services.Processings.StudentGuardians
 {
-    public class StudentGuardianProcessingService : IStudentGuardianProcessingService
+    public partial class StudentGuardianProcessingService : IStudentGuardianProcessingService
     {
         private readonly IStudentGuardianService studentGuardianService;
         private readonly ILoggingBroker loggingBroker;
@@ -24,6 +24,11 @@ namespace SCMS.Services.Api.Services.Processings.StudentGuardians
         }
 
         public ValueTask<StudentGuardian> AddStudentGuardianAsync(StudentGuardian studentGuardian) =>
-            this.studentGuardianService.AddStudentGuardianAsync(studentGuardian);
+        TryCatch(async () =>
+        {
+            ValidateStudentGuardian(studentGuardian);
+
+            return await this.studentGuardianService.AddStudentGuardianAsync(studentGuardian);
+        });
     }
 }

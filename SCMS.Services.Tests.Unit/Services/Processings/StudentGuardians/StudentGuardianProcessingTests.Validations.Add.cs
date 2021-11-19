@@ -24,8 +24,8 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
             var nullStudentGuardianProcessingException =
                 new NullStudentGuardianProcessingException();
 
-            var expectedStudentGuardianValidationProcessingException =
-                new StudentGuardianValidationProcessingException(
+            var expectedStudentGuardianProcessingValidationException =
+                new StudentGuardianProcessingValidationException(
                     nullStudentGuardianProcessingException);
 
             // when
@@ -34,12 +34,12 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
                     .AddStudentGuardianAsync(nullStudentGuardian);
 
             // then
-            await Assert.ThrowsAsync<StudentGuardianValidationProcessingException>(() =>
+            await Assert.ThrowsAsync<StudentGuardianProcessingValidationException>(() =>
                 addStudentGuardianTask.AsTask());
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedStudentGuardianValidationProcessingException))));
+                    expectedStudentGuardianProcessingValidationException))));
 
             this.studentGuardianServiceMock.Verify(service =>
                 service.AddStudentGuardianAsync(It.IsAny<StudentGuardian>()),
