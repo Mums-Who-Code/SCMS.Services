@@ -38,6 +38,21 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
                 && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
+        private static T GetInvalidEnum<T>()
+        {
+            int randomNumber = GetLocalRandomNumber();
+
+            while(Enum.IsDefined(typeof(T), randomNumber) is true)
+            {
+                randomNumber = GetLocalRandomNumber();
+            }
+
+            return (T)(object)randomNumber;
+
+            static int GetLocalRandomNumber() =>
+                new IntRange(min: int.MinValue, max: int.MaxValue).GetValue();
+        }
+
         private static DateTimeOffset GetRandomDateTime() =>
            new DateTimeRange(earliestDate: new DateTime()).GetValue();
 

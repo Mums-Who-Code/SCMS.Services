@@ -87,5 +87,45 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.studentGuardianServiceMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnAddIfLevelIsInvalidAndLogItAsync()
+        {
+            // given
+            StudentGuardian randomStudentGuadian = CreateRandomStudentGuardian();
+            StudentGuardian invalidStudentGuardian = randomStudentGuadian;
+            invalidStudentGuardian.Level = GetInvalidEnum<ContactLevel>();
+
+            var invalidStudentGuardianProcessingException =
+                new InvalidStudentGuardianProcessingException();
+
+            invalidStudentGuardianProcessingException.AddData(
+                key: nameof(StudentGuardian.Level),
+                values: "Value is invalid");
+
+            var expectedStudentGuardianProcessingValidationException =
+                new StudentGuardianProcessingValidationException(
+                    invalidStudentGuardianProcessingException);
+
+            // when
+            ValueTask<StudentGuardian> addStudentGuardianTask =
+                this.studentGuardianProcessingService
+                    .AddStudentGuardianAsync(invalidStudentGuardian);
+
+            // then
+            await Assert.ThrowsAsync<StudentGuardianProcessingValidationException>(() =>
+                addStudentGuardianTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentGuardianProcessingValidationException))));
+
+            this.studentGuardianServiceMock.Verify(service =>
+                service.AddStudentGuardianAsync(It.IsAny<StudentGuardian>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.studentGuardianServiceMock.VerifyNoOtherCalls();
+        }
     }
 }
