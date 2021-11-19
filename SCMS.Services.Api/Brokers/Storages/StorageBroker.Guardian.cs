@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
@@ -41,6 +41,15 @@ namespace SCMS.Services.Api.Brokers.Storages
         {
             using var broker = new StorageBroker(this.configuration);
             EntityEntry<Guardian> guardianEntityEntry = broker.Guardians.Update(entity: guardian);
+            await broker.SaveChangesAsync();
+
+            return guardianEntityEntry.Entity;
+        }
+
+        public async ValueTask<Guardian> DeleteGuardianAsync(Guardian guardian)
+        {
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Guardian> guardianEntityEntry = broker.Guardians.Remove(entity: guardian);
             await broker.SaveChangesAsync();
 
             return guardianEntityEntry.Entity;

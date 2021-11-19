@@ -15,5 +15,6 @@ namespace SCMS.Services.Api.Brokers.Storages
         IQueryable<Guardian> SelectAllGuardians();
         ValueTask<Guardian> SelectGuardianByIdAsync(Guid guardianId);
         ValueTask<Guardian> UpdateGuardianAsync(Guardian guardian);
+        ValueTask<Guardian> DeleteGuardianAsync(Guardian guardian);
     }
 }
