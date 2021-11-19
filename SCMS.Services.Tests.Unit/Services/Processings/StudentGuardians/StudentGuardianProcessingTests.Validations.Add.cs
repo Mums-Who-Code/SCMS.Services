@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Moq;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
@@ -89,23 +90,18 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
         }
 
         [Fact]
-        public async Task ShouldThrowValidationExceptionOnAddIfEnumIsInvalidAndLogItAsync()
+        public async Task ShouldThrowValidationExceptionOnAddIfLevelIsInvalidAndLogItAsync()
         {
             // given
             StudentGuardian randomStudentGuadian = CreateRandomStudentGuardian();
             StudentGuardian invalidStudentGuardian = randomStudentGuadian;
             invalidStudentGuardian.Level = GetInvalidEnum<ContactLevel>();
-            invalidStudentGuardian.Relation = GetInvalidEnum<Relationship>();
 
             var invalidStudentGuardianProcessingException =
                 new InvalidStudentGuardianProcessingException();
 
             invalidStudentGuardianProcessingException.AddData(
                 key: nameof(StudentGuardian.Level),
-                values: "Value is required");
-
-            invalidStudentGuardianProcessingException.AddData(
-                key: nameof(StudentGuardian.Relation),
                 values: "Value is required");
 
             var expectedStudentGuardianProcessingValidationException =
@@ -116,6 +112,57 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
             ValueTask<StudentGuardian> addStudentGuardianTask =
                 this.studentGuardianProcessingService
                     .AddStudentGuardianAsync(invalidStudentGuardian);
+
+            // then
+            await Assert.ThrowsAsync<StudentGuardianProcessingValidationException>(() =>
+                addStudentGuardianTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentGuardianProcessingValidationException))));
+
+            this.studentGuardianServiceMock.Verify(service =>
+                service.AddStudentGuardianAsync(It.IsAny<StudentGuardian>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.studentGuardianServiceMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnAddIfPrimaryContactAlreadyExistsAndLogItAsync()
+        {
+            // given
+            StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian();
+            StudentGuardian existingPrimaryStudentGuardian = randomStudentGuardian;
+            existingPrimaryStudentGuardian.Level = ContactLevel.Primary;
+            StudentGuardian inputStudentGuardian = CreateRandomStudentGuardian();
+            inputStudentGuardian.StudentId = existingPrimaryStudentGuardian.StudentId;
+            inputStudentGuardian.Level = ContactLevel.Primary;
+
+            IQueryable<StudentGuardian> randomStudentGuardians =
+                CreateRandomStudentGuardiansWithStudentGuardian(
+                    existingPrimaryStudentGuardian);
+
+            IQueryable<StudentGuardian> storageStudentGuardians =
+                randomStudentGuardians;
+
+            var alreadyExistsPrimaryStudentGuardianProcessingException =
+                new AlreadyExistsPrimaryStudentGuardianProcessingException(
+                    existingPrimaryStudentGuardian.GuardianId);
+
+            var expectedStudentGuardianProcessingValidationException =
+                new StudentGuardianProcessingValidationException(
+                    alreadyExistsPrimaryStudentGuardianProcessingException);
+
+            this.studentGuardianServiceMock.Setup(service =>
+                service.RetrieveAllStudentGuardians())
+                    .Returns(storageStudentGuardians);
+
+            // when
+            ValueTask<StudentGuardian> addStudentGuardianTask =
+                this.studentGuardianProcessingService
+                    .AddStudentGuardianAsync(inputStudentGuardian);
 
             // then
             await Assert.ThrowsAsync<StudentGuardianProcessingValidationException>(() =>

@@ -3,6 +3,8 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Moq;
 using SCMS.Services.Api.Brokers.Loggings;
@@ -42,7 +44,7 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
         {
             int randomNumber = GetLocalRandomNumber();
 
-            while(Enum.IsDefined(typeof(T), randomNumber) is true)
+            while (Enum.IsDefined(typeof(T), randomNumber) is true)
             {
                 randomNumber = GetLocalRandomNumber();
             }
@@ -55,6 +57,23 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
 
         private static DateTimeOffset GetRandomDateTime() =>
            new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+        private static int GetRandomNumber() =>
+            new IntRange(min: 2, max: 10).GetValue();
+
+        private static IQueryable<StudentGuardian> CreateRandomStudentGuardiansWithStudentGuardian(
+            StudentGuardian studentGuardian)
+        {
+            List<StudentGuardian> studentGuardians = CreateRandomStudentGuardians().ToList();
+
+            return studentGuardians.Append(studentGuardian).AsQueryable();
+        }
+
+        private static IQueryable<StudentGuardian> CreateRandomStudentGuardians()
+        {
+            return CreateStudentGuardianFiller(dates: GetRandomDateTime())
+                .Create(count: GetRandomNumber()).AsQueryable();
+        }
 
         private static StudentGuardian CreateRandomStudentGuardian() =>
             CreateStudentGuardianFiller(dates: GetRandomDateTime()).Create();

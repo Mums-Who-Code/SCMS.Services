@@ -16,8 +16,7 @@ namespace SCMS.Services.Api.Services.Processings.StudentGuardians
 
             Validate(
                 (Rule: IsInvalid(studentGuardian.StudentId), Parameter: nameof(StudentGuardian.StudentId)),
-                (Rule: IsInvalid(studentGuardian.Level), Parameter: nameof(StudentGuardian.Level)),
-                (Rule: IsInvalid(studentGuardian.Relation), Parameter: nameof(StudentGuardian.Relation))
+                (Rule: IsInvalid(studentGuardian.Level), Parameter: nameof(StudentGuardian.Level))
             );
         }
 
