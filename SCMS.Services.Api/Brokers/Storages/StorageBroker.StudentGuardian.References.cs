@@ -16,6 +16,18 @@ namespace SCMS.Services.Api.Brokers.Storages
                     new { studentGuardian.StudentId, studentGuardian.GuardianId });
 
             modelBuilder.Entity<StudentGuardian>()
+                .HasOne(studentGuardian => studentGuardian.Student)
+                .WithMany(student => student.RegisteredGuardians)
+                .HasForeignKey(studentGuardian => studentGuardian.StudentId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<StudentGuardian>()
+                .HasOne(studentGuardian => studentGuardian.Guardian)
+                .WithMany(guardian => guardian.RegisteredStudents)
+                .HasForeignKey(studentGuardian => studentGuardian.StudentId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<StudentGuardian>()
                 .HasOne(studentGuardian => studentGuardian.CreatedByUser)
                 .WithMany(user => user.CreatedStudentGuardians)
                 .HasForeignKey(studentGuardian => studentGuardian.CreatedBy)
