@@ -3,7 +3,6 @@
 // -----------------------------------------------------------------------
 
 using Microsoft.EntityFrameworkCore;
-using SCMS.Services.Api.Models.Foundations.Guardians;
 using SCMS.Services.Api.Models.Foundations.Phones;
 
 namespace SCMS.Services.Api.Brokers.Storages
@@ -13,7 +12,7 @@ namespace SCMS.Services.Api.Brokers.Storages
         public void SetPhoneReferences(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Phone>()
-                .HasOne(phone  => phone.Guardian)
+                .HasOne(phone => phone.Guardian)
                 .WithOne(guardian => guardian.RegisteredPhone)
                 .HasForeignKey<Phone>(phone => phone.GuardianId)
                 .OnDelete(DeleteBehavior.NoAction);
