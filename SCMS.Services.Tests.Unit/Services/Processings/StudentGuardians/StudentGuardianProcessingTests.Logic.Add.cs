@@ -47,5 +47,40 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
             this.studentGuardianServiceMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldAddNonPrimaryStudentGuardianAsync()
+        {
+            // given
+            StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian();
+            StudentGuardian inputStudentGuardian = randomStudentGuardian;
+            inputStudentGuardian.Level = ContactLevel.Secondary;
+            StudentGuardian persistedStudentGuardian = inputStudentGuardian;
+            StudentGuardian expectedStudentGuardian = persistedStudentGuardian.DeepClone();
+
+            this.studentGuardianServiceMock.Setup(service =>
+                service.AddStudentGuardianAsync(inputStudentGuardian))
+                    .ReturnsAsync(persistedStudentGuardian);
+
+            // when
+            StudentGuardian actualStudentGuardian =
+                await this.studentGuardianProcessingService
+                    .AddStudentGuardianAsync(inputStudentGuardian);
+
+            // then
+            actualStudentGuardian.Should().BeEquivalentTo(
+                expectedStudentGuardian);
+
+            this.studentGuardianServiceMock.Verify(service =>
+                service.RetrieveAllStudentGuardians(),
+                    Times.Never);
+
+            this.studentGuardianServiceMock.Verify(service =>
+                service.AddStudentGuardianAsync(inputStudentGuardian),
+                    Times.Once);
+
+            this.studentGuardianServiceMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
