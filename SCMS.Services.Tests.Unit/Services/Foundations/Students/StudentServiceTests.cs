@@ -82,10 +82,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
                 .OnProperty(student => student.Status).Use(StudentStatus.Active)
                 .OnType<DateTimeOffset>().Use(dateTime)
                 .OnType<Guid>().Use(userId)
-                .OnProperty(guardian => guardian.CreatedByUser).IgnoreIt()
-                .OnProperty(guardian => guardian.UpdatedByUser).IgnoreIt()
-                .OnProperty(guardian => guardian.RegisteredGuardians).IgnoreIt()
-                .OnProperty(guardian => guardian.EnrolledSchool).IgnoreIt();
+                .OnProperty(student => student.CreatedByUser).IgnoreIt()
+                .OnProperty(student => student.UpdatedByUser).IgnoreIt()
+                .OnProperty(student => student.RegisteredGuardians).IgnoreIt()
+                .OnProperty(student => student.EnrolledSchool).IgnoreIt();
 
             return filler;
         }

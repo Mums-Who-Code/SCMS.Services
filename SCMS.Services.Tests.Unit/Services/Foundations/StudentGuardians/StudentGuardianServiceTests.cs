@@ -111,10 +111,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentGuardians
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dates)
                 .OnType<Guid>().Use(userId)
-                .OnProperty(guardian => guardian.CreatedByUser).IgnoreIt()
-                .OnProperty(guardian => guardian.UpdatedByUser).IgnoreIt()
-                .OnProperty(guardian => guardian.Guardian).IgnoreIt()
-                .OnProperty(guardian => guardian.Student).IgnoreIt();
+                .OnProperty(studentGuardian => studentGuardian.CreatedByUser).IgnoreIt()
+                .OnProperty(studentGuardian => studentGuardian.UpdatedByUser).IgnoreIt()
+                .OnProperty(studentGuardian => studentGuardian.Guardian).IgnoreIt()
+                .OnProperty(studentGuardian => studentGuardian.Student).IgnoreIt();
 
             return filler;
         }
