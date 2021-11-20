@@ -14,11 +14,12 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
     public partial class StudentGuardianProcessingTests
     {
         [Fact]
-        public async Task ShouldAddStudentGuardianAsync()
+        public async Task ShouldAddPrimaryStudentGuardianAsync()
         {
             // given
             StudentGuardian randomStudentGuardian = CreateRandomStudentGuardian(); ;
             StudentGuardian inputStudentGuardian = randomStudentGuardian;
+            inputStudentGuardian.Level = ContactLevel.Primary;
             StudentGuardian persistedStudentGuardian = inputStudentGuardian;
             StudentGuardian expectedStudentGuardian = persistedStudentGuardian.DeepClone();
 
