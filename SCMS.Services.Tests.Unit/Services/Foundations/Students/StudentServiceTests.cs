@@ -81,7 +81,11 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             filler.Setup()
                 .OnProperty(student => student.Status).Use(StudentStatus.Active)
                 .OnType<DateTimeOffset>().Use(dateTime)
-                .OnType<Guid>().Use(userId);
+                .OnType<Guid>().Use(userId)
+                .OnProperty(guardian => guardian.CreatedByUser).IgnoreIt()
+                .OnProperty(guardian => guardian.UpdatedByUser).IgnoreIt()
+                .OnProperty(guardian => guardian.RegisteredGuardians).IgnoreIt()
+                .OnProperty(guardian => guardian.EnrolledSchool).IgnoreIt();
 
             return filler;
         }

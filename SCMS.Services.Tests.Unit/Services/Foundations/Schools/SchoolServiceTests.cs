@@ -88,7 +88,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
 
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(valueToUse: dates)
-                .OnType<Guid>().Use(valueToUse: randomGuid);
+                .OnType<Guid>().Use(valueToUse: randomGuid)
+                .OnProperty(guardian => guardian.CreatedByUser).IgnoreIt()
+                .OnProperty(guardian => guardian.UpdatedByUser).IgnoreIt()
+                .OnProperty(guardian => guardian.EnrolledStudents).IgnoreIt();
 
             return filler;
         }
