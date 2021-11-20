@@ -3,6 +3,9 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 using SCMS.Services.Api.Models.Foundations.Users;
 
 namespace SCMS.Services.Api.Models.Foundations.Guardians
@@ -21,5 +24,8 @@ namespace SCMS.Services.Api.Models.Foundations.Guardians
 
         public Guid UpdatedBy { get; set; }
         public User UpdatedByUser { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<StudentGuardian> RegisteredStudents { get; set; }
     }
 }
