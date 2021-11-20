@@ -24,7 +24,7 @@ namespace SCMS.Services.Api.Brokers.Storages
             modelBuilder.Entity<StudentGuardian>()
                 .HasOne(studentGuardian => studentGuardian.Guardian)
                 .WithMany(guardian => guardian.RegisteredStudents)
-                .HasForeignKey(studentGuardian => studentGuardian.StudentId)
+                .HasForeignKey(studentGuardian => studentGuardian.GuardianId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<StudentGuardian>()
