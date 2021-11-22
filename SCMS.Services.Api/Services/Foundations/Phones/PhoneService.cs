@@ -2,7 +2,6 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
 using System.Threading.Tasks;
 using SCMS.Services.Api.Brokers.DateTimes;
 using SCMS.Services.Api.Brokers.Loggings;

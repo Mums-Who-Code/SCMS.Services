@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq.Expressions;
 using Moq;
 using SCMS.Services.Api.Brokers.DateTimes;
 using SCMS.Services.Api.Brokers.Loggings;
@@ -10,6 +11,7 @@ using SCMS.Services.Api.Brokers.Storages;
 using SCMS.Services.Api.Models.Foundations.Phones;
 using SCMS.Services.Api.Services.Foundations.Phones;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.Phones
 {
@@ -30,6 +32,14 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Phones
                 storageBroker: this.storageBrokerMock.Object,
                 dateTimeBroker: this.dateTimeBrokerMock.Object,
                 loggingBroker: this.loggingBrokerMock.Object);
+        }
+
+        private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
+        {
+            return actualException =>
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message
+                && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
         private static DateTimeOffset GetRandomDateTime() =>
