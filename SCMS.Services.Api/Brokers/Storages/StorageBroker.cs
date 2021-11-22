@@ -26,6 +26,7 @@ namespace SCMS.Services.Api.Brokers.Storages
             SetStudentSchoolReferences(modelBuilder);
             SetGuardianReferences(modelBuilder);
             SetStudentGuardianReferences(modelBuilder);
+            SetPhoneReferences(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
