@@ -23,6 +23,10 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
             {
                 throw CreateAndLogValidationException(nullPhoneException);
             }
+            catch (InvalidPhoneException invalidPhoneException)
+            {
+                throw CreateAndLogValidationException(invalidPhoneException);
+            }
         }
 
         private Xeption CreateAndLogValidationException(Xeption exception)
