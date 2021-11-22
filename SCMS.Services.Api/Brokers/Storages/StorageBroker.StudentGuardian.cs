@@ -26,7 +26,7 @@ namespace SCMS.Services.Api.Brokers.Storages
 
             return entityEntry.Entity;
         }
-      
+
         public IQueryable<StudentGuardian> SelectAllStudentGuardians() => this.StudentGuardians;
 
         public async ValueTask<StudentGuardian> SelectStudentGuardianByIdAsync(Guid studentGuardianId)
@@ -36,7 +36,7 @@ namespace SCMS.Services.Api.Brokers.Storages
 
             return await broker.StudentGuardians.FindAsync(studentGuardianId);
         }
-      
+
         public async ValueTask<StudentGuardian> UpdateStudentGuardianAsync(StudentGuardian studentGuardian)
         {
             using var broker = new StorageBroker(this.configuration);
