@@ -10,7 +10,7 @@ using SCMS.Services.Api.Models.Foundations.Phones;
 
 namespace SCMS.Services.Api.Services.Foundations.Phones
 {
-    public class PhoneService : IPhoneService
+    public partial class PhoneService : IPhoneService
     {
         private readonly IStorageBroker storageBroker;
         private readonly IDateTimeBroker dateTimeBroker;
@@ -27,6 +27,12 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
         }
 
         public ValueTask<Phone> AddPhoneAsync(Phone phone) =>
-            this.storageBroker.InsertPhoneAsync(phone);
+        TryCatch(async () =>
+        {
+            ValidatePhone(phone);
+
+            return await this.storageBroker.InsertPhoneAsync(phone);
+        });
+
     }
 }
