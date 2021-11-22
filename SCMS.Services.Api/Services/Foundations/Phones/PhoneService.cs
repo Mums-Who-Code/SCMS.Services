@@ -28,6 +28,6 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
         }
 
         public ValueTask<Phone> AddPhoneAsync(Phone phone) =>
-            throw new NotImplementedException();
+            this.storageBroker.InsertPhoneAsync(phone);
     }
 }
