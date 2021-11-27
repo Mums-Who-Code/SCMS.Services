@@ -27,7 +27,13 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
                     firstDate: phone.UpdatedDate,
                     secondDate: phone.CreatedDate,
                     secondDateName: nameof(Phone.CreatedDate)),
-                Parameter: nameof(Phone.UpdatedDate)));
+                Parameter: nameof(Phone.UpdatedDate)),
+
+                (Rule: IsNotSame(
+                    firstId: phone.UpdatedBy,
+                    secondId: phone.CreatedBy,
+                    secondIdName: nameof(Phone.CreatedBy)),
+                Parameter: nameof(Phone.UpdatedBy)));
         }
 
         private static void ValidatePhoneIsNull(Phone phone)
@@ -63,6 +69,15 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
             {
                 Condition = firstDate != secondDate,
                 Message = $"Date is not same as {secondDateName}."
+            };
+
+        private static dynamic IsNotSame(
+            Guid firstId,
+            Guid secondId,
+            string secondIdName) => new
+            {
+                Condition = firstId != secondId,
+                Message = $"Id is not same as {secondIdName}."
             };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
