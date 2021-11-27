@@ -5,6 +5,7 @@
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using SCMS.Services.Api.Models.Foundations.Phones;
 using SCMS.Services.Api.Models.Foundations.Phones.Exceptions;
 using Xeptions;
@@ -34,7 +35,7 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
                 var failedPhoneStorageException =
                     new FailedPhoneStorageException(sqlException);
 
-                throw CreateAndLogDependencyException(failedPhoneStorageException);
+                throw CreateAndLogCriticalDependencyException(failedPhoneStorageException);
             }
             catch (DuplicateKeyException duplicateKeyException)
             {
@@ -50,9 +51,16 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
 
                 throw CreateAndLogDependencyValidationException(invalidPhoneReferenceException);
             }
+            catch (DbUpdateException databaseUpdateException)
+            {
+                var failedPhoneStorageException =
+                    new FailedPhoneStorageException(databaseUpdateException);
+
+                throw CreateAndLogDependencyException(failedPhoneStorageException);
+            }
         }
 
-        private Xeption CreateAndLogValidationException(Xeption exception)
+        private PhoneValidationException CreateAndLogValidationException(Xeption exception)
         {
             var phoneValidationException = new PhoneValidationException(exception);
             this.loggingBroker.LogError(phoneValidationException);
@@ -60,7 +68,7 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
             return phoneValidationException;
         }
 
-        private Xeption CreateAndLogDependencyException(Xeption exception)
+        private PhoneDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
         {
             var phoneDependencyException = new PhoneDependencyException(exception);
             this.loggingBroker.LogCritical(phoneDependencyException);
@@ -68,12 +76,20 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
             return phoneDependencyException;
         }
 
-        private Xeption CreateAndLogDependencyValidationException(Xeption exception)
+        private PhoneDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
         {
             var phoneDependencyValidationException = new PhoneDependencyValidationException(exception);
             this.loggingBroker.LogError(phoneDependencyValidationException);
 
             return phoneDependencyValidationException;
+        }
+
+        private PhoneDependencyException CreateAndLogDependencyException(Xeption exception)
+        {
+            var phoneDependencyException = new PhoneDependencyException(exception);
+            this.loggingBroker.LogError(phoneDependencyException);
+
+            return phoneDependencyException;
         }
     }
 }
