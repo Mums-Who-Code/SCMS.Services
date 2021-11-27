@@ -55,6 +55,9 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Phones
                 && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
+        private static string GetRandomString() =>
+            new MnemonicString().GetValue();
+
         private static int GetRandomNumber() =>
             new IntRange(min: 2, max: 10).GetValue();
 

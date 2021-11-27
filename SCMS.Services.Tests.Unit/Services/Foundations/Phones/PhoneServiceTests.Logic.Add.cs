@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
@@ -17,10 +18,15 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Phones
         public async Task ShouldAddPhoneAsync()
         {
             // given
-            Phone randomPhone = CreateRandomPhone();
+            DateTimeOffset randomDate = GetRandomDateTime();
+            Phone randomPhone = CreateRandomPhone(dates: randomDate);
             Phone inputPhone = randomPhone;
             Phone storagePhone = inputPhone;
             Phone expectedPhone = storagePhone.DeepClone();
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDate);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertPhoneAsync(inputPhone))
@@ -33,12 +39,16 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Phones
             // then
             actualPhone.Should().BeEquivalentTo(expectedPhone);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertPhoneAsync(inputPhone),
                     Times.Once);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }

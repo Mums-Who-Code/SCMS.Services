@@ -100,6 +100,58 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Phones
             await Assert.ThrowsAsync<PhoneValidationException>(() =>
                 addPhoneTask.AsTask());
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedPhoneValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertPhoneAsync(It.IsAny<Phone>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnAddIfNumberIsInvalidAndLogItAsync()
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Phone randomPhone = CreateRandomPhone(dates: randomDateTime);
+            Phone invalidPhone = randomPhone;
+            invalidPhone.Number = GetRandomString();
+
+            var invalidPhoneException = new InvalidPhoneException();
+
+            invalidPhoneException.AddData(
+                key: nameof(Phone.Number),
+                values: "Text is invalid.");
+
+            var expectedPhoneValidationException =
+                new PhoneValidationException(invalidPhoneException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
+
+            // when
+            ValueTask<Phone> addPhoneTask =
+                this.phoneService.AddPhoneAsync(invalidPhone);
+
+            // then
+            await Assert.ThrowsAsync<PhoneValidationException>(() =>
+                addPhoneTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedPhoneValidationException))),
@@ -137,6 +189,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Phones
             // then
             await Assert.ThrowsAsync<PhoneValidationException>(() =>
                 addPhoneTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
@@ -176,6 +232,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Phones
             // then
             await Assert.ThrowsAsync<PhoneValidationException>(() =>
                 addPhoneTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
