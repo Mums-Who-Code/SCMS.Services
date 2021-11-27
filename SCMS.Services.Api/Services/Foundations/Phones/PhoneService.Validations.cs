@@ -10,7 +10,7 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
 {
     public partial class PhoneService
     {
-        private static void ValidatePhone(Phone phone)
+        private void ValidatePhone(Phone phone)
         {
             ValidatePhoneIsNull(phone);
 
@@ -33,7 +33,9 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
                     firstId: phone.UpdatedBy,
                     secondId: phone.CreatedBy,
                     secondIdName: nameof(Phone.CreatedBy)),
-                Parameter: nameof(Phone.UpdatedBy)));
+                Parameter: nameof(Phone.UpdatedBy)),
+
+                (Rule: IsNotRecent(phone.CreatedDate), Parameter: nameof(Phone.CreatedDate)));
         }
 
         private static void ValidatePhoneIsNull(Phone phone)
@@ -79,6 +81,23 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
                 Condition = firstId != secondId,
                 Message = $"Id is not same as {secondIdName}."
             };
+
+        private dynamic IsNotRecent(DateTimeOffset date) => new
+        {
+            Condition = IsDateNotRecent(date),
+            Message = "Date is not recent."
+        };
+
+        private bool IsDateNotRecent(DateTimeOffset date)
+        {
+            DateTimeOffset currentDateTime =
+                this.dateTimeBroker.GetCurrentDateTime();
+
+            TimeSpan timeDifference = currentDateTime.Subtract(date);
+            TimeSpan oneMinute = TimeSpan.FromMinutes(1);
+
+            return timeDifference.Duration() > oneMinute;
+        }
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
