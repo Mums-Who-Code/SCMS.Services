@@ -43,6 +43,13 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
 
                 throw CreateAndLogDependencyValidationException(alreadyExistsPhoneException);
             }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidPhoneReferenceException =
+                    new InvalidPhoneReferenceException(foreignKeyConstraintConflictException);
+
+                throw CreateAndLogDependencyValidationException(invalidPhoneReferenceException);
+            }
         }
 
         private Xeption CreateAndLogValidationException(Xeption exception)
