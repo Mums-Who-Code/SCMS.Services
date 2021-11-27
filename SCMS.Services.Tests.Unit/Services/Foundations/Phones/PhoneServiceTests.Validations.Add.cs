@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using Moq;
 using SCMS.Services.Api.Models.Foundations.Phones;
@@ -125,6 +126,45 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Phones
             invalidPhoneException.AddData(
                 key: nameof(Phone.UpdatedDate),
                 values: $"Date is not same as {nameof(Phone.CreatedDate)}.");
+
+            var expectedPhoneValidationException =
+                new PhoneValidationException(invalidPhoneException);
+
+            // when
+            ValueTask<Phone> addPhoneTask =
+                this.phoneService.AddPhoneAsync(invalidPhone);
+
+            // then
+            await Assert.ThrowsAsync<PhoneValidationException>(() =>
+                addPhoneTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedPhoneValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertPhoneAsync(It.IsAny<Phone>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnAddIfCreatedByIsNotSameAsByAndLogItAsync()
+        {
+            // given
+            Guid randomGuid = Guid.NewGuid();
+            Phone randomPhone = CreateRandomPhone();
+            Phone invalidPhone = randomPhone;
+            invalidPhone.UpdatedBy = randomGuid;
+            var invalidPhoneException = new InvalidPhoneException();
+
+            invalidPhoneException.AddData(
+                key: nameof(Phone.UpdatedBy),
+                values: $"Id is not same as {nameof(Phone.CreatedBy)}.");
 
             var expectedPhoneValidationException =
                 new PhoneValidationException(invalidPhoneException);
