@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using SCMS.Services.Api.Models.Foundations.Phones;
 using SCMS.Services.Api.Models.Foundations.Phones.Exceptions;
@@ -35,6 +36,13 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
 
                 throw CreateAndLogDependencyException(failedPhoneStorageException);
             }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistsPhoneException =
+                    new AlreadyExistsPhoneException(duplicateKeyException);
+
+                throw CreateAndLogDependencyValidationException(alreadyExistsPhoneException);
+            }
         }
 
         private Xeption CreateAndLogValidationException(Xeption exception)
@@ -51,6 +59,14 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
             this.loggingBroker.LogCritical(phoneDependencyException);
 
             return phoneDependencyException;
+        }
+
+        private Xeption CreateAndLogDependencyValidationException(Xeption exception)
+        {
+            var phoneDependencyValidationException = new PhoneDependencyValidationException(exception);
+            this.loggingBroker.LogError(phoneDependencyValidationException);
+
+            return phoneDependencyValidationException;
         }
     }
 }
