@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -58,6 +59,13 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
 
                 throw CreateAndLogDependencyException(failedPhoneStorageException);
             }
+            catch (Exception exception)
+            {
+                var failedPhoneServiceException =
+                    new FailedPhoneServiceException(exception);
+
+                throw CreateAndLogServiceException(failedPhoneServiceException);
+            }
         }
 
         private PhoneValidationException CreateAndLogValidationException(Xeption exception)
@@ -90,6 +98,14 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
             this.loggingBroker.LogError(phoneDependencyException);
 
             return phoneDependencyException;
+        }
+
+        private PhoneServiceException CreateAndLogServiceException(Xeption exception)
+        {
+            var phoneServiceException = new PhoneServiceException(exception);
+            this.loggingBroker.LogError(phoneServiceException);
+
+            return phoneServiceException;
         }
     }
 }
