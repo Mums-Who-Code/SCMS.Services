@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Text.RegularExpressions;
 using SCMS.Services.Api.Models.Foundations.Phones;
 using SCMS.Services.Api.Models.Foundations.Phones.Exceptions;
 
@@ -17,7 +18,7 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
             Validate(
                 (Rule: IsInvalid(phone.Id), Parameter: nameof(Phone.Id)),
                 (Rule: IsInvalid(text: phone.CountryCode), Parameter: nameof(Phone.CountryCode)),
-                (Rule: IsInvalid(text: phone.Number), Parameter: nameof(Phone.Number)),
+                (Rule: IsInvalidNumber(phone.Number), Parameter: nameof(Phone.Number)),
                 (Rule: IsInvalid(phone.CreatedDate), Parameter: nameof(Phone.CreatedDate)),
                 (Rule: IsInvalid(phone.UpdatedDate), Parameter: nameof(Phone.UpdatedDate)),
                 (Rule: IsInvalid(id: phone.CreatedBy), Parameter: nameof(Phone.CreatedBy)),
@@ -99,9 +100,21 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
             return timeDifference.Duration() > oneMinute;
         }
 
+        private static dynamic IsInvalidNumber(string number) => new
+        {
+            Condition = IsNotMatch(number),
+            Message = "Text is invalid."
+        };
+
+        private static bool IsNotMatch(string number)
+        {
+            Regex regex = new Regex(@"^[0-9]{10}$");
+            return !regex.IsMatch(number);
+        }
+
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
-            var invalidPhoneException = new InvalidPhoneException();
+                var invalidPhoneException = new InvalidPhoneException();
 
             foreach ((dynamic rule, string parameter) in validations)
             {
