@@ -4,7 +4,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using Moq;
 using SCMS.Services.Api.Brokers.DateTimes;
 using SCMS.Services.Api.Brokers.Loggings;
@@ -54,6 +56,9 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Phones
                 && actualException.InnerException.Message == expectedException.InnerException.Message
                 && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
+
+        private static SqlException GetSqlException() =>
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         private static string GetRandomString() =>
             new MnemonicString().GetValue();

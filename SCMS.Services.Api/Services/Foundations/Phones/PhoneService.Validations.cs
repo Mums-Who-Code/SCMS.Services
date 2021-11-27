@@ -114,7 +114,7 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
-                var invalidPhoneException = new InvalidPhoneException();
+            var invalidPhoneException = new InvalidPhoneException();
 
             foreach ((dynamic rule, string parameter) in validations)
             {
