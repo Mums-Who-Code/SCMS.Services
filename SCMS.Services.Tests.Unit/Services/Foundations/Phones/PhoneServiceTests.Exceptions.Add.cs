@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Moq;
 using SCMS.Services.Api.Models.Foundations.Phones;
@@ -55,5 +56,52 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Phones
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowDependencyValidationExceptionOnAddIfPhoneAlreadyExistsAndLogItAsync()
+        {
+            // given
+            Phone randomPhone = CreateRandomPhone();
+            Phone alreadyExistsPhone = randomPhone;
+            string randomMessage = GetRandomString();
+            string exceptionMessage = randomMessage;
+            var duplicateKeyException = new DuplicateKeyException(exceptionMessage);
+
+            var alreadyExistsPhoneException =
+                new AlreadyExistsPhoneException(duplicateKeyException);
+
+            var expectedPhoneDepdendencyValidationException =
+                new PhoneDependencyValidationException(alreadyExistsPhoneException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Throws(duplicateKeyException);
+
+            // when
+            ValueTask<Phone> addPhoneTask =
+                this.phoneService.AddPhoneAsync(alreadyExistsPhone);
+
+            // then
+            await Assert.ThrowsAsync<PhoneDependencyValidationException>(() =>
+                addPhoneTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedPhoneDepdendencyValidationException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertPhoneAsync(alreadyExistsPhone),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
     }
 }

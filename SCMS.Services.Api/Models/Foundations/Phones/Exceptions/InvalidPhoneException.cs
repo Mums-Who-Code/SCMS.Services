@@ -9,7 +9,7 @@ namespace SCMS.Services.Api.Models.Foundations.Phones.Exceptions
     public class InvalidPhoneException : Xeption
     {
         public InvalidPhoneException()
-            : base(message: "Invalid phone.")
+            : base(message: "Invalid phone, fix the errors and try again.")
         { }
     }
 }

@@ -6,10 +6,10 @@ using Xeptions;
 
 namespace SCMS.Services.Api.Models.Foundations.Phones.Exceptions
 {
-    public class PhoneValidationException : Xeption
+    public class PhoneDependencyValidationException : Xeption
     {
-        public PhoneValidationException(Xeption innerException)
-            : base(message: "Phone validation error occurred, fix the errors and try again.",
+        public PhoneDependencyValidationException(Xeption innerException)
+            : base(message: "Phone dependency validation error occurred, fix the errors and try again.",
                   innerException)
         { }
     }

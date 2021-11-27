@@ -2,14 +2,15 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using Xeptions;
 
 namespace SCMS.Services.Api.Models.Foundations.Phones.Exceptions
 {
-    public class PhoneValidationException : Xeption
+    public class AlreadyExistsPhoneException : Xeption
     {
-        public PhoneValidationException(Xeption innerException)
-            : base(message: "Phone validation error occurred, fix the errors and try again.",
+        public AlreadyExistsPhoneException(Exception innerException)
+            : base(message: "Phone with same id already exists, try again.",
                   innerException)
         { }
     }
