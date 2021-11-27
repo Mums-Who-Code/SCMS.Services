@@ -190,5 +190,55 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Phones
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Theory]
+        [MemberData(nameof(InvalidMinuteCases))]
+        public async void ShouldThrowValidationExceptionOnCreateIfCreatedDateIsNotRecentAndLogItAsync(
+            int minutes)
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            Phone randomPhone = CreateRandomPhone(dates: randomDateTime);
+            Phone invalidPhone = randomPhone;
+            invalidPhone.CreatedDate = invalidPhone.CreatedDate.AddMinutes(minutes);
+            invalidPhone.UpdatedDate = invalidPhone.CreatedDate;
+            var invalidPhoneException = new InvalidPhoneException();
+
+            invalidPhoneException.AddData(
+                key: nameof(Phone.CreatedDate),
+                values: $"Date is not recent.");
+
+            var expectedPhoneValidationException =
+                new PhoneValidationException(invalidPhoneException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
+
+            // when
+            ValueTask<Phone> addPhoneTask =
+                this.phoneService.AddPhoneAsync(invalidPhone);
+
+            // then
+            await Assert.ThrowsAsync<PhoneValidationException>(() =>
+                addPhoneTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedPhoneValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertPhoneAsync(It.IsAny<Phone>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
