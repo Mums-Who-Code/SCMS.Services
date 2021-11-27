@@ -3,7 +3,6 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Data;
 using SCMS.Services.Api.Models.Foundations.Phones;
 using SCMS.Services.Api.Models.Foundations.Phones.Exceptions;
 
@@ -52,13 +51,13 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
             Message = "Date is required."
         };
 
-        private static void Validate(params(dynamic Rule, string Parameter)[] validations)
+        private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
             var invalidPhoneException = new InvalidPhoneException();
 
-            foreach((dynamic rule, string parameter) in validations)
+            foreach ((dynamic rule, string parameter) in validations)
             {
-                if(rule.Condition)
+                if (rule.Condition)
                 {
                     invalidPhoneException.UpsertDataList(
                         key: parameter,

@@ -112,5 +112,43 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Phones
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnAddIfCreatedDateIsNotSameAsUpdatedDateAndLogItAsync()
+        {
+            // given
+            Phone randomPhone = CreateRandomPhone();
+            Phone invalidPhone = randomPhone;
+            invalidPhone.UpdatedDate = invalidPhone.CreatedDate.AddDays(1);
+            var invalidPhoneException = new InvalidPhoneException();
+
+            invalidPhoneException.AddData(
+                key: nameof(Phone.UpdatedDate),
+                values: $"Date is not same as {nameof(Phone.CreatedDate)}.");
+
+            var expectedPhoneValidationException =
+                new PhoneValidationException(invalidPhoneException);
+
+            // when
+            ValueTask<Phone> addPhoneTask =
+                this.phoneService.AddPhoneAsync(invalidPhone);
+
+            // then
+            await Assert.ThrowsAsync<PhoneValidationException>(() =>
+                addPhoneTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedPhoneValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertPhoneAsync(It.IsAny<Phone>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
