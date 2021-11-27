@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using SCMS.Services.Api.Models.Foundations.Phones;
 using SCMS.Services.Api.Models.Foundations.Phones.Exceptions;
 using Xeptions;
@@ -27,6 +28,13 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
             {
                 throw CreateAndLogValidationException(invalidPhoneException);
             }
+            catch (SqlException sqlException)
+            {
+                var failedPhoneStorageException =
+                    new FailedPhoneStorageException(sqlException);
+
+                throw CreateAndLogDependencyException(failedPhoneStorageException);
+            }
         }
 
         private Xeption CreateAndLogValidationException(Xeption exception)
@@ -35,6 +43,14 @@ namespace SCMS.Services.Api.Services.Foundations.Phones
             this.loggingBroker.LogError(phoneValidationException);
 
             return phoneValidationException;
+        }
+
+        private Xeption CreateAndLogDependencyException(Xeption exception)
+        {
+            var phoneDependencyException = new PhoneDependencyException(exception);
+            this.loggingBroker.LogCritical(phoneDependencyException);
+
+            return phoneDependencyException;
         }
     }
 }
