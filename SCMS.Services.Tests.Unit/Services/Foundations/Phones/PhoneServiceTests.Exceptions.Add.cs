@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -186,6 +187,52 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Phones
             this.loggingBrokerMock.Verify(broker =>
                broker.LogError(It.Is(SameExceptionAs(
                    expectedPhoneDepdendencyException))),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertPhoneAsync(inputPhone),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowServiceExceptionOnAddIfServiceErrorOccursAndLogItAsync()
+        {
+            // given
+            Phone randomPhone = CreateRandomPhone();
+            Phone inputPhone = randomPhone;
+            string randomMessage = GetRandomString();
+            string exceptionMessage = randomMessage;
+            var serviceException = new Exception(exceptionMessage);
+
+            var failedPhoneServiceException =
+                new FailedPhoneServiceException(serviceException);
+
+            var expectedPhoneServiceException =
+                new PhoneServiceException(failedPhoneServiceException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Throws(serviceException);
+
+            // when
+            ValueTask<Phone> addPhoneTask =
+                this.phoneService.AddPhoneAsync(inputPhone);
+
+            // then
+            await Assert.ThrowsAsync<PhoneServiceException>(() =>
+                addPhoneTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedPhoneServiceException))),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
