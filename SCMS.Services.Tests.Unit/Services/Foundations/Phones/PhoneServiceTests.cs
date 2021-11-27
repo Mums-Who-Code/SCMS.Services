@@ -57,6 +57,9 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Phones
                 && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
+        private static string GetValidPhoneNumber() =>
+            new LongRange(min: 1000000000, max: 9999999999).GetValue().ToString();
+
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
@@ -86,9 +89,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Phones
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dates)
                 .OnType<Guid>().Use(userId)
-                .OnProperty(studentGuardian => studentGuardian.CreatedByUser).IgnoreIt()
-                .OnProperty(studentGuardian => studentGuardian.UpdatedByUser).IgnoreIt()
-                .OnProperty(studentGuardian => studentGuardian.Guardian).IgnoreIt();
+                .OnProperty(phone => phone.Number).Use(GetValidPhoneNumber)
+                .OnProperty(phone => phone.CreatedByUser).IgnoreIt()
+                .OnProperty(phone => phone.UpdatedByUser).IgnoreIt()
+                .OnProperty(phone => phone.Guardian).IgnoreIt();
 
             return filler;
         }

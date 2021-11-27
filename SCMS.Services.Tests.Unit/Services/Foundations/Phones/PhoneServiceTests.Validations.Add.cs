@@ -56,7 +56,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Phones
             var invalidPhone = new Phone
             {
                 CountryCode = invalidValue,
-                Number = invalidValue
+                Number = GetValidPhoneNumber()
             };
 
             var invalidPhoneException = new InvalidPhoneException();
@@ -67,10 +67,6 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Phones
 
             invalidPhoneException.AddData(
                 key: nameof(Phone.CountryCode),
-                values: "Text is required.");
-
-            invalidPhoneException.AddData(
-                key: nameof(Phone.Number),
                 values: "Text is required.");
 
             invalidPhoneException.AddData(
