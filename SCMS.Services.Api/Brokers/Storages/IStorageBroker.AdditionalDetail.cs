@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// -----------------------------------------------------------------------
+// Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
+// -----------------------------------------------------------------------
 
 namespace SCMS.Services.Api.Brokers.Storages
 {
     public partial interface IStorageBroker
     {
-        
+
     }
 }
