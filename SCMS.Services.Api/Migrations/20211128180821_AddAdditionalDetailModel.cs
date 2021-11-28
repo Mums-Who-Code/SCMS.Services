@@ -1,11 +1,15 @@
-﻿using System;
+﻿// -----------------------------------------------------------------------
+// Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
+// -----------------------------------------------------------------------
+
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace SCMS.Services.Api.Migrations
 {
-    public partial class AddAddtionalDetailModel : Migration
+    public partial class AddAdditionalDetailModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

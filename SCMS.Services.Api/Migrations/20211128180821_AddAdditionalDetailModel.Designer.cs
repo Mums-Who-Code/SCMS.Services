@@ -12,8 +12,8 @@ using SCMS.Services.Api.Brokers.Storages;
 namespace SCMS.Services.Api.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    [Migration("20211128141148_AddAddtionalDetailModel")]
-    partial class AddAddtionalDetailModel
+    [Migration("20211128180821_AddAdditionalDetailModel")]
+    partial class AddAdditionalDetailModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
