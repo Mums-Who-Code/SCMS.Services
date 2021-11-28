@@ -5,7 +5,7 @@
 using System;
 using SCMS.Services.Api.Models.Foundations.Students;
 
-namespace SCMS.Services.Api.Models.Foundations
+namespace SCMS.Services.Api.Models.Foundations.AdditionalDetails
 {
     public class AdditionalDetail
     {
