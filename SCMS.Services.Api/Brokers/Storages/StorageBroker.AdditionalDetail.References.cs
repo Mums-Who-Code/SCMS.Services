@@ -9,9 +9,8 @@ namespace SCMS.Services.Api.Brokers.Storages
 {
     public partial class StorageBroker
     {
-        public void SetUserStudentAdditionalDetailReferences(ModelBuilder modelBuilder)
+        public void SetAdditionalDetailReferences(ModelBuilder modelBuilder)
         {
-
             modelBuilder.Entity<AdditionalDetail>()
                 .HasOne(additionalDetailUser => additionalDetailUser.CreatedByUser)
                 .WithMany(user => user.CreatedAdditionalDetails)
@@ -26,8 +25,8 @@ namespace SCMS.Services.Api.Brokers.Storages
 
             modelBuilder.Entity<AdditionalDetail>()
                 .HasOne(additionalDetailStudent => additionalDetailStudent.Student)
-                .WithMany(student => student.AdditionalDetails)
-                .HasForeignKey(additionalDetailStudent => additionalDetailStudent.StudentId)
+                .WithOne(student => student.AdditionalDetail)
+                .HasForeignKey<AdditionalDetail>(additionalDetailStudent => additionalDetailStudent.StudentId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

@@ -12,6 +12,10 @@ namespace SCMS.Services.Api.Migrations
                 name: "FK_AddtionalDetails_Students_StudentId",
                 table: "AddtionalDetails");
 
+            migrationBuilder.DropIndex(
+                name: "IX_AddtionalDetails_StudentId",
+                table: "AddtionalDetails");
+
             migrationBuilder.RenameColumn(
                 name: "Fide",
                 table: "AddtionalDetails",
@@ -21,6 +25,12 @@ namespace SCMS.Services.Api.Migrations
                 name: "IX_AddtionalDetails_CreatedBy",
                 table: "AddtionalDetails",
                 column: "CreatedBy");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AddtionalDetails_StudentId",
+                table: "AddtionalDetails",
+                column: "StudentId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AddtionalDetails_UpdatedBy",
@@ -68,6 +78,10 @@ namespace SCMS.Services.Api.Migrations
                 table: "AddtionalDetails");
 
             migrationBuilder.DropIndex(
+                name: "IX_AddtionalDetails_StudentId",
+                table: "AddtionalDetails");
+
+            migrationBuilder.DropIndex(
                 name: "IX_AddtionalDetails_UpdatedBy",
                 table: "AddtionalDetails");
 
@@ -75,6 +89,11 @@ namespace SCMS.Services.Api.Migrations
                 name: "FideId",
                 table: "AddtionalDetails",
                 newName: "Fide");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AddtionalDetails_StudentId",
+                table: "AddtionalDetails",
+                column: "StudentId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AddtionalDetails_Students_StudentId",

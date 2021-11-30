@@ -53,7 +53,8 @@ namespace SCMS.Services.Api.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("StudentId")
+                        .IsUnique();
 
                     b.HasIndex("UpdatedBy");
 
@@ -305,8 +306,8 @@ namespace SCMS.Services.Api.Migrations
                         .IsRequired();
 
                     b.HasOne("SCMS.Services.Api.Models.Foundations.Students.Student", "Student")
-                        .WithMany("AdditionalDetails")
-                        .HasForeignKey("StudentId")
+                        .WithOne("AdditionalDetail")
+                        .HasForeignKey("SCMS.Services.Api.Models.Foundations.AdditionalDetails.AdditionalDetail", "StudentId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -491,7 +492,7 @@ namespace SCMS.Services.Api.Migrations
 
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Students.Student", b =>
                 {
-                    b.Navigation("AdditionalDetails");
+                    b.Navigation("AdditionalDetail");
 
                     b.Navigation("EnrolledSchool");
 
