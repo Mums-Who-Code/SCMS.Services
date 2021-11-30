@@ -61,42 +61,6 @@ namespace SCMS.Services.Api.Migrations
                     b.ToTable("AddtionalDetails");
                 });
 
-            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Emails.Email", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<Guid>("GuardianId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UpdatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset>("UpdatedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedBy");
-
-                    b.HasIndex("GuardianId")
-                        .IsUnique();
-
-                    b.HasIndex("UpdatedBy");
-
-                    b.ToTable("Emails");
-                });
-
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Guardians.Guardian", b =>
                 {
                     b.Property<Guid>("Id")
@@ -360,33 +324,6 @@ namespace SCMS.Services.Api.Migrations
                     b.Navigation("UpdatedByUser");
                 });
 
-            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Emails.Email", b =>
-                {
-                    b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "CreatedByUser")
-                        .WithMany("CreatedEmails")
-                        .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("SCMS.Services.Api.Models.Foundations.Guardians.Guardian", "Guardian")
-                        .WithOne("RegisteredEmail")
-                        .HasForeignKey("SCMS.Services.Api.Models.Foundations.Emails.Email", "GuardianId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "UpdatedByUser")
-                        .WithMany("UpdatedEmails")
-                        .HasForeignKey("UpdatedBy")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("CreatedByUser");
-
-                    b.Navigation("Guardian");
-
-                    b.Navigation("UpdatedByUser");
-                });
-
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Guardians.Guardian", b =>
                 {
                     b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "CreatedByUser")
@@ -543,8 +480,6 @@ namespace SCMS.Services.Api.Migrations
 
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Guardians.Guardian", b =>
                 {
-                    b.Navigation("RegisteredEmail");
-
                     b.Navigation("RegisteredPhone");
 
                     b.Navigation("RegisteredStudents");
@@ -568,8 +503,6 @@ namespace SCMS.Services.Api.Migrations
                 {
                     b.Navigation("CreatedAdditionalDetails");
 
-                    b.Navigation("CreatedEmails");
-
                     b.Navigation("CreatedGuardians");
 
                     b.Navigation("CreatedPhones");
@@ -583,8 +516,6 @@ namespace SCMS.Services.Api.Migrations
                     b.Navigation("CreatedStudents");
 
                     b.Navigation("UpdatedAdditionalDetails");
-
-                    b.Navigation("UpdatedEmails");
 
                     b.Navigation("UpdatedGuardians");
 
