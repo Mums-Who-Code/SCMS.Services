@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿// -----------------------------------------------------------------------
+// Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
+// -----------------------------------------------------------------------
+
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
