@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SCMS.Services.Api.Brokers.Storages;
 
@@ -11,9 +12,10 @@ using SCMS.Services.Api.Brokers.Storages;
 namespace SCMS.Services.Api.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    partial class StorageBrokerModelSnapshot : ModelSnapshot
+    [Migration("20211128180821_AddAdditionalDetailModel")]
+    partial class AddAdditionalDetailModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +36,7 @@ namespace SCMS.Services.Api.Migrations
                     b.Property<DateTimeOffset>("CreatedDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("FideId")
+                    b.Property<int>("Fide")
                         .HasColumnType("int");
 
                     b.Property<string>("Notes")
@@ -51,12 +53,7 @@ namespace SCMS.Services.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedBy");
-
-                    b.HasIndex("StudentId")
-                        .IsUnique();
-
-                    b.HasIndex("UpdatedBy");
+                    b.HasIndex("StudentId");
 
                     b.ToTable("AddtionalDetails");
                 });
@@ -299,29 +296,13 @@ namespace SCMS.Services.Api.Migrations
 
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.AdditionalDetails.AdditionalDetail", b =>
                 {
-                    b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "CreatedByUser")
-                        .WithMany("CreatedAdditionalDetails")
-                        .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("SCMS.Services.Api.Models.Foundations.Students.Student", "Student")
-                        .WithOne("AdditionalDetail")
-                        .HasForeignKey("SCMS.Services.Api.Models.Foundations.AdditionalDetails.AdditionalDetail", "StudentId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "UpdatedByUser")
-                        .WithMany("UpdatedAdditionalDetails")
-                        .HasForeignKey("UpdatedBy")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("CreatedByUser");
 
                     b.Navigation("Student");
-
-                    b.Navigation("UpdatedByUser");
                 });
 
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Guardians.Guardian", b =>
@@ -492,8 +473,6 @@ namespace SCMS.Services.Api.Migrations
 
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Students.Student", b =>
                 {
-                    b.Navigation("AdditionalDetail");
-
                     b.Navigation("EnrolledSchool");
 
                     b.Navigation("RegisteredGuardians");
@@ -501,8 +480,6 @@ namespace SCMS.Services.Api.Migrations
 
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Users.User", b =>
                 {
-                    b.Navigation("CreatedAdditionalDetails");
-
                     b.Navigation("CreatedGuardians");
 
                     b.Navigation("CreatedPhones");
@@ -514,8 +491,6 @@ namespace SCMS.Services.Api.Migrations
                     b.Navigation("CreatedStudentSchools");
 
                     b.Navigation("CreatedStudents");
-
-                    b.Navigation("UpdatedAdditionalDetails");
 
                     b.Navigation("UpdatedGuardians");
 

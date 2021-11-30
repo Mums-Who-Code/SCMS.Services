@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using SCMS.Services.Api.Models.Foundations.AdditionalDetails;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 using SCMS.Services.Api.Models.Foundations.StudentSchools;
 using SCMS.Services.Api.Models.Foundations.Users;
@@ -32,5 +33,8 @@ namespace SCMS.Services.Api.Models.Foundations.Students
 
         [JsonIgnore]
         public IEnumerable<StudentGuardian> RegisteredGuardians { get; set; }
+
+        [JsonIgnore]
+        public AdditionalDetail AdditionalDetail { get; set; }
     }
 }
