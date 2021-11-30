@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SCMS.Services.Api.Models.Foundations.AdditionalDetails;
+using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 
 namespace SCMS.Services.Api.Brokers.Storages
 {
