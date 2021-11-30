@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using SCMS.Services.Api.Models.Foundations.AdditionalDetails;
 using SCMS.Services.Api.Models.Foundations.Guardians;
 using SCMS.Services.Api.Models.Foundations.Phones;
 using SCMS.Services.Api.Models.Foundations.Schools;
@@ -54,5 +55,11 @@ namespace SCMS.Services.Api.Models.Foundations.Users
 
         [JsonIgnore]
         public IEnumerable<Phone> UpdatedPhones { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<AdditionalDetail> CreatedAdditionalDetails { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<AdditionalDetail> UpdatedAdditionalDetails { get; set; }
     }
 }

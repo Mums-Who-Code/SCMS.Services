@@ -4,6 +4,7 @@
 
 using System;
 using SCMS.Services.Api.Models.Foundations.Students;
+using SCMS.Services.Api.Models.Foundations.Users;
 
 namespace SCMS.Services.Api.Models.Foundations.AdditionalDetails
 {
@@ -13,19 +14,20 @@ namespace SCMS.Services.Api.Models.Foundations.AdditionalDetails
 
         public string Notes { get; set; }
 
-        public int Fide { get; set; }
+        public int FideId { get; set; }
 
         public Guid StudentId { get; set; }
 
         public Student Student { get; set; }
 
         public Guid CreatedBy { get; set; }
+        public User CreatedByUser { get; set; }
 
-        public DateTimeOffset UpdatedDate { get; set; }
+        public Guid UpdatedBy { get; set; }
+        public User UpdatedByUser { get; set; }
 
         public DateTimeOffset CreatedDate { get; set; }
 
-        public Guid UpdatedBy { get; set; }
-
+        public DateTimeOffset UpdatedDate { get; set; }
     }
 }
