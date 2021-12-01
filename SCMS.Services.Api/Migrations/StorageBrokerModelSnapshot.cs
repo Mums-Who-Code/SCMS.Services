@@ -58,7 +58,7 @@ namespace SCMS.Services.Api.Migrations
 
                     b.HasIndex("UpdatedBy");
 
-                    b.ToTable("AddtionalDetails");
+                    b.ToTable("AdditionalDetails");
                 });
 
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Emails.Email", b =>

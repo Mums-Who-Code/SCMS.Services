@@ -12,7 +12,7 @@ using SCMS.Services.Api.Brokers.Storages;
 namespace SCMS.Services.Api.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    [Migration("20211130180428_AddEmailModelRelations")]
+    [Migration("20211130193013_AddEmailModelRelations")]
     partial class AddEmailModelRelations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,7 +60,7 @@ namespace SCMS.Services.Api.Migrations
 
                     b.HasIndex("UpdatedBy");
 
-                    b.ToTable("AddtionalDetails");
+                    b.ToTable("AdditionalDetails");
                 });
 
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Emails.Email", b =>
