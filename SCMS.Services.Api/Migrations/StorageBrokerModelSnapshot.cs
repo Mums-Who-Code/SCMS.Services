@@ -452,7 +452,7 @@ namespace SCMS.Services.Api.Migrations
                     b.HasOne("SCMS.Services.Api.Models.Foundations.Guardians.Guardian", "Guardian")
                         .WithMany("RegisteredOccupations")
                         .HasForeignKey("GuardianId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "UpdatedByUser")

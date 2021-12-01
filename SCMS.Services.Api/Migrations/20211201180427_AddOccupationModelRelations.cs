@@ -28,8 +28,7 @@ namespace SCMS.Services.Api.Migrations
                         name: "FK_Occupations_Guardians_GuardianId",
                         column: x => x.GuardianId,
                         principalTable: "Guardians",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Occupations_Users_CreatedBy",
                         column: x => x.CreatedBy,

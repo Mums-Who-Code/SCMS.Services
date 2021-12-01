@@ -12,6 +12,12 @@ namespace SCMS.Services.Api.Brokers.Storages
         public void SetOccupationReferences(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Occupation>()
+                .HasOne(occupation => occupation.Guardian)
+                .WithMany(guardian => guardian.RegisteredOccupations)
+                .HasForeignKey(occupation => occupation.GuardianId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Occupation>()
                 .HasOne(occupation => occupation.CreatedByUser)
                 .WithMany(users => users.CreatedOccupations)
                 .HasForeignKey(occupation => occupation.CreatedBy)

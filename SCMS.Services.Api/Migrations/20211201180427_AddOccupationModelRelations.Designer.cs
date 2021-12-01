@@ -12,7 +12,7 @@ using SCMS.Services.Api.Brokers.Storages;
 namespace SCMS.Services.Api.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    [Migration("20211201173557_AddOccupationModelRelations")]
+    [Migration("20211201180427_AddOccupationModelRelations")]
     partial class AddOccupationModelRelations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -454,7 +454,7 @@ namespace SCMS.Services.Api.Migrations
                     b.HasOne("SCMS.Services.Api.Models.Foundations.Guardians.Guardian", "Guardian")
                         .WithMany("RegisteredOccupations")
                         .HasForeignKey("GuardianId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "UpdatedByUser")
