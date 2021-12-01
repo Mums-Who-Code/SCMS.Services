@@ -1,8 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
-// -----------------------------------------------------------------------
-
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -32,7 +28,8 @@ namespace SCMS.Services.Api.Migrations
                         name: "FK_Occupations_Guardians_GuardianId",
                         column: x => x.GuardianId,
                         principalTable: "Guardians",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Occupations_Users_CreatedBy",
                         column: x => x.CreatedBy,
@@ -53,8 +50,7 @@ namespace SCMS.Services.Api.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Occupations_GuardianId",
                 table: "Occupations",
-                column: "GuardianId",
-                unique: true);
+                column: "GuardianId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Occupations_UpdatedBy",

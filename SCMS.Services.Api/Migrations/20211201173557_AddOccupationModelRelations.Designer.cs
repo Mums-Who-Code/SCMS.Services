@@ -12,7 +12,7 @@ using SCMS.Services.Api.Brokers.Storages;
 namespace SCMS.Services.Api.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    [Migration("20211201072115_AddOccupationModelRelations")]
+    [Migration("20211201173557_AddOccupationModelRelations")]
     partial class AddOccupationModelRelations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -163,8 +163,7 @@ namespace SCMS.Services.Api.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.HasIndex("GuardianId")
-                        .IsUnique();
+                    b.HasIndex("GuardianId");
 
                     b.HasIndex("UpdatedBy");
 
@@ -453,9 +452,9 @@ namespace SCMS.Services.Api.Migrations
                         .IsRequired();
 
                     b.HasOne("SCMS.Services.Api.Models.Foundations.Guardians.Guardian", "Guardian")
-                        .WithOne("RegisteredOccupation")
-                        .HasForeignKey("SCMS.Services.Api.Models.Foundations.Occupations.Occupation", "GuardianId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .WithMany("RegisteredOccupations")
+                        .HasForeignKey("GuardianId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "UpdatedByUser")
@@ -610,7 +609,7 @@ namespace SCMS.Services.Api.Migrations
                 {
                     b.Navigation("RegisteredEmail");
 
-                    b.Navigation("RegisteredOccupation");
+                    b.Navigation("RegisteredOccupations");
 
                     b.Navigation("RegisteredPhone");
 
