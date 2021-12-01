@@ -37,5 +37,14 @@ namespace SCMS.Services.Api.Brokers.Storages
 
             return await broker.Phones.FindAsync(phoneId);
         }
+
+        public async ValueTask<Phone> UpdatePhoneAsync(Phone phone)
+        {
+            using var broker = new StorageBroker(this.configuration);
+            EntityEntry<Phone> entityEntry = broker.Phones.Update(entity: phone);
+            await broker.SaveChangesAsync();
+
+            return entityEntry.Entity;
+        }
     }
 }

@@ -31,8 +31,10 @@ namespace SCMS.Services.Api.Models.Foundations.Guardians
         [JsonIgnore]
         public IEnumerable<StudentGuardian> RegisteredStudents { get; set; }
 
+        [JsonIgnore]
+        public IEnumerable<Occupation> RegisteredOccupations { get; set; }
+
         public Phone RegisteredPhone { get; set; }
         public Email RegisteredEmail { get; set; }
-        public Occupation RegisteredOccupation { get; set; }
     }
 }
