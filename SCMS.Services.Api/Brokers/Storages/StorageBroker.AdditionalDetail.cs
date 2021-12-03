@@ -2,6 +2,8 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -23,6 +25,17 @@ namespace SCMS.Services.Api.Brokers.Storages
             await broker.SaveChangesAsync();
 
             return entityEntry.Entity;
+        }
+
+        public IQueryable<AdditionalDetail> SelectAllAdditionalDetails() => 
+            this.AdditionalDetails;
+
+        public async ValueTask<AdditionalDetail> SelectAdditionalDetailByIdAsync(Guid additionalDetailId)
+        {
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
+            return await broker.AdditionalDetails.FindAsync(additionalDetailId);
         }
     }
 }
