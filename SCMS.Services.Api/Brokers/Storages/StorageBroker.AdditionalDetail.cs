@@ -26,6 +26,18 @@ namespace SCMS.Services.Api.Brokers.Storages
             return entityEntry.Entity;
         }
 
+        public async ValueTask<AdditionalDetail> DeleteAdditionalDetailAsync(AdditionalDetail additionalDetail)
+        {
+            using var broker = new StorageBroker(this.configuration);
+
+            EntityEntry<AdditionalDetail> additionalDetailEntityEntry =
+                broker.AdditionalDetails.Remove(additionalDetail);
+
+            await broker.SaveChangesAsync();
+
+            return additionalDetailEntityEntry.Entity;
+        }
+
         public IQueryable<AdditionalDetail> SelectAllAdditionalDetails() => this.AdditionalDetails;
     }
 }
