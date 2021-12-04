@@ -15,5 +15,6 @@ namespace SCMS.Services.Api.Brokers.Storages
         IQueryable<Phone> SelectAllPhones();
         ValueTask<Phone> SelectPhoneByIdAsync(Guid phoneId);
         ValueTask<Phone> UpdatePhoneAsync(Phone phone);
+        ValueTask<Phone> DeletePhoneAsync(Phone phone);
     }
 }
