@@ -27,6 +27,17 @@ namespace SCMS.Services.Api.Brokers.Storages
             return entityEntry.Entity;
         }
 
+        public IQueryable<AdditionalDetail> SelectAllAdditionalDetails() => 
+            this.AdditionalDetails;
+
+        public async ValueTask<AdditionalDetail> SelectAdditionalDetailByIdAsync(Guid additionalDetailId)
+        {
+            using var broker = new StorageBroker(this.configuration);
+            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
+            return await broker.AdditionalDetails.FindAsync(additionalDetailId);
+        }
+        
         public async ValueTask<AdditionalDetail> UpdateAdditionalDetailAsync(AdditionalDetail additionalDetail)
         {
             using var broker = new StorageBroker(this.configuration);
@@ -37,17 +48,6 @@ namespace SCMS.Services.Api.Brokers.Storages
             await broker.SaveChangesAsync();
 
             return entityEntry.Entity;
-        }
-
-        public IQueryable<AdditionalDetail> SelectAllAdditionalDetails() => 
-            this.AdditionalDetails;
-
-        public async ValueTask<AdditionalDetail> SelectAdditionalDetailByIdAsync(Guid additionalDetailId)
-        {
-            using var broker = new StorageBroker(this.configuration);
-            broker.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-
-            return await broker.AdditionalDetails.FindAsync(additionalDetailId);
         }
     }
 }
