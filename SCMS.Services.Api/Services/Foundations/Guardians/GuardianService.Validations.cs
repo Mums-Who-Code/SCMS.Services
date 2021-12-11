@@ -120,7 +120,7 @@ namespace SCMS.Services.Api.Services.Foundations.Guardians
         {
             bool isInvalid = HasNoValue(number);
 
-            if(isInvalid is not true)
+            if (isInvalid is not true)
             {
                 return !IsValidContactNumberFormat(number);
             }
