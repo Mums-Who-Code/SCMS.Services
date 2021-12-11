@@ -2,13 +2,12 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
+using System.Collections.Generic;
 
-namespace SCMS.Services.Infrastructure.Provision.Brokers.Loggings
+namespace SCMS.Services.Infrastructure.Provision.Models.Configurations
 {
-    internal class LoggingBroker : ILoggingBroker
+    internal class CloudAction
     {
-        public void LogActivity(string message) =>
-            Console.WriteLine(message);
+        public List<string> Environments { get; set; }
     }
 }
