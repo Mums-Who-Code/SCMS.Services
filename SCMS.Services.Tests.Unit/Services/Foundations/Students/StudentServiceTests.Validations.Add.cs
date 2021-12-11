@@ -79,6 +79,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
                 values: "Value is invalid.");
 
             invalidStudentException.AddData(
+                key: nameof(Student.SchoolId),
+                values: "Id is required.");
+
+            invalidStudentException.AddData(
                 key: nameof(Student.CreatedDate),
                 values: "Date is required.");
 
