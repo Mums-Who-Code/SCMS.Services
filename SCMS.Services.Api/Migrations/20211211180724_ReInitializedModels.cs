@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SCMS.Services.Api.Migrations
 {
-    public partial class UpdatedGuardianModel : Migration
+    public partial class ReInitializedModels : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -78,106 +78,6 @@ namespace SCMS.Services.Api.Migrations
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Schools_Users_UpdatedBy",
-                        column: x => x.UpdatedBy,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Emails",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    GuardianId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Emails", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Emails_Guardians_GuardianId",
-                        column: x => x.GuardianId,
-                        principalTable: "Guardians",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Emails_Users_CreatedBy",
-                        column: x => x.CreatedBy,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Emails_Users_UpdatedBy",
-                        column: x => x.UpdatedBy,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Occupations",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    GuardianId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Occupations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Occupations_Guardians_GuardianId",
-                        column: x => x.GuardianId,
-                        principalTable: "Guardians",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Occupations_Users_CreatedBy",
-                        column: x => x.CreatedBy,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Occupations_Users_UpdatedBy",
-                        column: x => x.UpdatedBy,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Phones",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CountryCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Number = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    GuardianId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Phones", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Phones_Guardians_GuardianId",
-                        column: x => x.GuardianId,
-                        principalTable: "Guardians",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Phones_Users_CreatedBy",
-                        column: x => x.CreatedBy,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Phones_Users_UpdatedBy",
                         column: x => x.UpdatedBy,
                         principalTable: "Users",
                         principalColumn: "Id");
@@ -265,21 +165,6 @@ namespace SCMS.Services.Api.Migrations
                 values: new object[] { new Guid("ddbda33e-4df4-44ca-945d-62fec7f73973"), "Admin" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Emails_CreatedBy",
-                table: "Emails",
-                column: "CreatedBy");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Emails_GuardianId",
-                table: "Emails",
-                column: "GuardianId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Emails_UpdatedBy",
-                table: "Emails",
-                column: "UpdatedBy");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Guardians_CreatedBy",
                 table: "Guardians",
                 column: "CreatedBy");
@@ -287,36 +172,6 @@ namespace SCMS.Services.Api.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Guardians_UpdatedBy",
                 table: "Guardians",
-                column: "UpdatedBy");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Occupations_CreatedBy",
-                table: "Occupations",
-                column: "CreatedBy");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Occupations_GuardianId",
-                table: "Occupations",
-                column: "GuardianId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Occupations_UpdatedBy",
-                table: "Occupations",
-                column: "UpdatedBy");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Phones_CreatedBy",
-                table: "Phones",
-                column: "CreatedBy");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Phones_GuardianId",
-                table: "Phones",
-                column: "GuardianId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Phones_UpdatedBy",
-                table: "Phones",
                 column: "UpdatedBy");
 
             migrationBuilder.CreateIndex(
@@ -362,15 +217,6 @@ namespace SCMS.Services.Api.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Emails");
-
-            migrationBuilder.DropTable(
-                name: "Occupations");
-
-            migrationBuilder.DropTable(
-                name: "Phones");
-
             migrationBuilder.DropTable(
                 name: "StudentGuardians");
 

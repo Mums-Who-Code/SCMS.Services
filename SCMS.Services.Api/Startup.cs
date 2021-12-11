@@ -12,7 +12,6 @@ using SCMS.Services.Api.Brokers.DateTimes;
 using SCMS.Services.Api.Brokers.Loggings;
 using SCMS.Services.Api.Brokers.Storages;
 using SCMS.Services.Api.Services.Foundations.Guardians;
-using SCMS.Services.Api.Services.Foundations.Phones;
 using SCMS.Services.Api.Services.Foundations.Schools;
 using SCMS.Services.Api.Services.Foundations.StudentGuardians;
 using SCMS.Services.Api.Services.Foundations.Students;
@@ -87,7 +86,6 @@ namespace SCMS.Services.Api
             services.AddTransient<ISchoolService, SchoolService>();
             services.AddTransient<IGuardianService, GuardianService>();
             services.AddTransient<IStudentGuardianService, StudentGuardianService>();
-            services.AddTransient<IPhoneService, PhoneService>();
         }
 
         private static void AddProcessingServices(IServiceCollection services) =>
