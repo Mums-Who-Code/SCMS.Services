@@ -12,6 +12,12 @@ namespace SCMS.Services.Api.Brokers.Storages
         public void SetStudentReferences(ModelBuilder modelbuilder)
         {
             modelbuilder.Entity<Student>()
+                .HasOne(student => student.EnrolledSchool)
+                .WithMany(school => school.EnrolledStudents)
+                .HasForeignKey(student => student.SchoolId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelbuilder.Entity<Student>()
                 .HasOne(student => student.CreatedByUser)
                 .WithMany(user => user.CreatedStudents)
                 .HasForeignKey(student => student.CreatedBy)
