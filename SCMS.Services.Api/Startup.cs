@@ -16,7 +16,6 @@ using SCMS.Services.Api.Services.Foundations.Phones;
 using SCMS.Services.Api.Services.Foundations.Schools;
 using SCMS.Services.Api.Services.Foundations.StudentGuardians;
 using SCMS.Services.Api.Services.Foundations.Students;
-using SCMS.Services.Api.Services.Foundations.StudentSchools;
 using SCMS.Services.Api.Services.Processings.StudentGuardians;
 
 namespace SCMS.Services.Api
@@ -86,7 +85,6 @@ namespace SCMS.Services.Api
         {
             services.AddTransient<IStudentService, StudentService>();
             services.AddTransient<ISchoolService, SchoolService>();
-            services.AddTransient<IStudentSchoolService, StudentSchoolService>();
             services.AddTransient<IGuardianService, GuardianService>();
             services.AddTransient<IStudentGuardianService, StudentGuardianService>();
             services.AddTransient<IPhoneService, PhoneService>();

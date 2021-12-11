@@ -159,7 +159,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
         }
 
         [Fact]
-        public async void ShouldThrowDependencyExceptionOnAddIfDbExceptionOccursAndLogItAsync()
+        public async void ShouldThrowDependencyExceptionOnAddIfDatabaseErrorOccursAndLogItAsync()
         {
             // given
             DateTimeOffset dateTime = GetRandomDateTime();

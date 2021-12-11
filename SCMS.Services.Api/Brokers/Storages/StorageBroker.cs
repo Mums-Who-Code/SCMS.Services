@@ -23,11 +23,9 @@ namespace SCMS.Services.Api.Brokers.Storages
             SeedUsers(modelBuilder);
             SetStudentReferences(modelBuilder);
             SetSchoolReferences(modelBuilder);
-            SetStudentSchoolReferences(modelBuilder);
             SetGuardianReferences(modelBuilder);
             SetStudentGuardianReferences(modelBuilder);
             SetPhoneReferences(modelBuilder);
-            SetAdditionalDetailReferences(modelBuilder);
             SetEmailReferences(modelBuilder);
             SetOccupationReferences(modelBuilder);
         }
