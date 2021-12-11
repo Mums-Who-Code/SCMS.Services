@@ -118,9 +118,14 @@ namespace SCMS.Services.Api.Services.Foundations.Guardians
 
         private static bool IsInvalidContactNumber(string number)
         {
-            bool isInvalid = HasValue(number);
+            bool isInvalid = HasNoValue(number);
 
-            return !isInvalid && !IsValidContactNumberFormat(number);
+            if(isInvalid is not true)
+            {
+                return !IsValidContactNumberFormat(number);
+            }
+
+            return isInvalid;
         }
 
         private static bool IsValidContactNumberFormat(string number)
@@ -130,7 +135,7 @@ namespace SCMS.Services.Api.Services.Foundations.Guardians
                 pattern: @"^[0-9]{10}$");
         }
 
-        private static bool HasValue(string number) =>
+        private static bool HasNoValue(string number) =>
             String.IsNullOrWhiteSpace(number);
 
         private static dynamic IsInvalidEmail(string emailAddress) => new
@@ -141,9 +146,14 @@ namespace SCMS.Services.Api.Services.Foundations.Guardians
 
         private static bool IsInvalidEmailFormat(string emailAddress)
         {
-            bool isInvalid = HasValue(emailAddress);
+            bool isInvalid = HasNoValue(emailAddress);
 
-            return !isInvalid && !IsValidEmailFormat(emailAddress);
+            if (isInvalid is not true)
+            {
+                return !IsValidEmailFormat(emailAddress);
+            }
+
+            return isInvalid;
         }
 
         private static bool IsValidEmailFormat(string emailAddress)
