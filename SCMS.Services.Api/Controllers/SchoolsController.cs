@@ -2,8 +2,10 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 using RESTFulSense.Controllers;
 using SCMS.Services.Api.Models.Foundations.Schools;
 using SCMS.Services.Api.Models.Foundations.Schools.Exceptions;
@@ -47,6 +49,27 @@ namespace SCMS.Services.Api.Controllers
                 when (schoolDependencyValidationException.InnerException is InvalidSchoolReferenceException)
             {
                 return FailedDependency(schoolDependencyValidationException.InnerException);
+            }
+            catch (SchoolServiceException schoolServiceException)
+            {
+                return InternalServerError(schoolServiceException);
+            }
+        }
+
+        [HttpGet]
+        [EnableQuery]
+        public ActionResult<IQueryable<School>> GetAllSchools()
+        {
+            try
+            {
+                IQueryable<School> schools =
+                    this.schoolService.RetrieveAllSchools();
+
+                return Ok(schools);
+            }
+            catch (SchoolDependencyException schoolDependencyException)
+            {
+                return InternalServerError(schoolDependencyException);
             }
             catch (SchoolServiceException schoolServiceException)
             {
