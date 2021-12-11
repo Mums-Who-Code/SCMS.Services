@@ -179,6 +179,57 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Theory]
+        [MemberData(nameof(InvalidContactNumbers))]
+        public async Task ShouldThrowValidationExceptionOnAddIfContactNumberIsInvalidAndLogItAsync(
+            string invalidContactNumber)
+        {
+            // given
+            DateTimeOffset randomDate = GetRandomDateTime();
+            Guardian randomGuardian = CreateRandomGuardian(randomDate);
+            Guardian invalidGuardian = randomGuardian;
+            invalidGuardian.ContactNumber = invalidContactNumber;
+
+            var invalidGuardianException = new InvalidGuardianException();
+
+            invalidGuardianException.AddData(
+                key: nameof(Guardian.ContactNumber),
+                values: "Text is invalid.");
+
+            var expectedGuardianValidationException =
+                new GuardianValidationException(invalidGuardianException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDate);
+
+            // when
+            ValueTask<Guardian> addGuardianTask =
+                this.guardianService.AddGuardianAsync(invalidGuardian);
+
+            // then
+            await Assert.ThrowsAsync<GuardianValidationException>(() =>
+                addGuardianTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertGuardianAsync(It.IsAny<Guardian>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+
         [Fact]
         public async Task ShouldThrowValidationExceptionOnAddIfCreatedDateIsNotSameAsUpdatedDateAndLogItAsync()
         {

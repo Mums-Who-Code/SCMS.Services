@@ -48,10 +48,26 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
 
             return new TheoryData<string>
             {
+                null,
+                "",
+                "  ",
                 letterString,
                 characterString,
                 domainString,
                 incompleteEmailString
+            };
+        }
+
+        public static TheoryData InvalidContactNumbers()
+        {
+            string randomString = GetRandomString();
+
+            return new TheoryData<string>
+            {
+                null,
+                "",
+                "  ",
+                randomString
             };
         }
 
