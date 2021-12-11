@@ -10,7 +10,6 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SCMS.Services.Api.Models.Foundations.Schools;
 using SCMS.Services.Api.Models.Foundations.Schools.Exceptions;
-using SCMS.Services.Api.Models.Foundations.Students.Exceptions;
 using Xeptions;
 
 namespace SCMS.Services.Api.Services.Foundations.Schools
@@ -84,7 +83,7 @@ namespace SCMS.Services.Api.Services.Foundations.Schools
 
                 throw CreateAndLogCriticalDependencyException(failedSchoolStorageException);
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 var failedSchoolServiceException =
                     new FailedSchoolServiceException(exception);
