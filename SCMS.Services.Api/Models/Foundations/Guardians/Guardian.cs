@@ -19,6 +19,10 @@ namespace SCMS.Services.Api.Models.Foundations.Guardians
         public Title Title { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string EmailId { get; set; }
+        public string CountryCode { get; set; }
+        public string ContactNumber { get; set; }
+        public string Occupation { get; set; }
         public DateTimeOffset CreatedDate { get; set; }
         public DateTimeOffset UpdatedDate { get; set; }
 
@@ -30,11 +34,5 @@ namespace SCMS.Services.Api.Models.Foundations.Guardians
 
         [JsonIgnore]
         public IEnumerable<StudentGuardian> RegisteredStudents { get; set; }
-
-        [JsonIgnore]
-        public IEnumerable<Occupation> RegisteredOccupations { get; set; }
-
-        public Phone RegisteredPhone { get; set; }
-        public Email RegisteredEmail { get; set; }
     }
 }
