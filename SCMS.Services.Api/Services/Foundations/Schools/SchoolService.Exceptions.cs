@@ -3,12 +3,14 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SCMS.Services.Api.Models.Foundations.Schools;
 using SCMS.Services.Api.Models.Foundations.Schools.Exceptions;
+using SCMS.Services.Api.Models.Foundations.Students.Exceptions;
 using Xeptions;
 
 namespace SCMS.Services.Api.Services.Foundations.Schools
@@ -16,6 +18,7 @@ namespace SCMS.Services.Api.Services.Foundations.Schools
     public partial class SchoolService
     {
         private delegate ValueTask<School> ReturningSchoolFunction();
+        private delegate IQueryable<School> ReturningSchoolsFunction();
 
         private async ValueTask<School> TryCatch(ReturningSchoolFunction returningSchoolFunction)
         {
@@ -60,6 +63,28 @@ namespace SCMS.Services.Api.Services.Foundations.Schools
                 throw CreateAndLogDependencyException(failedSchoolStorageException);
             }
             catch (Exception exception)
+            {
+                var failedSchoolServiceException =
+                    new FailedSchoolServiceException(exception);
+
+                throw CreateAndLogServiceException(failedSchoolServiceException);
+            }
+        }
+
+        private IQueryable<School> TryCatch(ReturningSchoolsFunction returningSchoolsFunction)
+        {
+            try
+            {
+                return returningSchoolsFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                var failedSchoolStorageException =
+                    new FailedSchoolStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedSchoolStorageException);
+            }
+            catch(Exception exception)
             {
                 var failedSchoolServiceException =
                     new FailedSchoolServiceException(exception);
