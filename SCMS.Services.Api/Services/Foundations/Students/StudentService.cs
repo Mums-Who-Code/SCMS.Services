@@ -35,7 +35,12 @@ namespace SCMS.Services.Api.Services.Foundations.Students
             return await this.storageBroker.InsertStudentAsync(student);
         });
 
-        public async ValueTask<Student> RetrieveStudentByIdAsync(Guid studentId) =>
-            await this.storageBroker.SelectStudentByIdAsync(studentId);
+        public ValueTask<Student> RetrieveStudentByIdAsync(Guid studentId) =>
+        TryCatch(async () =>
+        {
+            ValidateStudentId(studentId);
+
+            return await this.storageBroker.SelectStudentByIdAsync(studentId);
+        });
     }
 }

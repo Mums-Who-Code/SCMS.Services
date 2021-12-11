@@ -10,7 +10,6 @@ namespace SCMS.Services.Api.Services.Foundations.Students
 {
     public partial class StudentService
     {
-
         private void ValidateStudentOnAdd(Student student)
         {
             ValidateInput(student);
@@ -40,6 +39,9 @@ namespace SCMS.Services.Api.Services.Foundations.Students
                 (Rule: IsNotRecent(student.CreatedDate), Parameter: nameof(Student.CreatedDate))
             );
         }
+
+        private void ValidateStudentId(Guid studentId) =>
+            Validate((Rule: IsInvalid(studentId), Parameter: nameof(Student.Id)));
 
         private void ValidateInput(Student student)
         {
