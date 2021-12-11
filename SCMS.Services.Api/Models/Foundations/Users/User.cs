@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using SCMS.Services.Api.Models.Foundations.AdditionalDetails;
 using SCMS.Services.Api.Models.Foundations.Emails;
 using SCMS.Services.Api.Models.Foundations.Guardians;
 using SCMS.Services.Api.Models.Foundations.Occupations;
@@ -13,7 +12,6 @@ using SCMS.Services.Api.Models.Foundations.Phones;
 using SCMS.Services.Api.Models.Foundations.Schools;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 using SCMS.Services.Api.Models.Foundations.Students;
-using SCMS.Services.Api.Models.Foundations.StudentSchools;
 
 namespace SCMS.Services.Api.Models.Foundations.Users
 {
@@ -35,12 +33,6 @@ namespace SCMS.Services.Api.Models.Foundations.Users
         public IEnumerable<School> UpdatedSchools { get; set; }
 
         [JsonIgnore]
-        public IEnumerable<StudentSchool> CreatedStudentSchools { get; set; }
-
-        [JsonIgnore]
-        public IEnumerable<StudentSchool> UpdatedStudentSchools { get; set; }
-
-        [JsonIgnore]
         public IEnumerable<Guardian> CreatedGuardians { get; set; }
 
         [JsonIgnore]
@@ -57,12 +49,6 @@ namespace SCMS.Services.Api.Models.Foundations.Users
 
         [JsonIgnore]
         public IEnumerable<Phone> UpdatedPhones { get; set; }
-
-        [JsonIgnore]
-        public IEnumerable<AdditionalDetail> CreatedAdditionalDetails { get; set; }
-
-        [JsonIgnore]
-        public IEnumerable<AdditionalDetail> UpdatedAdditionalDetails { get; set; }
 
         [JsonIgnore]
         public IEnumerable<Email> CreatedEmails { get; set; }
