@@ -73,6 +73,9 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
                     .GetValue();
         }
 
+        private static string GetInvalidContactNumber() =>
+            new LongRange(min: 1000000000, max: 9999999999).GetValue().ToString();
+
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 

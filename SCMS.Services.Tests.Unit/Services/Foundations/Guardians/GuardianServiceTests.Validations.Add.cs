@@ -50,15 +50,19 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
         [InlineData("")]
         [InlineData("  ")]
         public async Task ShouldThrowValidationExceptionOnAddIfGuardianIsInvalidAndLogItAsync(
-            string invalidName)
+            string invalidText)
         {
             // given
             var invalidTitle = GetInvalidEnum<Title>();
 
             var invalidGuardian = new Guardian
             {
-                FirstName = invalidName,
-                Title = invalidTitle
+                Title = invalidTitle,
+                FirstName = invalidText,
+                LastName = invalidText,
+                CountryCode = invalidText,
+                ContactNumber = GetInvalidContactNumber(),
+                Occupation = invalidText
             };
 
             var invalidGuardianException = new InvalidGuardianException();
@@ -77,6 +81,18 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
 
             invalidGuardianException.AddData(
                 key: nameof(Guardian.LastName),
+                values: "Text is required.");
+
+            invalidGuardianException.AddData(
+                key: nameof(Guardian.CountryCode),
+                values: "Text is required.");
+
+            invalidGuardianException.AddData(
+                key: nameof(Guardian.ContactNumber),
+                values: "Text is required.");
+
+            invalidGuardianException.AddData(
+                key: nameof(Guardian.Occupation),
                 values: "Text is required.");
 
             invalidGuardianException.AddData(
