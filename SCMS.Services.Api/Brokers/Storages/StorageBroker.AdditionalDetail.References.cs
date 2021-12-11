@@ -22,12 +22,6 @@ namespace SCMS.Services.Api.Brokers.Storages
                 .WithMany(user => user.UpdatedAdditionalDetails)
                 .HasForeignKey(additionalDetailUser => additionalDetailUser.UpdatedBy)
                 .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<AdditionalDetail>()
-                .HasOne(additionalDetailStudent => additionalDetailStudent.Student)
-                .WithOne(student => student.AdditionalDetail)
-                .HasForeignKey<AdditionalDetail>(additionalDetailStudent => additionalDetailStudent.StudentId)
-                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

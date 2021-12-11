@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using SCMS.Services.Api.Models.Foundations.Students;
 using SCMS.Services.Api.Models.Foundations.StudentSchools;
 using SCMS.Services.Api.Models.Foundations.Users;
 
@@ -24,6 +25,6 @@ namespace SCMS.Services.Api.Models.Foundations.Schools
         public User UpdatedByUser { get; set; }
 
         [JsonIgnore]
-        public IEnumerable<StudentSchool> EnrolledStudents { get; set; }
+        public IEnumerable<Student> EnrolledStudents { get; set; }
     }
 }
