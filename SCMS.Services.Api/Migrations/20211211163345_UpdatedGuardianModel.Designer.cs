@@ -12,8 +12,8 @@ using SCMS.Services.Api.Brokers.Storages;
 namespace SCMS.Services.Api.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    [Migration("20211211162415_RefactoredStudent")]
-    partial class RefactoredStudent
+    [Migration("20211211163345_UpdatedGuardianModel")]
+    partial class UpdatedGuardianModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,8 +52,7 @@ namespace SCMS.Services.Api.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.HasIndex("GuardianId")
-                        .IsUnique();
+                    b.HasIndex("GuardianId");
 
                     b.HasIndex("UpdatedBy");
 
@@ -66,16 +65,28 @@ namespace SCMS.Services.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ContactNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CountryCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("CreatedDate")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<string>("EmailId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Occupation")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Title")
@@ -162,8 +173,7 @@ namespace SCMS.Services.Api.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.HasIndex("GuardianId")
-                        .IsUnique();
+                    b.HasIndex("GuardianId");
 
                     b.HasIndex("UpdatedBy");
 
@@ -320,9 +330,9 @@ namespace SCMS.Services.Api.Migrations
                         .IsRequired();
 
                     b.HasOne("SCMS.Services.Api.Models.Foundations.Guardians.Guardian", "Guardian")
-                        .WithOne("RegisteredEmail")
-                        .HasForeignKey("SCMS.Services.Api.Models.Foundations.Emails.Email", "GuardianId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .WithMany()
+                        .HasForeignKey("GuardianId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "UpdatedByUser")
@@ -366,9 +376,9 @@ namespace SCMS.Services.Api.Migrations
                         .IsRequired();
 
                     b.HasOne("SCMS.Services.Api.Models.Foundations.Guardians.Guardian", "Guardian")
-                        .WithMany("RegisteredOccupations")
+                        .WithMany()
                         .HasForeignKey("GuardianId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "UpdatedByUser")
@@ -393,9 +403,9 @@ namespace SCMS.Services.Api.Migrations
                         .IsRequired();
 
                     b.HasOne("SCMS.Services.Api.Models.Foundations.Guardians.Guardian", "Guardian")
-                        .WithOne("RegisteredPhone")
-                        .HasForeignKey("SCMS.Services.Api.Models.Foundations.Phones.Phone", "GuardianId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .WithMany()
+                        .HasForeignKey("GuardianId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "UpdatedByUser")
@@ -494,12 +504,6 @@ namespace SCMS.Services.Api.Migrations
 
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Guardians.Guardian", b =>
                 {
-                    b.Navigation("RegisteredEmail");
-
-                    b.Navigation("RegisteredOccupations");
-
-                    b.Navigation("RegisteredPhone");
-
                     b.Navigation("RegisteredStudents");
                 });
 

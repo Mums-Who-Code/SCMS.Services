@@ -12,12 +12,6 @@ namespace SCMS.Services.Api.Brokers.Storages
         public void SetEmailReferences(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Email>()
-                .HasOne(email => email.Guardian)
-                .WithOne(guardian => guardian.RegisteredEmail)
-                .HasForeignKey<Email>(email => email.GuardianId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<Email>()
                 .HasOne(email => email.CreatedByUser)
                 .WithMany(users => users.CreatedEmails)
                 .HasForeignKey(email => email.CreatedBy)

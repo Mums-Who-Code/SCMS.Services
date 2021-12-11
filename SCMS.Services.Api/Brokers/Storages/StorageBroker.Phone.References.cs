@@ -12,12 +12,6 @@ namespace SCMS.Services.Api.Brokers.Storages
         public void SetPhoneReferences(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Phone>()
-                .HasOne(phone => phone.Guardian)
-                .WithOne(guardian => guardian.RegisteredPhone)
-                .HasForeignKey<Phone>(phone => phone.GuardianId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<Phone>()
                 .HasOne(phone => phone.CreatedByUser)
                 .WithMany(users => users.CreatedPhones)
                 .HasForeignKey(phone => phone.CreatedBy)
