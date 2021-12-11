@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Text.RegularExpressions;
 using SCMS.Services.Api.Models.Foundations.Guardians;
 using SCMS.Services.Api.Models.Foundations.Guardians.Exceptions;
 
@@ -20,6 +21,9 @@ namespace SCMS.Services.Api.Services.Foundations.Guardians
                 (Rule: IsInvalid(enumValue: guardian.Title), Parameter: nameof(Guardian.Title)),
                 (Rule: IsInvalid(text: guardian.FirstName), Parameter: nameof(Guardian.FirstName)),
                 (Rule: IsInvalid(text: guardian.LastName), Parameter: nameof(Guardian.LastName)),
+                (Rule: IsInvalid(text: guardian.CountryCode), Parameter: nameof(Guardian.CountryCode)),
+                (Rule: IsInvalidNumber(guardian.ContactNumber), Parameter: nameof(Guardian.ContactNumber)),
+                (Rule: IsInvalid(text: guardian.Occupation), Parameter: nameof(Guardian.Occupation)),
                 (Rule: IsInvalid(date: guardian.CreatedDate), Parameter: nameof(Guardian.CreatedDate)),
                 (Rule: IsInvalid(id: guardian.CreatedBy), Parameter: nameof(Guardian.CreatedBy)),
 
@@ -104,6 +108,28 @@ namespace SCMS.Services.Api.Services.Foundations.Guardians
 
             return timeDifference.Duration() > oneMinute;
         }
+
+        private static dynamic IsInvalidNumber(string number) => new
+        {
+            Condition = IsNotMatch(number),
+            Message = "Text is invalid."
+        };
+
+        private static bool IsNotMatch(string number)
+        {
+            bool isInvalid = HasValue(number);
+
+            if (isInvalid is not true)
+            {
+                Regex regex = new Regex(@"^[0-9]{10}$");
+                isInvalid = !regex.IsMatch(number);
+            }
+
+            return isInvalid;
+        }
+
+        private static bool HasValue(string number) =>
+            String.IsNullOrWhiteSpace(number);
 
         private void Validate(params (dynamic Rule, string Parameter)[] validations)
         {

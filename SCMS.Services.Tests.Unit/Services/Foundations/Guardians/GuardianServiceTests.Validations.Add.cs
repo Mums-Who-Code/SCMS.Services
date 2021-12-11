@@ -61,7 +61,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
                 FirstName = invalidText,
                 LastName = invalidText,
                 CountryCode = invalidText,
-                ContactNumber = GetInvalidContactNumber(),
+                ContactNumber = invalidText,
                 Occupation = invalidText
             };
 
@@ -89,7 +89,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
 
             invalidGuardianException.AddData(
                 key: nameof(Guardian.ContactNumber),
-                values: "Text is required.");
+                values: "Text is invalid.");
 
             invalidGuardianException.AddData(
                 key: nameof(Guardian.Occupation),
