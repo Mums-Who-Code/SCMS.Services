@@ -15,6 +15,7 @@ using SCMS.Services.Api.Models.Foundations.Guardians;
 using SCMS.Services.Api.Services.Foundations.Guardians;
 using Tynamix.ObjectFiller;
 using Xeptions;
+using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
 {
@@ -35,6 +36,23 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
                 storageBroker: this.storageBrokerMock.Object,
                 dateTimeBroker: this.dateTimeBrokerMock.Object,
                 loggingBroker: this.loggingBrokerMock.Object);
+        }
+
+        public static TheoryData InvalidEmails()
+        {
+            string randomString = GetRandomString();
+            string letterString = randomString;
+            string characterString = $"\n\r\b{randomString}^8&";
+            string domainString = $"{randomString}.com";
+            string incompleteEmailString = $"{randomString}@{randomString}";
+
+            return new TheoryData<string>
+            {
+                letterString,
+                characterString,
+                domainString,
+                incompleteEmailString
+            };
         }
 
         private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
@@ -72,6 +90,9 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
                 new IntRange(min: int.MinValue, max: int.MaxValue)
                     .GetValue();
         }
+
+        private static string GetRandomString() =>
+            new MnemonicString().GetValue();
 
         private static string GetInvalidContactNumber() =>
             new LongRange(min: 1000000000, max: 9999999999).GetValue().ToString();
