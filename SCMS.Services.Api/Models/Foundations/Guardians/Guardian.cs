@@ -5,9 +5,6 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using SCMS.Services.Api.Models.Foundations.Emails;
-using SCMS.Services.Api.Models.Foundations.Occupations;
-using SCMS.Services.Api.Models.Foundations.Phones;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 using SCMS.Services.Api.Models.Foundations.Users;
 

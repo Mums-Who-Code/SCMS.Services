@@ -50,15 +50,20 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
         [InlineData("")]
         [InlineData("  ")]
         public async Task ShouldThrowValidationExceptionOnAddIfGuardianIsInvalidAndLogItAsync(
-            string invalidName)
+            string invalidText)
         {
             // given
             var invalidTitle = GetInvalidEnum<Title>();
 
             var invalidGuardian = new Guardian
             {
-                FirstName = invalidName,
-                Title = invalidTitle
+                Title = invalidTitle,
+                FirstName = invalidText,
+                LastName = invalidText,
+                CountryCode = invalidText,
+                ContactNumber = GetValidContactNumber(),
+                Occupation = invalidText,
+                EmailId = GetRandomEmail()
             };
 
             var invalidGuardianException = new InvalidGuardianException();
@@ -77,6 +82,14 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
 
             invalidGuardianException.AddData(
                 key: nameof(Guardian.LastName),
+                values: "Text is required.");
+
+            invalidGuardianException.AddData(
+                key: nameof(Guardian.CountryCode),
+                values: "Text is required.");
+
+            invalidGuardianException.AddData(
+                key: nameof(Guardian.Occupation),
                 values: "Text is required.");
 
             invalidGuardianException.AddData(
@@ -115,6 +128,107 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Theory]
+        [MemberData(nameof(InvalidEmails))]
+        public async Task ShouldThrowValidationExceptionOnAddIfEmailIdIsInvalidAndLogItAsync(
+            string invalidEmail)
+        {
+            // given
+            DateTimeOffset randomDate = GetRandomDateTime();
+            Guardian randomGuardian = CreateRandomGuardian(randomDate);
+            Guardian invalidGuardian = randomGuardian;
+            invalidGuardian.EmailId = invalidEmail;
+
+            var invalidGuardianException = new InvalidGuardianException();
+
+            invalidGuardianException.AddData(
+                key: nameof(Guardian.EmailId),
+                values: "Text is invalid.");
+
+            var expectedGuardianValidationException =
+                new GuardianValidationException(invalidGuardianException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDate);
+
+            // when
+            ValueTask<Guardian> addGuardianTask =
+                this.guardianService.AddGuardianAsync(invalidGuardian);
+
+            // then
+            await Assert.ThrowsAsync<GuardianValidationException>(() =>
+                addGuardianTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertGuardianAsync(It.IsAny<Guardian>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Theory]
+        [MemberData(nameof(InvalidContactNumbers))]
+        public async Task ShouldThrowValidationExceptionOnAddIfContactNumberIsInvalidAndLogItAsync(
+            string invalidContactNumber)
+        {
+            // given
+            DateTimeOffset randomDate = GetRandomDateTime();
+            Guardian randomGuardian = CreateRandomGuardian(randomDate);
+            Guardian invalidGuardian = randomGuardian;
+            invalidGuardian.ContactNumber = invalidContactNumber;
+
+            var invalidGuardianException = new InvalidGuardianException();
+
+            invalidGuardianException.AddData(
+                key: nameof(Guardian.ContactNumber),
+                values: "Text is invalid.");
+
+            var expectedGuardianValidationException =
+                new GuardianValidationException(invalidGuardianException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDate);
+
+            // when
+            ValueTask<Guardian> addGuardianTask =
+                this.guardianService.AddGuardianAsync(invalidGuardian);
+
+            // then
+            await Assert.ThrowsAsync<GuardianValidationException>(() =>
+                addGuardianTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertGuardianAsync(It.IsAny<Guardian>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
 
         [Fact]
         public async Task ShouldThrowValidationExceptionOnAddIfCreatedDateIsNotSameAsUpdatedDateAndLogItAsync()

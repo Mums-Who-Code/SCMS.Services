@@ -15,6 +15,7 @@ using SCMS.Services.Api.Models.Foundations.Guardians;
 using SCMS.Services.Api.Services.Foundations.Guardians;
 using Tynamix.ObjectFiller;
 using Xeptions;
+using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
 {
@@ -35,6 +36,39 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
                 storageBroker: this.storageBrokerMock.Object,
                 dateTimeBroker: this.dateTimeBrokerMock.Object,
                 loggingBroker: this.loggingBrokerMock.Object);
+        }
+
+        public static TheoryData InvalidEmails()
+        {
+            string randomString = GetRandomString();
+            string letterString = randomString;
+            string characterString = $"\n\r\b{randomString}^8&";
+            string domainString = $"{randomString}.com";
+            string incompleteEmailString = $"{randomString}@{randomString}";
+
+            return new TheoryData<string>
+            {
+                null,
+                "",
+                "  ",
+                letterString,
+                characterString,
+                domainString,
+                incompleteEmailString
+            };
+        }
+
+        public static TheoryData InvalidContactNumbers()
+        {
+            string randomString = GetRandomString();
+
+            return new TheoryData<string>
+            {
+                null,
+                "",
+                "  ",
+                randomString
+            };
         }
 
         private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
@@ -73,6 +107,12 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
                     .GetValue();
         }
 
+        private static string GetRandomString() =>
+            new MnemonicString().GetValue();
+
+        private static string GetValidContactNumber() =>
+            new LongRange(min: 1000000000, max: 9999999999).GetValue().ToString();
+
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
@@ -88,6 +128,9 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
+        private static string GetRandomEmail() =>
+            new EmailAddresses().GetValue().ToString();
+
         private static Guardian CreateRandomGuardian(DateTimeOffset date) =>
             CreateGuardianFiller(date).Create();
 
@@ -100,11 +143,13 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
             Guid userId = Guid.NewGuid();
 
             filler.Setup()
-                .OnType<DateTimeOffset>().Use(date)
-                .OnType<Guid>().Use(userId)
+                .OnProperty(guardian => guardian.EmailId).Use(GetRandomEmail())
+                .OnProperty(guardian => guardian.ContactNumber).Use(GetValidContactNumber())
                 .OnProperty(guardian => guardian.CreatedByUser).IgnoreIt()
                 .OnProperty(guardian => guardian.UpdatedByUser).IgnoreIt()
-                .OnProperty(guardian => guardian.RegisteredStudents).IgnoreIt();
+                .OnProperty(guardian => guardian.RegisteredStudents).IgnoreIt()
+                .OnType<DateTimeOffset>().Use(date)
+                .OnType<Guid>().Use(userId);
 
             return filler;
         }
