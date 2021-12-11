@@ -37,6 +37,6 @@ namespace SCMS.Services.Api.Services.Foundations.Schools
         });
 
         public IQueryable<School> RetrieveAllSchools() =>
-            throw new NotImplementedException();
+            this.storageBroker.SelectAllSchools();
     }
 }
