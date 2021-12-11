@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
@@ -74,6 +75,12 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+        private static IQueryable<School> CreateRandomSchools()
+        {
+            return CreateRandomSchoolFiller(dates: GetRandomDateTimeOffset())
+                .Create(count: GetRandomNumber()).AsQueryable();
+        }
 
         private static School CreateRandomSchool() =>
             CreateRandomSchoolFiller(dates: GetRandomDateTimeOffset()).Create();
