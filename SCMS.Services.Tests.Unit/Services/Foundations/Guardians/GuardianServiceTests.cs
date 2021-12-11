@@ -94,7 +94,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
         private static string GetRandomString() =>
             new MnemonicString().GetValue();
 
-        private static string GetInvalidContactNumber() =>
+        private static string GetValidContactNumber() =>
             new LongRange(min: 1000000000, max: 9999999999).GetValue().ToString();
 
         private static SqlException GetSqlException() =>
@@ -112,6 +112,9 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
+        private static string GetRandomEmail() =>
+            new EmailAddresses().GetValue().ToString();
+
         private static Guardian CreateRandomGuardian(DateTimeOffset date) =>
             CreateGuardianFiller(date).Create();
 
@@ -124,11 +127,13 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
             Guid userId = Guid.NewGuid();
 
             filler.Setup()
-                .OnType<DateTimeOffset>().Use(date)
-                .OnType<Guid>().Use(userId)
+                .OnProperty(guardian => guardian.EmailId).Use(GetRandomEmail())
+                .OnProperty(guardian => guardian.ContactNumber).Use(GetValidContactNumber())
                 .OnProperty(guardian => guardian.CreatedByUser).IgnoreIt()
                 .OnProperty(guardian => guardian.UpdatedByUser).IgnoreIt()
-                .OnProperty(guardian => guardian.RegisteredStudents).IgnoreIt();
+                .OnProperty(guardian => guardian.RegisteredStudents).IgnoreIt()
+                .OnType<DateTimeOffset>().Use(date)
+                .OnType<Guid>().Use(userId);
 
             return filler;
         }

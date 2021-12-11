@@ -61,8 +61,9 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
                 FirstName = invalidText,
                 LastName = invalidText,
                 CountryCode = invalidText,
-                ContactNumber = invalidText,
-                Occupation = invalidText
+                ContactNumber = GetValidContactNumber(),
+                Occupation = invalidText,
+                EmailId = GetRandomEmail()
             };
 
             var invalidGuardianException = new InvalidGuardianException();
@@ -86,10 +87,6 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
             invalidGuardianException.AddData(
                 key: nameof(Guardian.CountryCode),
                 values: "Text is required.");
-
-            invalidGuardianException.AddData(
-                key: nameof(Guardian.ContactNumber),
-                values: "Text is invalid.");
 
             invalidGuardianException.AddData(
                 key: nameof(Guardian.Occupation),
@@ -138,7 +135,8 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
             string invalidEmail)
         {
             // given
-            Guardian randomGuardian = CreateRandomGuardian();
+            DateTimeOffset randomDate = GetRandomDateTime();
+            Guardian randomGuardian = CreateRandomGuardian(randomDate);
             Guardian invalidGuardian = randomGuardian;
             invalidGuardian.EmailId = invalidEmail;
 
@@ -150,6 +148,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
 
             var expectedGuardianValidationException =
                 new GuardianValidationException(invalidGuardianException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDate);
 
             // when
             ValueTask<Guardian> addGuardianTask =
