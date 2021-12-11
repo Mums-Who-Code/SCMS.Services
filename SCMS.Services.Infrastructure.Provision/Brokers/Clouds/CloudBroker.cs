@@ -9,7 +9,7 @@ using Microsoft.Azure.Management.ResourceManager.Fluent.Core;
 
 namespace SCMS.Services.Infrastructure.Provision.Brokers.Clouds
 {
-    internal class CloudBroker : ICloudBroker
+    internal partial class CloudBroker : ICloudBroker
     {
         private readonly string clientId;
         private readonly string clientSecret;

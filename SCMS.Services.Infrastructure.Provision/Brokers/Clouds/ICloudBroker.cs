@@ -4,7 +4,7 @@
 
 namespace SCMS.Services.Infrastructure.Provision.Brokers.Clouds
 {
-    internal interface ICloudBroker
+    internal partial interface ICloudBroker
     {
     }
 }
