@@ -14,7 +14,7 @@ namespace SCMS.Services.Infrastructure.Provision.Brokers.Configurations
         {
             IConfigurationRoot configurations = new ConfigurationBuilder()
                 .SetBasePath(basePath: Directory.GetCurrentDirectory())
-                .AddJsonFile(path: "appsettings.json", optional: false)
+                .AddJsonFile(path: "appSettings.json", optional: false)
                 .Build();
 
             return configurations.Get<CloudManagementConfiguration>();
