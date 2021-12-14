@@ -73,7 +73,7 @@ namespace SCMS.Services.Api.Services.Processings.StudentGuardians
         private StudentGuardianProcessingDependencyException CreateAndLogDependencyException(Xeption exception)
         {
             var studentGuardianProcessingDependencyException =
-                new StudentGuardianProcessingDependencyException(exception);
+                new StudentGuardianProcessingDependencyException(exception.InnerException as Xeption);
 
             this.loggingBroker.LogError(studentGuardianProcessingDependencyException);
 
