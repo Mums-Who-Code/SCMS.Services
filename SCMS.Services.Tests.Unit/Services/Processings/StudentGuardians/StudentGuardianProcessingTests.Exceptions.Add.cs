@@ -25,7 +25,7 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians
 
             var expectedStudentGuardianProcessingDependencyException =
                 new StudentGuardianProcessingDependencyException(
-                    dependencyValidationException);
+                    dependencyValidationException.InnerException as Xeption);
 
             this.studentGuardianServiceMock.Setup(service =>
                 service.RetrieveAllStudentGuardians())
