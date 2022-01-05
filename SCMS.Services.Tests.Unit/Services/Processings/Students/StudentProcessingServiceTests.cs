@@ -3,12 +3,14 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq.Expressions;
 using Moq;
 using SCMS.Services.Api.Brokers.Loggings;
 using SCMS.Services.Api.Models.Foundations.Students;
 using SCMS.Services.Api.Services.Foundations.Students;
 using SCMS.Services.Api.Services.Processings.Students;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace SCMS.Services.Tests.Unit.Services.Processings.Students
 {
@@ -26,6 +28,14 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.Students
             this.studentProcessingService = new StudentProcessingService(
                 studentService: this.studentServiceMock.Object,
                 loggingBroker: this.loggingBrokerMock.Object);
+        }
+
+        private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
+        {
+            return actualException =>
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message
+                && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
         private static DateTimeOffset GetRandomDateTime() =>
