@@ -10,7 +10,7 @@ using SCMS.Services.Api.Services.Foundations.Students;
 
 namespace SCMS.Services.Api.Services.Processings.Students
 {
-    public class StudentProcessingService : IStudentProcessingService
+    public partial class StudentProcessingService : IStudentProcessingService
     {
         private readonly IStudentService studentService;
         private readonly ILoggingBroker loggingBroker;
@@ -24,6 +24,11 @@ namespace SCMS.Services.Api.Services.Processings.Students
         }
 
         public ValueTask<Student> VerifyStudentExistsAsync(Guid studentId) =>
-            this.studentService.RetrieveStudentByIdAsync(studentId);
+        TryCatch(async () =>
+        {
+            Validate(studentId);
+
+            return await this.studentService.RetrieveStudentByIdAsync(studentId);
+        });
     }
 }
