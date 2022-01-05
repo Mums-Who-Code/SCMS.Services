@@ -28,7 +28,12 @@ namespace SCMS.Services.Api.Services.Processings.Students
         {
             Validate(studentId);
 
-            return await this.studentService.RetrieveStudentByIdAsync(studentId);
+            Student returningStudent =
+                await this.studentService.RetrieveStudentByIdAsync(studentId);
+
+            ValidateReturningStudent(returningStudent, studentId);
+
+            return returningStudent;
         });
     }
 }

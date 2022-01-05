@@ -16,6 +16,14 @@ namespace SCMS.Services.Api.Services.Processings.Students
                 (Rule: IsInvalid(studentId), Parameter: nameof(Student.Id)));
         }
 
+        private static void ValidateReturningStudent(Student student, Guid studentId)
+        {
+            if (student == null)
+            {
+                throw new NotFoundStudentProcessingException(studentId);
+            }
+        }
+
         private static dynamic IsInvalid(Guid id) => new
         {
             Condition = id == Guid.Empty,

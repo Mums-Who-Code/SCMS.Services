@@ -23,6 +23,10 @@ namespace SCMS.Services.Api.Services.Processings.Students
             {
                 throw CreateAndLogValidationException(invalidStudentProcessingException);
             }
+            catch (NotFoundStudentProcessingException notFoundStudentProcessingException)
+            {
+                throw CreateAndLogValidationException(notFoundStudentProcessingException);
+            }
         }
 
         private StudentProcessingValidationException CreateAndLogValidationException(Xeption exception)
