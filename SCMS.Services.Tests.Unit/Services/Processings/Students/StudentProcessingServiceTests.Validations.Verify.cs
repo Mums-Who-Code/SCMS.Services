@@ -44,6 +44,44 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.Students
                 service.RetrieveStudentByIdAsync(inputStudentId),
                     Times.Never);
 
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.studentServiceMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnVerifyIfReturningStudentIsNullAndLogItAsync()
+        {
+            // given
+            Student noStudent = null;
+            Guid someStudentId = Guid.NewGuid();
+
+            var notFoundStudentProcessingException = new NotFoundStudentProcessingException(
+                someStudentId);
+
+            var expectedStudentProcessingValidation = new StudentProcessingValidationException(
+                notFoundStudentProcessingException);
+
+            this.studentServiceMock.Setup(service =>
+                service.RetrieveStudentByIdAsync(someStudentId))
+                    .ReturnsAsync(noStudent);
+
+            // when
+            ValueTask<Student> verifyStudentExsistsTask = this.studentProcessingService
+                .VerifyStudentExistsAsync(someStudentId);
+
+            // then
+            await Assert.ThrowsAsync<StudentProcessingValidationException>(() =>
+                verifyStudentExsistsTask.AsTask());
+
+            this.studentServiceMock.Verify(service =>
+                service.RetrieveStudentByIdAsync(someStudentId),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentProcessingValidation))),
+                        Times.Once);
+
             this.studentServiceMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
