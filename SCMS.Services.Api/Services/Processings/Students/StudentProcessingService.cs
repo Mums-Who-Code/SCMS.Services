@@ -24,6 +24,6 @@ namespace SCMS.Services.Api.Services.Processings.Students
         }
 
         public ValueTask<Student> VerifyStudentExistsAsync(Guid studentId) =>
-            throw new NotImplementedException();
+            this.studentService.RetrieveStudentByIdAsync(studentId);
     }
 }
