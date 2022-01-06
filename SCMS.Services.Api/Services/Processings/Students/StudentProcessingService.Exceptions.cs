@@ -4,6 +4,7 @@
 
 using System.Threading.Tasks;
 using SCMS.Services.Api.Models.Foundations.Students;
+using SCMS.Services.Api.Models.Foundations.Students.Exceptions;
 using SCMS.Services.Api.Models.Processings.Students.Exceptions;
 using Xeptions;
 
@@ -27,6 +28,10 @@ namespace SCMS.Services.Api.Services.Processings.Students
             {
                 throw CreateAndLogValidationException(notFoundStudentProcessingException);
             }
+            catch (StudentValidationException studentValidationException)
+            {
+                throw CreateAndLogDependencyValidationException(studentValidationException);
+            }
         }
 
         private StudentProcessingValidationException CreateAndLogValidationException(Xeption exception)
@@ -35,6 +40,17 @@ namespace SCMS.Services.Api.Services.Processings.Students
             this.loggingBroker.LogError(studentProcessingValidationException);
 
             throw studentProcessingValidationException;
+        }
+
+        private StudentProcessingDependencyValidationException CreateAndLogDependencyValidationException(
+            Xeption exception)
+        {
+            var studentProcessingDependencyValidationException =
+                new StudentProcessingDependencyValidationException(exception.InnerException as Xeption);
+
+            this.loggingBroker.LogError(studentProcessingDependencyValidationException);
+
+            throw studentProcessingDependencyValidationException;
         }
     }
 }

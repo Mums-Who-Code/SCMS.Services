@@ -29,7 +29,7 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.Students
 
             this.studentServiceMock.Setup(service =>
                 service.RetrieveStudentByIdAsync(someStudentId))
-                    .ThrowsAsync(invalidStudentException);
+                    .ThrowsAsync(studentValidationException);
 
             // when
             ValueTask<Student> verifyStudentExsistsTask = this.studentProcessingService
