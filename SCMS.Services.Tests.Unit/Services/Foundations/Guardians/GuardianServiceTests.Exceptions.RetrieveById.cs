@@ -52,5 +52,44 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnRetreiveByIdIfDependenctErrorOccursAndLogItAsync()
+        {
+            // given
+            Guid someGuardianId = Guid.NewGuid();
+            var invalidOperationException = new InvalidOperationException();
+
+            var failedGuardianStorageException =
+                new FailedGuardianStorageException(invalidOperationException);
+
+            var expectedGuardianDependencyException =
+                new GuardianDependencyException(failedGuardianStorageException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectGuardianByIdAsync(It.IsAny<Guid>()))
+                    .Throws(invalidOperationException);
+
+            // when
+            ValueTask<Guardian> retrieveGuardianByIdTask =
+                this.guardianService.RetrieveGuardianByIdAsync(someGuardianId);
+
+            // then
+            await Assert.ThrowsAsync<GuardianDependencyException>(() =>
+                retrieveGuardianByIdTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectGuardianByIdAsync(It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianDependencyException))),
+                        Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
