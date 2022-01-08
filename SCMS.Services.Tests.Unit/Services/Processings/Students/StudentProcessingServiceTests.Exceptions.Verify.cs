@@ -51,5 +51,47 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.Students
             this.studentServiceMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnVerifyIfDependencyErrorOccursAndLogItAsync()
+        {
+            // given
+            Guid someStudentId = Guid.NewGuid();
+            var someException = new Exception();
+
+            var failedStudentStorageException =
+                new FailedStudentStorageException(someException);
+
+            var studentDependenctException =
+                new StudentDependencyException(failedStudentStorageException);
+
+            var expectedStudentProcessingValidation =
+                new StudentProcessingDependencyException(
+                    studentDependenctException.InnerException as Xeption);
+
+            this.studentServiceMock.Setup(service =>
+                service.RetrieveStudentByIdAsync(someStudentId))
+                    .ThrowsAsync(studentDependenctException);
+
+            // when
+            ValueTask<Student> verifyStudentExsistsTask = this.studentProcessingService
+                .VerifyStudentExistsAsync(someStudentId);
+
+            // then
+            await Assert.ThrowsAsync<StudentProcessingDependencyException>(() =>
+                verifyStudentExsistsTask.AsTask());
+
+            this.studentServiceMock.Verify(service =>
+                service.RetrieveStudentByIdAsync(someStudentId),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentProcessingValidation))),
+                        Times.Once);
+
+            this.studentServiceMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
