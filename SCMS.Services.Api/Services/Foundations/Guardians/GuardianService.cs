@@ -36,6 +36,11 @@ namespace SCMS.Services.Api.Services.Foundations.Guardians
         });
 
         public ValueTask<Guardian> RetrieveGuardianByIdAsync(Guid guardianId) =>
-            this.storageBroker.SelectGuardianByIdAsync(guardianId);
+        TryCatch(async () =>
+        {
+            ValidateGuardianId(guardianId);
+
+            return await this.storageBroker.SelectGuardianByIdAsync(guardianId);
+        });
     }
 }
