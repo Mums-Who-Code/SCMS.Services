@@ -60,11 +60,11 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
             Guid someGuardianId = Guid.NewGuid();
             var invalidOperationException = new InvalidOperationException();
 
-            var failedGuardianStorageException =
-                new FailedGuardianStorageException(invalidOperationException);
+            var failedGuardianDependencyException =
+                new FailedGuardianDependencyException(invalidOperationException);
 
             var expectedGuardianDependencyException =
-                new GuardianDependencyException(failedGuardianStorageException);
+                new GuardianDependencyException(failedGuardianDependencyException);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectGuardianByIdAsync(It.IsAny<Guid>()))
