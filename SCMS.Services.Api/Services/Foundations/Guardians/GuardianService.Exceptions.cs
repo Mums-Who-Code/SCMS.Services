@@ -63,6 +63,13 @@ namespace SCMS.Services.Api.Services.Foundations.Guardians
                 throw CreateAndLogDependencyException(
                     failedGuardianStorageException);
             }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                var failedGuardianDependencyException =
+                    new FailedGuardianDependencyException(invalidOperationException);
+
+                throw CreateAndLogDependencyException(failedGuardianDependencyException);
+            }
             catch (Exception exception)
             {
                 var failedGuardianServiceException =

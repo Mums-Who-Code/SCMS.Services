@@ -11,7 +11,6 @@ namespace SCMS.Services.Api.Services.Foundations.Guardians
 {
     public partial class GuardianService
     {
-
         private void ValidateGuardianOnAdd(Guardian guardian)
         {
             ValidateGuardianIsNotNull(guardian);
@@ -41,6 +40,12 @@ namespace SCMS.Services.Api.Services.Foundations.Guardians
                 Parameter: nameof(Guardian.UpdatedBy)),
 
                 (Rule: IsNotRecent(guardian.CreatedDate), Parameter: nameof(Guardian.CreatedDate)));
+        }
+
+        private void ValidateGuardianId(Guid guardianId)
+        {
+            Validate(
+                (Rule: IsInvalid(guardianId), Parameter: nameof(Guardian.Id)));
         }
 
         private void ValidateGuardianIsNotNull(Guardian guardian)

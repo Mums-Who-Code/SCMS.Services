@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using SCMS.Services.Api.Brokers.DateTimes;
 using SCMS.Services.Api.Brokers.Loggings;
@@ -34,5 +35,12 @@ namespace SCMS.Services.Api.Services.Foundations.Guardians
             return await this.storageBroker.InsertGuardianAsync(guardian);
         });
 
+        public ValueTask<Guardian> RetrieveGuardianByIdAsync(Guid guardianId) =>
+        TryCatch(async () =>
+        {
+            ValidateGuardianId(guardianId);
+
+            return await this.storageBroker.SelectGuardianByIdAsync(guardianId);
+        });
     }
 }
