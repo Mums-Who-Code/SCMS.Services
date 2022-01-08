@@ -17,6 +17,7 @@ using SCMS.Services.Api.Services.Foundations.Schools;
 using SCMS.Services.Api.Services.Foundations.StudentGuardians;
 using SCMS.Services.Api.Services.Foundations.Students;
 using SCMS.Services.Api.Services.Processings.StudentGuardians;
+using SCMS.Services.Api.Services.Processings.Students;
 
 namespace SCMS.Services.Api
 {
@@ -91,7 +92,10 @@ namespace SCMS.Services.Api
             services.AddTransient<IStudentGuardianService, StudentGuardianService>();
         }
 
-        private static void AddProcessingServices(IServiceCollection services) =>
+        private static void AddProcessingServices(IServiceCollection services)
+        {
             services.AddTransient<IStudentGuardianProcessingService, StudentGuardianProcessingService>();
+            services.AddTransient<IStudentProcessingService, StudentProcessingService>();
+        }
     }
 }
