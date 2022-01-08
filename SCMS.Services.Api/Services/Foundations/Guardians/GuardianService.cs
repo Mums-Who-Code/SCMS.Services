@@ -36,6 +36,6 @@ namespace SCMS.Services.Api.Services.Foundations.Guardians
         });
 
         public ValueTask<Guardian> RetrieveGuardianByIdAsync(Guid guardianId) =>
-            throw new NotImplementedException();
+            this.storageBroker.SelectGuardianByIdAsync(guardianId);
     }
 }
