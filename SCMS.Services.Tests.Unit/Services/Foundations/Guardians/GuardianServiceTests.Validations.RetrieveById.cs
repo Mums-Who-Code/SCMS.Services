@@ -42,7 +42,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectGuardianByIdAsync(It.IsAny<Guid>()),
-                    Times.Never());
+                    Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
