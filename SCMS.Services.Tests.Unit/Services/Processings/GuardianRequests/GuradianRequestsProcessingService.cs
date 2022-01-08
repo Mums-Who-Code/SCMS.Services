@@ -6,6 +6,7 @@ using System;
 using Moq;
 using SCMS.Services.Api.Brokers.Loggings;
 using SCMS.Services.Api.Models.Foundations.Guardians;
+using SCMS.Services.Api.Models.Processings.GuardianRequests;
 using SCMS.Services.Api.Services.Foundations.Guardians;
 using SCMS.Services.Api.Services.Processings.GuardianRequests;
 using Tynamix.ObjectFiller;
@@ -31,12 +32,12 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.GuardianRequests
         private DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
-        private Guardian CreateRandomGuardian() =>
-            CreateGuardianFiller().Create();
+        private GuardianRequest CreateRandomGuardianRequest() =>
+            CreateGuardianRequestFiller().Create();
 
-        private Filler<Guardian> CreateGuardianFiller()
+        private Filler<GuardianRequest> CreateGuardianRequestFiller()
         {
-            var filler = new Filler<Guardian>();
+            var filler = new Filler<GuardianRequest>();
 
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());

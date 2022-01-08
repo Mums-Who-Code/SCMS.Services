@@ -5,6 +5,7 @@
 using System;
 using System.Threading.Tasks;
 using SCMS.Services.Api.Brokers.Loggings;
+using SCMS.Services.Api.Models.Foundations.Guardians;
 using SCMS.Services.Api.Models.Processings.GuardianRequests;
 using SCMS.Services.Api.Services.Foundations.Guardians;
 
@@ -23,7 +24,32 @@ namespace SCMS.Services.Api.Services.Processings.GuardianRequests
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<GuardianRequest> EnsureGuardianRequestExists(GuardianRequest guardianRequest) =>
-            throw new NotImplementedException();
+        public async ValueTask<GuardianRequest> EnsureGuardianRequestExists(GuardianRequest guardianRequest)
+        {
+            Guardian returningGuardian = await this.guardianService
+                .RetrieveGuardianByIdAsync(guardianId: guardianRequest.Id);
+
+            return MapToGuardianRequest(returningGuardian, guardianRequest.StudentId);
+        }
+
+        private GuardianRequest MapToGuardianRequest(Guardian guardian, Guid studentId)
+        {
+            return new GuardianRequest
+            {
+                Id = guardian.Id,
+                Title = (GuardianRequestTitle)guardian.Title,
+                FirstName = guardian.FirstName,
+                LastName = guardian.LastName,
+                EmailId = guardian.EmailId,
+                CountryCode = guardian.CountryCode,
+                ContactNumber = guardian.ContactNumber,
+                Occupation = guardian.Occupation,
+                StudentId = studentId,
+                CreatedDate = guardian.CreatedDate,
+                UpdatedDate = guardian.UpdatedDate,
+                CreatedBy = guardian.CreatedBy,
+                UpdatedBy = guardian.UpdatedBy
+            };
+        }
     }
 }

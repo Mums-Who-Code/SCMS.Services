@@ -19,25 +19,26 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.GuardianRequests
         public async Task ShouldEnsureGuardianRequestExistsIfGuardianExists()
         {
             // given
-            Guardian randomGuardian = CreateRandomGuardian();
-            Guardian returningGuardian = randomGuardian;
-            var inputStudentId = Guid.NewGuid();
-            var inputGuardianId = randomGuardian.Id;
+            GuardianRequest randomGuardianRequest = CreateRandomGuardianRequest();
+            GuardianRequest inputGuardianRequest = randomGuardianRequest;
+            GuardianRequest expectedGuardianRequest = inputGuardianRequest.DeepClone();
+            var inputGuardianId = randomGuardianRequest.Id;
 
-            var inputGuardianRequest = new GuardianRequest
+            var returningGuardian = new Guardian
             {
-                Id = randomGuardian.Id,
-                Title = (GuardianRequestTitle)randomGuardian.Title,
-                FirstName = randomGuardian.FirstName,
-                LastName = randomGuardian.LastName,
-                EmailId = randomGuardian.EmailId,
-                CountryCode = randomGuardian.CountryCode,
-                ContactNumber = randomGuardian.ContactNumber,
-                Occupation = randomGuardian.Occupation,
-                StudentId = inputStudentId
+                Id = randomGuardianRequest.Id,
+                Title = (Title)randomGuardianRequest.Title,
+                FirstName = randomGuardianRequest.FirstName,
+                LastName = randomGuardianRequest.LastName,
+                EmailId = randomGuardianRequest.EmailId,
+                CountryCode = randomGuardianRequest.CountryCode,
+                ContactNumber = randomGuardianRequest.ContactNumber,
+                Occupation = randomGuardianRequest.Occupation,
+                CreatedBy = randomGuardianRequest.CreatedBy,
+                UpdatedBy = randomGuardianRequest.UpdatedBy,
+                CreatedDate = randomGuardianRequest.CreatedDate,
+                UpdatedDate = randomGuardianRequest.UpdatedDate
             };
-
-            var expectedGuardianRequest = inputGuardianRequest.DeepClone();
 
             this.guardianServiceMock.Setup(service =>
                 service.RetrieveGuardianByIdAsync(inputGuardianId))
