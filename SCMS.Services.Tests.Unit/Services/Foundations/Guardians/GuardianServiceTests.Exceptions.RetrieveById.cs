@@ -54,7 +54,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
         }
 
         [Fact]
-        public async Task ShouldThrowDependencyExceptionOnRetreiveByIdIfDependenctErrorOccursAndLogItAsync()
+        public async Task ShouldThrowDependencyExceptionOnRetreiveByIdIfDependencyErrorOccursAndLogItAsync()
         {
             // given
             Guid someGuardianId = Guid.NewGuid();
@@ -85,6 +85,45 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedGuardianDependencyException))),
+                        Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnRetreiveByIdIfServiceErrorOccursAndLogItAsync()
+        {
+            // given
+            Guid someGuardianId = Guid.NewGuid();
+            var serviceException = new Exception();
+
+            var failedGuardianServiceException =
+                new FailedGuardianServiceException(serviceException);
+
+            var expectedGuardianServiceException =
+                new GuardianServiceException(failedGuardianServiceException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectGuardianByIdAsync(It.IsAny<Guid>()))
+                    .Throws(serviceException);
+
+            // when
+            ValueTask<Guardian> retrieveGuardianByIdTask =
+                this.guardianService.RetrieveGuardianByIdAsync(someGuardianId);
+
+            // then
+            await Assert.ThrowsAsync<GuardianServiceException>(() =>
+                retrieveGuardianByIdTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectGuardianByIdAsync(It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianServiceException))),
                         Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
