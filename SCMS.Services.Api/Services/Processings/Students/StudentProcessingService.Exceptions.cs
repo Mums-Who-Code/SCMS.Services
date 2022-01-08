@@ -32,6 +32,10 @@ namespace SCMS.Services.Api.Services.Processings.Students
             {
                 throw CreateAndLogDependencyValidationException(studentValidationException);
             }
+            catch (StudentDependencyException studentDependencyException)
+            {
+                throw CreateAndLogDependencyException(studentDependencyException);
+            }
         }
 
         private StudentProcessingValidationException CreateAndLogValidationException(Xeption exception)
@@ -51,6 +55,17 @@ namespace SCMS.Services.Api.Services.Processings.Students
             this.loggingBroker.LogError(studentProcessingDependencyValidationException);
 
             throw studentProcessingDependencyValidationException;
+        }
+
+        private StudentProcessingDependencyException CreateAndLogDependencyException(
+            Xeption exception)
+        {
+            var studentProcessingDependencyException =
+                new StudentProcessingDependencyException(exception.InnerException as Xeption);
+
+            this.loggingBroker.LogError(studentProcessingDependencyException);
+
+            throw studentProcessingDependencyException;
         }
     }
 }
