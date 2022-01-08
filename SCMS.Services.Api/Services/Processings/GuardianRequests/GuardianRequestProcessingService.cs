@@ -26,10 +26,49 @@ namespace SCMS.Services.Api.Services.Processings.GuardianRequests
 
         public async ValueTask<GuardianRequest> EnsureGuardianRequestExists(GuardianRequest guardianRequest)
         {
-            Guardian returningGuardian = await this.guardianService
-                .RetrieveGuardianByIdAsync(guardianId: guardianRequest.Id);
+            Guardian mayBeGuardian = await RetrieveGuardianAsync(guardianRequest);
 
-            return MapToGuardianRequest(returningGuardian, guardianRequest.StudentId);
+            return mayBeGuardian switch
+            {
+                null => await AddGuardianRequest(guardianRequest),
+                _ => MapToGuardianRequest(mayBeGuardian, guardianRequest.StudentId)
+            };
+        }
+
+        private async Task<Guardian> RetrieveGuardianAsync(GuardianRequest guardianRequest) =>
+            await this.guardianService.RetrieveGuardianByIdAsync(guardianId: guardianRequest.Id);
+
+        private async Task<GuardianRequest> AddGuardianRequest(GuardianRequest guardianRequest)
+        {
+            Guardian guardian = await AddGuardianAsync(guardianRequest);
+
+            return MapToGuardianRequest(guardian, guardianRequest.StudentId);
+        }
+
+        private async ValueTask<Guardian> AddGuardianAsync(GuardianRequest guardianRequest)
+        {
+            Guardian guardian = MapToGuardian(guardianRequest);
+
+            return await this.guardianService.AddGuardianAsync(guardian);
+        }
+
+        private Guardian MapToGuardian(GuardianRequest guardianRequest)
+        {
+            return new Guardian
+            {
+                Id = guardianRequest.Id,
+                Title = (Title)guardianRequest.Title,
+                FirstName = guardianRequest.FirstName,
+                LastName = guardianRequest.LastName,
+                EmailId = guardianRequest.EmailId,
+                CountryCode = guardianRequest.CountryCode,
+                ContactNumber = guardianRequest.ContactNumber,
+                Occupation = guardianRequest.Occupation,
+                CreatedDate = guardianRequest.CreatedDate,
+                UpdatedDate = guardianRequest.UpdatedDate,
+                CreatedBy = guardianRequest.CreatedBy,
+                UpdatedBy = guardianRequest.UpdatedBy
+            };
         }
 
         private GuardianRequest MapToGuardianRequest(Guardian guardian, Guid studentId)

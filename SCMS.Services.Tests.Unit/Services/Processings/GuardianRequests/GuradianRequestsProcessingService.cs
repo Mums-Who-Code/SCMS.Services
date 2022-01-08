@@ -3,8 +3,11 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq.Expressions;
+using KellermanSoftware.CompareNetObjects;
 using Moq;
 using SCMS.Services.Api.Brokers.Loggings;
+using SCMS.Services.Api.Models.Foundations.Guardians;
 using SCMS.Services.Api.Models.Processings.GuardianRequests;
 using SCMS.Services.Api.Services.Foundations.Guardians;
 using SCMS.Services.Api.Services.Processings.GuardianRequests;
@@ -17,11 +20,13 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.GuardianRequests
         private readonly Mock<IGuardianService> guardianServiceMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly IGuardianRequestProcessingService guardianRequestProcessingService;
+        private readonly ICompareLogic compareLogic;
 
         public GuradianRequestsProcessingService()
         {
             this.guardianServiceMock = new Mock<IGuardianService>();
             this.loggingBrokerMock = new Mock<ILoggingBroker>();
+            this.compareLogic = new CompareLogic();
 
             this.guardianRequestProcessingService = new GuardianRequestProcessingService(
                 guardianService: this.guardianServiceMock.Object,
@@ -31,8 +36,33 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.GuardianRequests
         private DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
+        private Expression<Func<Guardian, bool>> SameGuardianAs(
+            Guardian expectedGuardian)
+        {
+            return actualGuardian =>
+                this.compareLogic.Compare(expectedGuardian, actualGuardian)
+                    .AreEqual;
+        }
+
+
+        private Guardian CreateRandomGuardian() =>
+        CreateGuardianFiller().Create();
+
         private GuardianRequest CreateRandomGuardianRequest() =>
             CreateGuardianRequestFiller().Create();
+
+        private Filler<Guardian> CreateGuardianFiller()
+        {
+            var filler = new Filler<Guardian>();
+
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime())
+                .OnProperty(guardian => guardian.CreatedByUser).IgnoreIt()
+                .OnProperty(guardian => guardian.UpdatedByUser).IgnoreIt()
+                .OnProperty(guardian => guardian.RegisteredStudents).IgnoreIt();
+
+            return filler;
+        }
 
         private Filler<GuardianRequest> CreateGuardianRequestFiller()
         {
