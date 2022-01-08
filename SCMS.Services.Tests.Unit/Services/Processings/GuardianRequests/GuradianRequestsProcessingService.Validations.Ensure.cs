@@ -37,13 +37,18 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.GuardianRequests
             await Assert.ThrowsAsync<GuardianRequestProcessingValidationException>(() =>
                 ensureGuardianRequestExistsTask.AsTask());
 
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianRequestValidationException))),
+                        Times.Once);
+
             this.guardianServiceMock.Verify(service =>
                 service.RetrieveGuardianByIdAsync(It.IsAny<Guid>()),
                     Times.Never);
 
             this.guardianServiceMock.Verify(service =>
                 service.AddGuardianAsync(It.IsAny<Guardian>()),
-                    Times.Once);
+                    Times.Never);
 
             this.guardianServiceMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();

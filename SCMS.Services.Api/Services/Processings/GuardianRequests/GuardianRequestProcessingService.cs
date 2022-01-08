@@ -11,7 +11,7 @@ using SCMS.Services.Api.Services.Foundations.Guardians;
 
 namespace SCMS.Services.Api.Services.Processings.GuardianRequests
 {
-    public class GuardianRequestProcessingService : IGuardianRequestProcessingService
+    public partial class GuardianRequestProcessingService : IGuardianRequestProcessingService
     {
         private readonly IGuardianService guardianService;
         private readonly ILoggingBroker loggingBroker;
@@ -24,8 +24,10 @@ namespace SCMS.Services.Api.Services.Processings.GuardianRequests
             this.loggingBroker = loggingBroker;
         }
 
-        public async ValueTask<GuardianRequest> EnsureGuardianRequestExists(GuardianRequest guardianRequest)
+        public ValueTask<GuardianRequest> EnsureGuardianRequestExists(GuardianRequest guardianRequest) =>
+        TryCatch(async () =>
         {
+            ValidateGuardianRequest(guardianRequest);
             Guardian mayBeGuardian = await RetrieveGuardianAsync(guardianRequest);
 
             return mayBeGuardian switch
@@ -33,7 +35,7 @@ namespace SCMS.Services.Api.Services.Processings.GuardianRequests
                 null => await AddGuardianRequest(guardianRequest),
                 _ => MapToGuardianRequest(mayBeGuardian, guardianRequest.StudentId)
             };
-        }
+        });
 
         private async Task<Guardian> RetrieveGuardianAsync(GuardianRequest guardianRequest) =>
             await this.guardianService.RetrieveGuardianByIdAsync(guardianId: guardianRequest.Id);

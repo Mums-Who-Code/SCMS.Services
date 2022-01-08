@@ -12,6 +12,7 @@ using SCMS.Services.Api.Models.Processings.GuardianRequests;
 using SCMS.Services.Api.Services.Foundations.Guardians;
 using SCMS.Services.Api.Services.Processings.GuardianRequests;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace SCMS.Services.Tests.Unit.Services.Processings.GuardianRequests
 {
@@ -44,6 +45,13 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.GuardianRequests
                     .AreEqual;
         }
 
+        private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
+        {
+            return actualException =>
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message
+                && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
+        }
 
         private Guardian CreateRandomGuardian() =>
         CreateGuardianFiller().Create();
