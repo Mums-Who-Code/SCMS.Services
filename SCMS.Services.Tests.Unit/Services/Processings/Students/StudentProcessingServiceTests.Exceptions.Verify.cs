@@ -62,16 +62,16 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.Students
             var failedStudentStorageException =
                 new FailedStudentStorageException(someException);
 
-            var studentDependenctException =
+            var studentDependencyException =
                 new StudentDependencyException(failedStudentStorageException);
 
             var expectedStudentProcessingValidation =
                 new StudentProcessingDependencyException(
-                    studentDependenctException.InnerException as Xeption);
+                    studentDependencyException.InnerException as Xeption);
 
             this.studentServiceMock.Setup(service =>
                 service.RetrieveStudentByIdAsync(someStudentId))
-                    .ThrowsAsync(studentDependenctException);
+                    .ThrowsAsync(studentDependencyException);
 
             // when
             ValueTask<Student> verifyStudentExsistsTask = this.studentProcessingService
@@ -88,6 +88,44 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.Students
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedStudentProcessingValidation))),
+                        Times.Once);
+
+            this.studentServiceMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnVerifyIfServiceErrorOccursAndLogItAsync()
+        {
+            // given
+            Guid someStudentId = Guid.NewGuid();
+            var serviceException = new Exception();
+
+            var failedStudentProcessingServiceException =
+                new FailedStudentProcessingServiceException(serviceException);
+
+            var expectedStudentServiceException =
+                new StudentProcessingServiceException(failedStudentProcessingServiceException);
+
+            this.studentServiceMock.Setup(service =>
+                service.RetrieveStudentByIdAsync(someStudentId))
+                    .ThrowsAsync(serviceException);
+
+            // when
+            ValueTask<Student> verifyStudentExsistsTask = this.studentProcessingService
+                .VerifyStudentExistsAsync(someStudentId);
+
+            // then
+            await Assert.ThrowsAsync<StudentProcessingServiceException>(() =>
+                verifyStudentExsistsTask.AsTask());
+
+            this.studentServiceMock.Verify(service =>
+                service.RetrieveStudentByIdAsync(someStudentId),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentServiceException))),
                         Times.Once);
 
             this.studentServiceMock.VerifyNoOtherCalls();
