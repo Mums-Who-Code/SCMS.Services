@@ -5,7 +5,6 @@
 using System;
 using Moq;
 using SCMS.Services.Api.Brokers.Loggings;
-using SCMS.Services.Api.Models.Foundations.Guardians;
 using SCMS.Services.Api.Models.Processings.GuardianRequests;
 using SCMS.Services.Api.Services.Foundations.Guardians;
 using SCMS.Services.Api.Services.Processings.GuardianRequests;
