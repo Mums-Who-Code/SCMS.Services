@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using SCMS.Services.Api.Models.Foundations.Students;
 using SCMS.Services.Api.Models.Foundations.Students.Exceptions;
@@ -36,6 +37,13 @@ namespace SCMS.Services.Api.Services.Processings.Students
             {
                 throw CreateAndLogDependencyException(studentDependencyException);
             }
+            catch (Exception exception)
+            {
+                var failedStudentProcessingServiceException =
+                    new FailedStudentProcessingServiceException(exception);
+
+                throw CreateAndLogServiceException(failedStudentProcessingServiceException);
+            }
         }
 
         private StudentProcessingValidationException CreateAndLogValidationException(Xeption exception)
@@ -66,6 +74,17 @@ namespace SCMS.Services.Api.Services.Processings.Students
             this.loggingBroker.LogError(studentProcessingDependencyException);
 
             throw studentProcessingDependencyException;
+        }
+
+        private StudentProcessingServiceException CreateAndLogServiceException(
+            Xeption exception)
+        {
+            var studentProcessingServiceException =
+                new StudentProcessingServiceException(exception);
+
+            this.loggingBroker.LogError(studentProcessingServiceException);
+
+            throw studentProcessingServiceException;
         }
     }
 }
