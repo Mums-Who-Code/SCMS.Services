@@ -42,7 +42,7 @@ namespace SCMS.Services.Api.Services.Processings.GuardianRequests
             {
                 throw CreateAndLogDependencyException(guardianServiceException);
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 var failedGuardianRequestProcessingException =
                     new FailedGuardianRequestProcessingException(exception);
