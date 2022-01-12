@@ -103,5 +103,51 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.GuardianRequests
             this.guardianServiceMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnEnsureIfServiceErrorOccursAndLogItAsync()
+        {
+            // given
+            GuardianRequest someGuardianRequest = CreateRandomGuardianRequest();
+            var serviceException = new Exception();
+
+            var failedGuardianRequestProcessingException =
+                new FailedGuardianRequestProcessingException(
+                    serviceException);
+
+            var expectedGuardianRequestProcessingServiceException =
+                new GuardianRequestProcessingServiceException(
+                    failedGuardianRequestProcessingException);
+
+            this.guardianServiceMock.Setup(service =>
+                service.RetrieveGuardianByIdAsync(It.IsAny<Guid>()))
+                    .ThrowsAsync(serviceException);
+
+            // when
+            ValueTask<GuardianRequest> ensureGuardianRequestExistsTask =
+                this.guardianRequestProcessingService
+                    .EnsureGuardianRequestExists(
+                        someGuardianRequest);
+
+            // then
+            await Assert.ThrowsAsync<GuardianRequestProcessingServiceException>(() =>
+                ensureGuardianRequestExistsTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedGuardianRequestProcessingServiceException))),
+                        Times.Once);
+
+            this.guardianServiceMock.Verify(service =>
+                service.RetrieveGuardianByIdAsync(It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.guardianServiceMock.Verify(service =>
+                service.AddGuardianAsync(It.IsAny<Guardian>()),
+                    Times.Never);
+
+            this.guardianServiceMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
