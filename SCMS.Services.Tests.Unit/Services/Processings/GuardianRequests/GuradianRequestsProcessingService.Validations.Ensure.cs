@@ -60,7 +60,7 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.GuardianRequests
             // given
             var invalidGuardianRequest = new GuardianRequest();
 
-            var invalidGuardianRequestProcessingException = 
+            var invalidGuardianRequestProcessingException =
                 new InvalidGuardianRequestProcessingException();
 
             invalidGuardianRequestProcessingException.AddData(

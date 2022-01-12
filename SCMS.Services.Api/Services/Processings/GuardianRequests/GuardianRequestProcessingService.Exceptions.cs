@@ -24,6 +24,10 @@ namespace SCMS.Services.Api.Services.Processings.GuardianRequests
             {
                 throw CreateAndLogValidationException(nullGuardianRequestProcessingException);
             }
+            catch (InvalidGuardianRequestProcessingException invalidGuardianRequestProcessingException)
+            {
+                throw CreateAndLogValidationException(invalidGuardianRequestProcessingException);
+            }
         }
 
         private GuardianRequestProcessingValidationException CreateAndLogValidationException(Xeption exception)
