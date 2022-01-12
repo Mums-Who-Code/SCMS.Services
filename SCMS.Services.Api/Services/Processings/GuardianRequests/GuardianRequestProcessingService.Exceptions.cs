@@ -37,6 +37,10 @@ namespace SCMS.Services.Api.Services.Processings.GuardianRequests
             {
                 throw CreateAndLogDependencyException(guardianDependencyException);
             }
+            catch (GuardianServiceException guardianServiceException)
+            {
+                throw CreateAndLogDependencyException(guardianServiceException);
+            }
         }
 
         private GuardianRequestProcessingValidationException CreateAndLogValidationException(Xeption exception)
