@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System.Threading.Tasks;
+using SCMS.Services.Api.Models.Foundations.Guardians.Exceptions;
 using SCMS.Services.Api.Models.Processings.GuardianRequests;
 using SCMS.Services.Api.Models.Processings.GuardianRequests.Exceptions;
 using Xeptions;
@@ -28,6 +29,10 @@ namespace SCMS.Services.Api.Services.Processings.GuardianRequests
             {
                 throw CreateAndLogValidationException(invalidGuardianRequestProcessingException);
             }
+            catch (GuardianValidationException guardianValidationException)
+            {
+                throw CreateAndLogDependencyValidationException(guardianValidationException);
+            }
         }
 
         private GuardianRequestProcessingValidationException CreateAndLogValidationException(Xeption exception)
@@ -38,6 +43,17 @@ namespace SCMS.Services.Api.Services.Processings.GuardianRequests
             this.loggingBroker.LogError(guardianRequestProcessingValidationException);
 
             return guardianRequestProcessingValidationException;
+        }
+
+        private GuardianRequestProcessingDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
+        {
+            var guardianRequestProcessingDependencyValidationException =
+                new GuardianRequestProcessingDependencyValidationException(
+                    exception.InnerException as Xeption);
+
+            this.loggingBroker.LogError(guardianRequestProcessingDependencyValidationException);
+
+            return guardianRequestProcessingDependencyValidationException;
         }
     }
 }

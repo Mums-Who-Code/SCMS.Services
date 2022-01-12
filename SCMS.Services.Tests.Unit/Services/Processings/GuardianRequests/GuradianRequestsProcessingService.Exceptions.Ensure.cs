@@ -20,7 +20,7 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.GuardianRequests
         public async Task ShouldThrowDependencyValidationExceptionOnEnsureIfValidationErrorOccursAndLogItAsync()
         {
             // given
-            GuardianRequest someGuardianRequest = new GuardianRequest();
+            GuardianRequest someGuardianRequest = CreateRandomGuardianRequest();
             var someException = new Xeption();
 
             var guardianValidationException =
