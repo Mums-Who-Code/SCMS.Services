@@ -33,6 +33,10 @@ namespace SCMS.Services.Api.Services.Processings.GuardianRequests
             {
                 throw CreateAndLogDependencyValidationException(guardianValidationException);
             }
+            catch (GuardianDependencyException guardianDependencyException)
+            {
+                throw CreateAndLogDependencyException(guardianDependencyException);
+            }
         }
 
         private GuardianRequestProcessingValidationException CreateAndLogValidationException(Xeption exception)
@@ -54,6 +58,17 @@ namespace SCMS.Services.Api.Services.Processings.GuardianRequests
             this.loggingBroker.LogError(guardianRequestProcessingDependencyValidationException);
 
             return guardianRequestProcessingDependencyValidationException;
+        }
+
+        private GuardianRequestProcessingDependencyException CreateAndLogDependencyException(Xeption exception)
+        {
+            var guardianRequestProcessingDependencyException =
+                new GuardianRequestProcessingDependencyException(
+                    exception.InnerException as Xeption);
+
+            this.loggingBroker.LogError(guardianRequestProcessingDependencyException);
+
+            return guardianRequestProcessingDependencyException;
         }
     }
 }
