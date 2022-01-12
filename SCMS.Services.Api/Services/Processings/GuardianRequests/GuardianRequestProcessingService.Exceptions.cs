@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using SCMS.Services.Api.Models.Foundations.Guardians.Exceptions;
 using SCMS.Services.Api.Models.Processings.GuardianRequests;
@@ -41,6 +42,13 @@ namespace SCMS.Services.Api.Services.Processings.GuardianRequests
             {
                 throw CreateAndLogDependencyException(guardianServiceException);
             }
+            catch(Exception exception)
+            {
+                var failedGuardianRequestProcessingException =
+                    new FailedGuardianRequestProcessingException(exception);
+
+                throw CreateAndLogServiceException(failedGuardianRequestProcessingException);
+            }
         }
 
         private GuardianRequestProcessingValidationException CreateAndLogValidationException(Xeption exception)
@@ -73,6 +81,16 @@ namespace SCMS.Services.Api.Services.Processings.GuardianRequests
             this.loggingBroker.LogError(guardianRequestProcessingDependencyException);
 
             return guardianRequestProcessingDependencyException;
+        }
+
+        private GuardianRequestProcessingServiceException CreateAndLogServiceException(Xeption exception)
+        {
+            var guardianRequestProcessingServiceException =
+                new GuardianRequestProcessingServiceException(exception);
+
+            this.loggingBroker.LogError(guardianRequestProcessingServiceException);
+
+            return guardianRequestProcessingServiceException;
         }
     }
 }
