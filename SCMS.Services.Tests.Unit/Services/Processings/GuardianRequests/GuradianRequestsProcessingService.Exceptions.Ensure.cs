@@ -61,23 +61,21 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.GuardianRequests
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
-        [Fact]
-        public async Task ShouldThrowDependencyExceptionOnEnsureIfDependencyErrorOccursAndLogItAsync()
+        [Theory]
+        [MemberData(nameof(DependencyExceptions))]
+        public async Task ShouldThrowDependencyExceptionOnEnsureIfDependencyErrorOccursAndLogItAsync(
+            Xeption dependencyException)
         {
             // given
             GuardianRequest someGuardianRequest = CreateRandomGuardianRequest();
-            var someException = new Xeption();
-
-            var guardianDependencyException =
-                new GuardianDependencyException(someException);
 
             var expectedGuardianRequestProcessingDependencyException =
                 new GuardianRequestProcessingDependencyException(
-                    guardianDependencyException.InnerException as Xeption);
+                    dependencyException.InnerException as Xeption);
 
             this.guardianServiceMock.Setup(service =>
                 service.RetrieveGuardianByIdAsync(It.IsAny<Guid>()))
-                    .ThrowsAsync(guardianDependencyException);
+                    .ThrowsAsync(dependencyException);
 
             // when
             ValueTask<GuardianRequest> ensureGuardianRequestExistsTask =
