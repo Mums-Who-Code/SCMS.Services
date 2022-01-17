@@ -33,7 +33,7 @@ namespace SCMS.Services.Api.Services.Processings.GuardianRequests
             return mayBeGuardian switch
             {
                 null => await AddGuardianRequest(guardianRequest),
-                _ => MapToGuardianRequest(mayBeGuardian, guardianRequest.StudentId)
+                _ => MapToGuardianRequest(mayBeGuardian, guardianRequest)
             };
         });
 
@@ -44,7 +44,7 @@ namespace SCMS.Services.Api.Services.Processings.GuardianRequests
         {
             Guardian guardian = await AddGuardianAsync(guardianRequest);
 
-            return MapToGuardianRequest(guardian, guardianRequest.StudentId);
+            return MapToGuardianRequest(guardian, guardianRequest);
         }
 
         private async ValueTask<Guardian> AddGuardianAsync(GuardianRequest guardianRequest)
@@ -73,7 +73,7 @@ namespace SCMS.Services.Api.Services.Processings.GuardianRequests
             };
         }
 
-        private GuardianRequest MapToGuardianRequest(Guardian guardian, Guid studentId)
+        private GuardianRequest MapToGuardianRequest(Guardian guardian, GuardianRequest guardianRequest)
         {
             return new GuardianRequest
             {
@@ -85,7 +85,9 @@ namespace SCMS.Services.Api.Services.Processings.GuardianRequests
                 CountryCode = guardian.CountryCode,
                 ContactNumber = guardian.ContactNumber,
                 Occupation = guardian.Occupation,
-                StudentId = studentId,
+                ContactLevel = guardianRequest.ContactLevel,
+                Relationship = guardianRequest.Relationship,
+                StudentId = guardianRequest.StudentId,
                 CreatedDate = guardian.CreatedDate,
                 UpdatedDate = guardian.UpdatedDate,
                 CreatedBy = guardian.CreatedBy,

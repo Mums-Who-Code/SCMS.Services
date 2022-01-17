@@ -40,7 +40,7 @@ namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianReques
                     .ReturnsAsync(returningGuardianRequest);
 
             this.studentGuardianProcessingServiceMock.InSequence(mockSequence).Setup(service =>
-                service.AddStudentGuardianAsync(inputStudentGuardian))
+                service.AddStudentGuardianAsync(It.Is(SameStudentGuardianAs(inputStudentGuardian))))
                     .ReturnsAsync(returningStudentGuardian);
 
             // when
@@ -60,8 +60,9 @@ namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianReques
                     Times.Once);
 
             this.studentGuardianProcessingServiceMock.Verify(service =>
-                service.AddStudentGuardianAsync(inputStudentGuardian),
-                    Times.Once);
+                service.AddStudentGuardianAsync(It.Is(SameStudentGuardianAs(
+                    inputStudentGuardian))),
+                        Times.Once);
 
             this.studentProcessingServiceMock.VerifyNoOtherCalls();
             this.guardianRequestProcessingServiceMock.VerifyNoOtherCalls();

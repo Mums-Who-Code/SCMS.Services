@@ -3,6 +3,8 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq.Expressions;
+using KellermanSoftware.CompareNetObjects;
 using Moq;
 using SCMS.Services.Api.Brokers.Loggings;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
@@ -22,6 +24,7 @@ namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianReques
         private readonly Mock<IStudentGuardianProcessingService> studentGuardianProcessingServiceMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly IStudentGuardianRequestOrchestrationService studentGuardianRequestOrchestrationService;
+        private readonly ICompareLogic compareLogic;
 
         public StudentGuardianRequestOrchestrationServiceTests()
         {
@@ -29,12 +32,21 @@ namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianReques
             this.guardianRequestProcessingServiceMock = new Mock<IGuardianRequestProcessingService>();
             this.studentGuardianProcessingServiceMock = new Mock<IStudentGuardianProcessingService>();
             this.loggingBrokerMock = new Mock<ILoggingBroker>();
+            this.compareLogic = new CompareLogic();
 
             this.studentGuardianRequestOrchestrationService = new StudentGuardianRequestOrchestrationService(
                 studentProcessingService: this.studentProcessingServiceMock.Object,
                 guardianRequestProcessingService: this.guardianRequestProcessingServiceMock.Object,
-                studentGuardianRequestProcessingService: this.studentGuardianProcessingServiceMock.Object,
+                studentGuardianProcessingService: this.studentGuardianProcessingServiceMock.Object,
                 loggingBroker: this.loggingBrokerMock.Object);
+        }
+
+        private Expression<Func<StudentGuardian, bool>> SameStudentGuardianAs(
+            StudentGuardian expectedStudentGuardian)
+        {
+            return actualStudentGuardian =>
+                this.compareLogic.Compare(expectedStudentGuardian, actualStudentGuardian)
+                    .AreEqual;
         }
 
         private DateTimeOffset GetRandomDateTime() =>
@@ -63,6 +75,10 @@ namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianReques
             var filler = new Filler<StudentGuardian>();
 
             filler.Setup()
+                .OnProperty(studentGuardian => studentGuardian.Guardian).IgnoreIt()
+                .OnProperty(studentGuardian => studentGuardian.Student).IgnoreIt()
+                .OnProperty(studentGuardian => studentGuardian.CreatedByUser).IgnoreIt()
+                .OnProperty(studentGuardian => studentGuardian.UpdatedByUser).IgnoreIt()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler;
