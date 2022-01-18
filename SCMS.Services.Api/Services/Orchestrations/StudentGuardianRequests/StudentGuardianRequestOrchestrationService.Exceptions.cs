@@ -41,17 +41,35 @@ namespace SCMS.Services.Api.Services.Orchestrations.StudentGuardianRequests
                 throw CreateAndLogDependencyValidationException(
                     studentProcessingValidationException);
             }
+            catch (StudentProcessingDependencyValidationException
+                studentProcessingDependencyValidationException)
+            {
+                throw CreateAndLogDependencyValidationException(
+                    studentProcessingDependencyValidationException);
+            }
             catch (GuardianRequestProcessingValidationException
                 guardianRequestProcessingValidationException)
             {
                 throw CreateAndLogDependencyValidationException(
                     guardianRequestProcessingValidationException);
             }
+            catch (GuardianRequestProcessingDependencyValidationException
+                guardianRequestProcessingDependencyValidationException)
+            {
+                throw CreateAndLogDependencyValidationException(
+                    guardianRequestProcessingDependencyValidationException);
+            }
             catch (StudentGuardianProcessingValidationException
                 studentGuardianProcessingValidationException)
             {
                 throw CreateAndLogDependencyValidationException(
                     studentGuardianProcessingValidationException);
+            }
+            catch (StudentGuardianProcessingDependencyValidationException
+                studentGuardianProcessingDependencyValidationException)
+            {
+                throw CreateAndLogDependencyValidationException(
+                    studentGuardianProcessingDependencyValidationException);
             }
         }
 
