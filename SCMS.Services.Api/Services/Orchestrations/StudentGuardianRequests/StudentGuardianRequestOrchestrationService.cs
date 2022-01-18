@@ -12,7 +12,7 @@ using SCMS.Services.Api.Services.Processings.Students;
 
 namespace SCMS.Services.Api.Services.Orchestrations.StudentGuardianRequests
 {
-    public class StudentGuardianRequestOrchestrationService : IStudentGuardianRequestOrchestrationService
+    public partial class StudentGuardianRequestOrchestrationService : IStudentGuardianRequestOrchestrationService
     {
         private readonly IStudentProcessingService studentProcessingService;
         private readonly IGuardianRequestProcessingService guardianRequestProcessingService;
@@ -31,8 +31,10 @@ namespace SCMS.Services.Api.Services.Orchestrations.StudentGuardianRequests
             this.loggingBroker = loggingBroker;
         }
 
-        public async ValueTask<GuardianRequest> AddStudentGuardianRequestAsync(GuardianRequest guardianRequest)
+        public ValueTask<GuardianRequest> AddStudentGuardianRequestAsync(GuardianRequest guardianRequest) =>
+        TryCatch(async () =>
         {
+            ValidateStudentGuardianRequest(guardianRequest);
             await this.studentProcessingService.VerifyStudentExistsAsync(guardianRequest.StudentId);
 
             GuardianRequest addedGuardianRequest =
@@ -42,7 +44,7 @@ namespace SCMS.Services.Api.Services.Orchestrations.StudentGuardianRequests
                 await AddStudentGuardianAsync(guardianRequest);
 
             return MapToGuardianRequest(addedGuardianRequest, addedStudentGuardian);
-        }
+        });
 
         private async ValueTask<StudentGuardian> AddStudentGuardianAsync(GuardianRequest guardianRequest)
         {
