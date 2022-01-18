@@ -5,6 +5,9 @@
 using System.Threading.Tasks;
 using SCMS.Services.Api.Models.Orchestrations.StudentGuardianRequests.Exceptions;
 using SCMS.Services.Api.Models.Processings.GuardianRequests;
+using SCMS.Services.Api.Models.Processings.GuardianRequests.Exceptions;
+using SCMS.Services.Api.Models.Processings.StudentGuardians.Exceptions;
+using SCMS.Services.Api.Models.Processings.Students.Exceptions;
 using Xeptions;
 
 namespace SCMS.Services.Api.Services.Orchestrations.StudentGuardianRequests
@@ -32,6 +35,24 @@ namespace SCMS.Services.Api.Services.Orchestrations.StudentGuardianRequests
                 throw CreateAndLogValidationException(
                     invalidStudentGuardianRequestOrchestrationException);
             }
+            catch (StudentProcessingValidationException
+                studentProcessingValidationException)
+            {
+                throw CreateAndLogDependencyValidationException(
+                    studentProcessingValidationException);
+            }
+            catch (GuardianRequestProcessingValidationException
+                guardianRequestProcessingValidationException)
+            {
+                throw CreateAndLogDependencyValidationException(
+                    guardianRequestProcessingValidationException);
+            }
+            catch (StudentGuardianProcessingValidationException
+                studentGuardianProcessingValidationException)
+            {
+                throw CreateAndLogDependencyValidationException(
+                    studentGuardianProcessingValidationException);
+            }
         }
 
         private StudentGuardianRequestOrchestrationValidationException CreateAndLogValidationException(
@@ -43,6 +64,18 @@ namespace SCMS.Services.Api.Services.Orchestrations.StudentGuardianRequests
             this.loggingBroker.LogError(studentGuardianRequestOrchestrationValidationException);
 
             return studentGuardianRequestOrchestrationValidationException;
+        }
+
+        private StudentGuardianRequestOrchestrationDependencyValidationException
+            CreateAndLogDependencyValidationException(Xeption exception)
+        {
+            var studentGuardianRequestOrchestrationDependencyValidationException =
+                new StudentGuardianRequestOrchestrationDependencyValidationException(
+                    exception.InnerException as Xeption);
+
+            this.loggingBroker.LogError(studentGuardianRequestOrchestrationDependencyValidationException);
+
+            return studentGuardianRequestOrchestrationDependencyValidationException;
         }
     }
 }

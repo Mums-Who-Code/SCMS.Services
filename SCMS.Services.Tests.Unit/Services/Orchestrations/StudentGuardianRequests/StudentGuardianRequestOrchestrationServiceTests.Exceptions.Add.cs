@@ -40,14 +40,14 @@ namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianReques
             await Assert.ThrowsAsync<StudentGuardianRequestOrchestrationDependencyValidationException>(() =>
                 addStudentGuardianRequestTask.AsTask());
 
+            this.studentProcessingServiceMock.Verify(service =>
+                service.VerifyStudentExistsAsync(It.IsAny<Guid>()),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedStudentGuardianRequestOrchestrationDependencyValidationException))),
                         Times.Once);
-
-            this.studentProcessingServiceMock.Verify(service =>
-                service.VerifyStudentExistsAsync(It.IsAny<Guid>()),
-                    Times.Never);
 
             this.guardianRequestProcessingServiceMock.Verify(service =>
                 service.EnsureGuardianRequestExists(It.IsAny<GuardianRequest>()),
@@ -57,8 +57,8 @@ namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianReques
                 service.AddStudentGuardianAsync(It.IsAny<StudentGuardian>()),
                     Times.Never);
 
-            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.studentProcessingServiceMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
             this.guardianRequestProcessingServiceMock.VerifyNoOtherCalls();
             this.studentGuardianProcessingServiceMock.VerifyNoOtherCalls();
         }
