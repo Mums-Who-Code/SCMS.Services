@@ -9,12 +9,16 @@ using Moq;
 using SCMS.Services.Api.Brokers.Loggings;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 using SCMS.Services.Api.Models.Processings.GuardianRequests;
+using SCMS.Services.Api.Models.Processings.GuardianRequests.Exceptions;
+using SCMS.Services.Api.Models.Processings.StudentGuardians.Exceptions;
+using SCMS.Services.Api.Models.Processings.Students.Exceptions;
 using SCMS.Services.Api.Services.Orchestrations.StudentGuardianRequests;
 using SCMS.Services.Api.Services.Processings.GuardianRequests;
 using SCMS.Services.Api.Services.Processings.StudentGuardians;
 using SCMS.Services.Api.Services.Processings.Students;
 using Tynamix.ObjectFiller;
 using Xeptions;
+using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianRequests
 {
@@ -40,6 +44,18 @@ namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianReques
                 guardianRequestProcessingService: this.guardianRequestProcessingServiceMock.Object,
                 studentGuardianProcessingService: this.studentGuardianProcessingServiceMock.Object,
                 loggingBroker: this.loggingBrokerMock.Object);
+        }
+
+        public static TheoryData DependencyValidationExceptions()
+        {
+            var someException = new Xeption();
+
+            return new TheoryData<Xeption>()
+            {
+                new StudentProcessingValidationException(someException),
+                new GuardianRequestProcessingValidationException(someException),
+                new StudentGuardianProcessingValidationException(someException)
+            };
         }
 
         private Expression<Func<StudentGuardian, bool>> SameStudentGuardianAs(
@@ -78,6 +94,9 @@ namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianReques
 
             return filler;
         }
+
+        private GuardianRequest CreateRandomGuardianRequest() =>
+            CreateGuardianRequestFiller().Create();
 
         private Filler<StudentGuardian> CreateStudentGuardianFiller()
         {
