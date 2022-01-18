@@ -65,7 +65,7 @@ namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianReques
 
         [Theory]
         [MemberData(nameof(DependencyExceptions))]
-        public async Task ShouldThrowDependencyValidationExceptionAddIfDependencyErrorOccursAndLogItAsync(
+        public async Task ShouldThrowDependencyExceptionAddIfDependencyErrorOccursAndLogItAsync(
             Xeption dependencyException)
         {
             // given
@@ -95,6 +95,57 @@ namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianReques
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedStudentGuardianRequestOrchestrationDependencyException))),
+                        Times.Once);
+
+            this.guardianRequestProcessingServiceMock.Verify(service =>
+                service.EnsureGuardianRequestExists(It.IsAny<GuardianRequest>()),
+                    Times.Never);
+
+            this.studentGuardianProcessingServiceMock.Verify(service =>
+                service.AddStudentGuardianAsync(It.IsAny<StudentGuardian>()),
+                    Times.Never);
+
+            this.studentProcessingServiceMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.guardianRequestProcessingServiceMock.VerifyNoOtherCalls();
+            this.studentGuardianProcessingServiceMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionAddIfServiceErrorOccursAndLogItAsync()
+        {
+            // given
+            GuardianRequest someGuardianRequest = CreateRandomGuardianRequest();
+            var serviceException = new Exception();
+
+            var failedStudentGuardianRequestOrchestrationException =
+                new FailedStudentGuardianRequestOrchestrationException(
+                    serviceException);
+
+            var expectedStudentGuardianRequestOrchestrationServiceException =
+                new StudentGuardianRequestOrchestrationServiceException(
+                    failedStudentGuardianRequestOrchestrationException);
+
+            this.studentProcessingServiceMock.Setup(service =>
+                service.VerifyStudentExistsAsync(It.IsAny<Guid>()))
+                    .ThrowsAsync(serviceException);
+
+            // when
+            ValueTask<GuardianRequest> addStudentGuardianRequestTask =
+                this.studentGuardianRequestOrchestrationService
+                    .AddStudentGuardianRequestAsync(someGuardianRequest);
+
+            // then
+            await Assert.ThrowsAsync<StudentGuardianRequestOrchestrationServiceException>(() =>
+                addStudentGuardianRequestTask.AsTask());
+
+            this.studentProcessingServiceMock.Verify(service =>
+                service.VerifyStudentExistsAsync(It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentGuardianRequestOrchestrationServiceException))),
                         Times.Once);
 
             this.guardianRequestProcessingServiceMock.Verify(service =>
