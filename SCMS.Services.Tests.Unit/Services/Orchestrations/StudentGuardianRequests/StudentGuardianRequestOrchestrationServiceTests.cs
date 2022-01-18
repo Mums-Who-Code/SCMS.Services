@@ -53,8 +53,11 @@ namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianReques
             return new TheoryData<Xeption>()
             {
                 new StudentProcessingValidationException(someException),
+                new StudentProcessingDependencyValidationException(someException),
                 new GuardianRequestProcessingValidationException(someException),
-                new StudentGuardianProcessingValidationException(someException)
+                new GuardianRequestProcessingDependencyValidationException(someException),
+                new StudentGuardianProcessingValidationException(someException),
+                new StudentGuardianProcessingDependencyValidationException(someException)
             };
         }
 
