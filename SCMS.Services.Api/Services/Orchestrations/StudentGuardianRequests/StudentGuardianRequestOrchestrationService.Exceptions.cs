@@ -13,7 +13,7 @@ using Xeptions;
 
 namespace SCMS.Services.Api.Services.Orchestrations.StudentGuardianRequests
 {
-    public partial class StudentGuardianRequestOrchestrationService : IStudentGuardianRequestOrchestrationService
+    public partial class StudentGuardianRequestOrchestrationService
     {
         private delegate ValueTask<GuardianRequest> ReturningGuardianRequestFunction();
 

@@ -14,7 +14,7 @@ using Xeptions;
 
 namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
 {
-    public partial class StudentGuardianService : IStudentGuardianService
+    public partial class StudentGuardianService
     {
         private delegate ValueTask<StudentGuardian> ReturningStudentGuardianFunction();
         private delegate IQueryable<StudentGuardian> ReturningStudentGuardiansFunction();
