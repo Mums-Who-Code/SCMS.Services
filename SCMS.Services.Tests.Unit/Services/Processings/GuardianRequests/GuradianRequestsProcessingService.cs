@@ -67,7 +67,7 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.GuardianRequests
         }
 
         private Guardian CreateRandomGuardian() =>
-        CreateGuardianFiller().Create();
+            CreateGuardianFiller().Create();
 
         private GuardianRequest CreateRandomGuardianRequest() =>
             CreateGuardianRequestFiller().Create();

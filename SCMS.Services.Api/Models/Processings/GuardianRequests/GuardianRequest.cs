@@ -16,6 +16,8 @@ namespace SCMS.Services.Api.Models.Processings.GuardianRequests
         public string CountryCode { get; set; }
         public string ContactNumber { get; set; }
         public string Occupation { get; set; }
+        public GuardianRequestContactLevel ContactLevel { get; set; }
+        public GuardianRequestRelationship Relationship { get; set; }
         public Guid StudentId { get; set; }
         public DateTimeOffset CreatedDate { get; set; }
         public DateTimeOffset UpdatedDate { get; set; }

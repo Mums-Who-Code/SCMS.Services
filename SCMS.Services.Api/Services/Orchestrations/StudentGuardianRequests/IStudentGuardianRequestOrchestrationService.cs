@@ -5,10 +5,10 @@
 using System.Threading.Tasks;
 using SCMS.Services.Api.Models.Processings.GuardianRequests;
 
-namespace SCMS.Services.Api.Services.Processings.GuardianRequests
+namespace SCMS.Services.Api.Services.Orchestrations.StudentGuardianRequests
 {
-    public interface IGuardianRequestProcessingService
+    public interface IStudentGuardianRequestOrchestrationService
     {
-        ValueTask<GuardianRequest> EnsureGuardianRequestExistsAsync(GuardianRequest guardianRequest);
+        ValueTask<GuardianRequest> AddStudentGuardianRequestAsync(GuardianRequest guardianRequest);
     }
 }

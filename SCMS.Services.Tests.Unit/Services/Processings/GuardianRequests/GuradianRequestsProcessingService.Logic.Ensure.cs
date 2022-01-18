@@ -47,7 +47,7 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.GuardianRequests
             // when
             GuardianRequest actualGuardianRequest =
                 await this.guardianRequestProcessingService
-                    .EnsureGuardianRequestExists(
+                    .EnsureGuardianRequestExistsAsync(
                         inputGuardianRequest);
 
             // then
@@ -103,7 +103,7 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.GuardianRequests
             // when
             GuardianRequest actualGuardianRequest =
                 await this.guardianRequestProcessingService
-                    .EnsureGuardianRequestExists(
+                    .EnsureGuardianRequestExistsAsync(
                         inputGuardianRequest);
 
             // then
