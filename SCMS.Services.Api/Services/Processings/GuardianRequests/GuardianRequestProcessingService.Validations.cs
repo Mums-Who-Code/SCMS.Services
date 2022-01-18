@@ -8,7 +8,7 @@ using SCMS.Services.Api.Models.Processings.GuardianRequests.Exceptions;
 
 namespace SCMS.Services.Api.Services.Processings.GuardianRequests
 {
-    public partial class GuardianRequestProcessingService : IGuardianRequestProcessingService
+    public partial class GuardianRequestProcessingService
     {
         private void ValidateGuardianRequest(GuardianRequest guardianRequest)
         {

@@ -11,7 +11,7 @@ using Xeptions;
 
 namespace SCMS.Services.Api.Services.Processings.Students
 {
-    public partial class StudentProcessingService : IStudentProcessingService
+    public partial class StudentProcessingService
     {
         private delegate ValueTask<Student> ReturningStudentFunction();
 
