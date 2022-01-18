@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using SCMS.Services.Api.Models.Orchestrations.StudentGuardianRequests.Exceptions;
 using SCMS.Services.Api.Models.Processings.GuardianRequests;
@@ -107,6 +108,14 @@ namespace SCMS.Services.Api.Services.Orchestrations.StudentGuardianRequests
                 throw CreateAndLogDependencyException(
                     studentGuardianProcessingServiceException);
             }
+            catch (Exception exception)
+            {
+                var failedStudentGuardianRequestOrchestrationException =
+                    new FailedStudentGuardianRequestOrchestrationException(exception);
+
+                throw CreateAndLogServiceException(
+                    failedStudentGuardianRequestOrchestrationException);
+            }
         }
 
         private StudentGuardianRequestOrchestrationValidationException CreateAndLogValidationException(
@@ -142,6 +151,19 @@ namespace SCMS.Services.Api.Services.Orchestrations.StudentGuardianRequests
             this.loggingBroker.LogError(studentGuardianRequestOrchestrationDependencyException);
 
             return studentGuardianRequestOrchestrationDependencyException;
+        }
+
+        private StudentGuardianRequestOrchestrationServiceException
+            CreateAndLogServiceException(Xeption exception)
+        {
+            var studentGuardianRequestOrchestrationServiceException =
+                new StudentGuardianRequestOrchestrationServiceException(
+                    exception);
+
+            this.loggingBroker.LogError(studentGuardianRequestOrchestrationServiceException);
+
+            return studentGuardianRequestOrchestrationServiceException;
+            ;
         }
     }
 }
