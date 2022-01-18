@@ -14,6 +14,7 @@ using SCMS.Services.Api.Services.Processings.GuardianRequests;
 using SCMS.Services.Api.Services.Processings.StudentGuardians;
 using SCMS.Services.Api.Services.Processings.Students;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianRequests
 {
@@ -47,6 +48,14 @@ namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianReques
             return actualStudentGuardian =>
                 this.compareLogic.Compare(expectedStudentGuardian, actualStudentGuardian)
                     .AreEqual;
+        }
+
+        private Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
+        {
+            return actualException =>
+                actualException.Message == expectedException.Message
+                && actualException.InnerException.Message == expectedException.InnerException.Message
+                && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
         private DateTimeOffset GetRandomDateTime() =>

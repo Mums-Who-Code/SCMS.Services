@@ -33,7 +33,7 @@ namespace SCMS.Services.Api.Services.Orchestrations.StudentGuardianRequests
 
         public async ValueTask<GuardianRequest> AddStudentGuardianRequestAsync(GuardianRequest guardianRequest)
         {
-            this.studentProcessingService.VerifyStudentExistsAsync(guardianRequest.StudentId);
+            await this.studentProcessingService.VerifyStudentExistsAsync(guardianRequest.StudentId);
 
             GuardianRequest addedGuardianRequest =
                 await this.guardianRequestProcessingService.EnsureGuardianRequestExists(guardianRequest);
