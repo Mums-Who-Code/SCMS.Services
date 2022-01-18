@@ -26,6 +26,12 @@ namespace SCMS.Services.Api.Services.Orchestrations.StudentGuardianRequests
                 throw CreateAndLogValidationException(
                     nullStudentGuardianRequestOrchestrationException);
             }
+            catch (InvalidStudentGuardianRequestOrchestrationException
+                invalidStudentGuardianRequestOrchestrationException)
+            {
+                throw CreateAndLogValidationException(
+                    invalidStudentGuardianRequestOrchestrationException);
+            }
         }
 
         private StudentGuardianRequestOrchestrationValidationException CreateAndLogValidationException(
