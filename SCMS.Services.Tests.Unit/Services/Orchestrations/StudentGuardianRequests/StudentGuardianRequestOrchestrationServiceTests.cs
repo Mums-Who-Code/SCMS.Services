@@ -61,6 +61,21 @@ namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianReques
             };
         }
 
+        public static TheoryData DependencyExceptions()
+        {
+            var someException = new Xeption();
+
+            return new TheoryData<Xeption>()
+            {
+                new StudentProcessingDependencyException(someException),
+                new StudentProcessingServiceException(someException),
+                new GuardianRequestProcessingDependencyException(someException),
+                new GuardianRequestProcessingServiceException(someException),
+                new StudentGuardianProcessingDependencyException(someException),
+                new StudentGuardianProcessingServiceException(someException)
+            };
+        }
+
         private Expression<Func<StudentGuardian, bool>> SameStudentGuardianAs(
             StudentGuardian expectedStudentGuardian)
         {
