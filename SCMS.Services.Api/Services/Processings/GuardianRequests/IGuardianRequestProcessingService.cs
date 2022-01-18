@@ -9,6 +9,6 @@ namespace SCMS.Services.Api.Services.Processings.GuardianRequests
 {
     public interface IGuardianRequestProcessingService
     {
-        ValueTask<GuardianRequest> EnsureGuardianRequestExists(GuardianRequest guardianRequest);
+        ValueTask<GuardianRequest> EnsureGuardianRequestExistsAsync(GuardianRequest guardianRequest);
     }
 }

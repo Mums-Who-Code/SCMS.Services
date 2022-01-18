@@ -23,7 +23,7 @@ namespace SCMS.Services.Api.Services.Processings.GuardianRequests
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<GuardianRequest> EnsureGuardianRequestExists(GuardianRequest guardianRequest) =>
+        public ValueTask<GuardianRequest> EnsureGuardianRequestExistsAsync(GuardianRequest guardianRequest) =>
         TryCatch(async () =>
         {
             ValidateGuardianRequest(guardianRequest);

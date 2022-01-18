@@ -38,7 +38,7 @@ namespace SCMS.Services.Api.Services.Orchestrations.StudentGuardianRequests
             await this.studentProcessingService.VerifyStudentExistsAsync(guardianRequest.StudentId);
 
             GuardianRequest addedGuardianRequest =
-                await this.guardianRequestProcessingService.EnsureGuardianRequestExists(guardianRequest);
+                await this.guardianRequestProcessingService.EnsureGuardianRequestExistsAsync(guardianRequest);
 
             StudentGuardian addedStudentGuardian =
                 await AddStudentGuardianAsync(guardianRequest);

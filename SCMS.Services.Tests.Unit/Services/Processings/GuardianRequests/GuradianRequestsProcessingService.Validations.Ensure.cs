@@ -30,7 +30,7 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.GuardianRequests
             // when
             ValueTask<GuardianRequest> ensureGuardianRequestExistsTask =
                 this.guardianRequestProcessingService
-                    .EnsureGuardianRequestExists(
+                    .EnsureGuardianRequestExistsAsync(
                         nullGuardianRequest);
 
             // then
@@ -102,7 +102,7 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.GuardianRequests
             // when
             ValueTask<GuardianRequest> ensureGuardianRequestExistsTask =
                 this.guardianRequestProcessingService
-                    .EnsureGuardianRequestExists(
+                    .EnsureGuardianRequestExistsAsync(
                         invalidGuardianRequest);
 
             // then

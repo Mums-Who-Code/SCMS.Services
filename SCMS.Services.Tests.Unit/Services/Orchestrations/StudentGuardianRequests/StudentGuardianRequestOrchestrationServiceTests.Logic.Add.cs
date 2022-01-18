@@ -36,7 +36,7 @@ namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianReques
                 service.VerifyStudentExistsAsync(inputStudentId));
 
             this.guardianRequestProcessingServiceMock.InSequence(mockSequence).Setup(service =>
-                service.EnsureGuardianRequestExists(inputGuardianRequest))
+                service.EnsureGuardianRequestExistsAsync(inputGuardianRequest))
                     .ReturnsAsync(returningGuardianRequest);
 
             this.studentGuardianProcessingServiceMock.InSequence(mockSequence).Setup(service =>
@@ -56,7 +56,7 @@ namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianReques
                     Times.Once);
 
             this.guardianRequestProcessingServiceMock.Verify(service =>
-                service.EnsureGuardianRequestExists(inputGuardianRequest),
+                service.EnsureGuardianRequestExistsAsync(inputGuardianRequest),
                     Times.Once);
 
             this.studentGuardianProcessingServiceMock.Verify(service =>

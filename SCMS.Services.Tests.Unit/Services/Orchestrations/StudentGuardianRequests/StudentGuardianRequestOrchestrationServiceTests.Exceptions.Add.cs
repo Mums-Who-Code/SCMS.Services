@@ -50,7 +50,7 @@ namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianReques
                         Times.Once);
 
             this.guardianRequestProcessingServiceMock.Verify(service =>
-                service.EnsureGuardianRequestExists(It.IsAny<GuardianRequest>()),
+                service.EnsureGuardianRequestExistsAsync(It.IsAny<GuardianRequest>()),
                     Times.Never);
 
             this.studentGuardianProcessingServiceMock.Verify(service =>
@@ -98,7 +98,7 @@ namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianReques
                         Times.Once);
 
             this.guardianRequestProcessingServiceMock.Verify(service =>
-                service.EnsureGuardianRequestExists(It.IsAny<GuardianRequest>()),
+                service.EnsureGuardianRequestExistsAsync(It.IsAny<GuardianRequest>()),
                     Times.Never);
 
             this.studentGuardianProcessingServiceMock.Verify(service =>
@@ -149,7 +149,7 @@ namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianReques
                         Times.Once);
 
             this.guardianRequestProcessingServiceMock.Verify(service =>
-                service.EnsureGuardianRequestExists(It.IsAny<GuardianRequest>()),
+                service.EnsureGuardianRequestExistsAsync(It.IsAny<GuardianRequest>()),
                     Times.Never);
 
             this.studentGuardianProcessingServiceMock.Verify(service =>
