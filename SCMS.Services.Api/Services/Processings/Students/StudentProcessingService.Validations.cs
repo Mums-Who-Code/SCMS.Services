@@ -8,7 +8,7 @@ using SCMS.Services.Api.Models.Processings.Students.Exceptions;
 
 namespace SCMS.Services.Api.Services.Processings.Students
 {
-    public partial class StudentProcessingService : IStudentProcessingService
+    public partial class StudentProcessingService
     {
         private static void Validate(Guid studentId)
         {

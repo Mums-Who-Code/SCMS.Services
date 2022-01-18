@@ -8,7 +8,7 @@ using SCMS.Services.Api.Models.Foundations.StudentGuardians.Exceptions;
 
 namespace SCMS.Services.Api.Services.Foundations.StudentGuardians
 {
-    public partial class StudentGuardianService : IStudentGuardianService
+    public partial class StudentGuardianService
     {
         private void ValidateStudentGuardian(StudentGuardian studentGuardian)
         {
