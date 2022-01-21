@@ -34,6 +34,10 @@ namespace SCMS.Services.Api.Services.Processings.GuardianRequests
             {
                 throw CreateAndLogDependencyValidationException(guardianValidationException);
             }
+            catch (GuardianDependencyValidationException guardianDependencyValidationException)
+            {
+                throw CreateAndLogDependencyValidationException(guardianDependencyValidationException);
+            }
             catch (GuardianDependencyException guardianDependencyException)
             {
                 throw CreateAndLogDependencyException(guardianDependencyException);
