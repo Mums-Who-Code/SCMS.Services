@@ -16,23 +16,22 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.GuardianRequests
 {
     public partial class GuradianRequestsProcessingService
     {
-        [Fact]
-        public async Task ShouldThrowDependencyValidationExceptionOnEnsureIfValidationErrorOccursAndLogItAsync()
+        [Theory]
+        [MemberData(nameof(DependencyValidationExceptions))]
+        public async Task ShouldThrowDependencyValidationExceptionOnEnsureIfValidationErrorOccursAndLogItAsync(
+            Xeption dependencyValidationException)
         {
             // given
             GuardianRequest someGuardianRequest = CreateRandomGuardianRequest();
             var someException = new Xeption();
 
-            var guardianValidationException =
-                new GuardianValidationException(someException);
-
             var expectedGuardianRequestProcessingDependencyValidationException =
                 new GuardianRequestProcessingDependencyValidationException(
-                    guardianValidationException.InnerException as Xeption);
+                    dependencyValidationException.InnerException as Xeption);
 
             this.guardianServiceMock.Setup(service =>
                 service.RetrieveGuardianByIdAsync(It.IsAny<Guid>()))
-                    .ThrowsAsync(guardianValidationException);
+                    .ThrowsAsync(dependencyValidationException);
 
             // when
             ValueTask<GuardianRequest> ensureGuardianRequestExistsTask =
