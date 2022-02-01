@@ -64,9 +64,9 @@ namespace SCMS.Services.Api.Services.Orchestrations.StudentGuardianRequests
             {
                 if (rule.Condition)
                 {
-                    invalidStudentGuardianRequestOrchestrationException.AddData(
+                    invalidStudentGuardianRequestOrchestrationException.UpsertDataList(
                         key: parameter,
-                        values: rule.Message);
+                        value: rule.Message);
                 }
             }
 

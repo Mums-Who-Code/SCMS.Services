@@ -36,6 +36,17 @@ namespace SCMS.Services.Tests.Unit.Services.Processings.GuardianRequests
                 loggingBroker: this.loggingBrokerMock.Object);
         }
 
+        public static TheoryData DependencyValidationExceptions()
+        {
+            var someXeption = new Xeption();
+
+            return new TheoryData<Xeption>
+            {
+                new GuardianValidationException(someXeption),
+                new GuardianDependencyValidationException(someXeption)
+            };
+        }
+
         public static TheoryData DependencyExceptions()
         {
             var someXeption = new Xeption();
