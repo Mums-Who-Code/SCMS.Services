@@ -78,7 +78,7 @@ namespace SCMS.Services.Api.Services.Orchestrations.StudentGuardianRequests
                 Title = addedGuardianRequest.Title,
                 FirstName = addedGuardianRequest.FirstName,
                 LastName = addedGuardianRequest.LastName,
-                EmailId = addedGuardianRequest.EmailId,
+                Email = addedGuardianRequest.Email,
                 CountryCode = addedGuardianRequest.CountryCode,
                 ContactNumber = addedGuardianRequest.ContactNumber,
                 Occupation = addedGuardianRequest.Occupation,

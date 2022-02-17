@@ -18,7 +18,7 @@ namespace SCMS.Services.Api.Services.Processings.GuardianRequests
                 (Rule: IsInvalid(guardianRequest.Id), Parameter: nameof(GuardianRequest.Id)),
                 (Rule: IsInvalid(text: guardianRequest.FirstName), Parameter: nameof(GuardianRequest.FirstName)),
                 (Rule: IsInvalid(text: guardianRequest.LastName), Parameter: nameof(GuardianRequest.LastName)),
-                (Rule: IsInvalid(text: guardianRequest.EmailId), Parameter: nameof(GuardianRequest.EmailId)),
+                (Rule: IsInvalid(text: guardianRequest.Email), Parameter: nameof(GuardianRequest.Email)),
                 (Rule: IsInvalid(text: guardianRequest.CountryCode), Parameter: nameof(GuardianRequest.CountryCode)),
                 (Rule: IsInvalid(text: guardianRequest.ContactNumber), Parameter: nameof(GuardianRequest.ContactNumber)),
                 (Rule: IsInvalid(text: guardianRequest.Occupation), Parameter: nameof(GuardianRequest.Occupation)),
