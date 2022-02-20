@@ -26,7 +26,7 @@ namespace SCMS.Services.Api.Services.Foundations.TermsAndConditions
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<TermsAndCondition> AddTermsAndConditionAsync(TermsAndCondition termsAndCondition) =>
-            throw new System.NotImplementedException();
+        public async ValueTask<TermsAndCondition> AddTermsAndConditionAsync(TermsAndCondition termsAndCondition) =>
+            await this.storageBroker.InsertTermsAndConditionAsync(termsAndCondition);
     }
 }
