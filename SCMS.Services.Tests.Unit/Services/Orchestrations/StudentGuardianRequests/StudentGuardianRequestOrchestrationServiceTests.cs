@@ -116,6 +116,17 @@ namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianReques
         private GuardianRequest CreateRandomGuardianRequest() =>
             CreateGuardianRequestFiller().Create();
 
+       
+
+        private Filler<GuardianRequest> CreateGuardianRequestFiller()
+        {
+            var filler = new Filler<GuardianRequest>();
+
+            filler.Setup()
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
+
+            return filler;
+        }
         private Filler<StudentGuardian> CreateStudentGuardianFiller()
         {
             var filler = new Filler<StudentGuardian>();
@@ -125,16 +136,6 @@ namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianReques
                 .OnProperty(studentGuardian => studentGuardian.Student).IgnoreIt()
                 .OnProperty(studentGuardian => studentGuardian.CreatedByUser).IgnoreIt()
                 .OnProperty(studentGuardian => studentGuardian.UpdatedByUser).IgnoreIt()
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
-
-            return filler;
-        }
-
-        private Filler<GuardianRequest> CreateGuardianRequestFiller()
-        {
-            var filler = new Filler<GuardianRequest>();
-
-            filler.Setup()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
             return filler;
