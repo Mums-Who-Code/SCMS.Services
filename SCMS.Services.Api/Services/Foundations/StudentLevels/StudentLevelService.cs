@@ -27,7 +27,7 @@ namespace SCMS.Services.Api.Services.Foundations.StudentLevels
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<StudentLevel> AddStudentLevelAsync(StudentLevel studentLevel) =>
-            throw new NotImplementedException();
+        public async ValueTask<StudentLevel> AddStudentLevelAsync(StudentLevel studentLevel) =>
+            await this.storageBroker.InsertStudentLevelAsync(studentLevel);
     }
 }
