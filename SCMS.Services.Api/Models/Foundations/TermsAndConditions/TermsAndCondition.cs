@@ -9,7 +9,7 @@ namespace SCMS.Services.Api.Models.Foundations.TermsAndConditions
 {
     public class TermsAndCondition
     {
-        public Guid ID { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Url { get; set; }
         public TermsAndConditionType Type { get; set; }
