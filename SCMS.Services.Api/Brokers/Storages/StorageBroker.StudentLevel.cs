@@ -9,9 +9,9 @@ using SCMS.Services.Api.Models.Foundations.StudentLevels;
 
 namespace SCMS.Services.Api.Brokers.Storages
 {
-    public  partial class StorageBroker
+    public partial class StorageBroker
     {
-       public DbSet<StudentLevel> StudentLevels { get; set; }
+        public DbSet<StudentLevel> StudentLevels { get; set; }
 
         public async ValueTask<StudentLevel> InsertStudentLevelAsync(StudentLevel studentLevel)
         {

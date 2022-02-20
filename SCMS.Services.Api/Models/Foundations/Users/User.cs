@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using SCMS.Services.Api.Models.Foundations.Branches;
 using SCMS.Services.Api.Models.Foundations.Guardians;
 using SCMS.Services.Api.Models.Foundations.Schools;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
@@ -41,12 +42,18 @@ namespace SCMS.Services.Api.Models.Foundations.Users
 
         [JsonIgnore]
         public IEnumerable<StudentGuardian> UpdatedStudentGuardians { get; set; }
-         
+
         [JsonIgnore]
         public IEnumerable<StudentLevel> CreatedStudentLevels { get; set; }
 
         [JsonIgnore]
         public IEnumerable<StudentLevel> UpdatedStudentLevels { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<Branch> CreatedBranches { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<Branch> UpdatedBranches { get; set; }
 
     }
 }

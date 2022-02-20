@@ -6,7 +6,6 @@ using System;
 using System.Threading.Tasks;
 using Moq;
 using SCMS.Services.Api.Models.Foundations.Guardians;
-using SCMS.Services.Api.Models.Foundations.Guardians.Exceptions;
 using SCMS.Services.Api.Models.Processings.GuardianRequests;
 using SCMS.Services.Api.Models.Processings.GuardianRequests.Exceptions;
 using Xeptions;
