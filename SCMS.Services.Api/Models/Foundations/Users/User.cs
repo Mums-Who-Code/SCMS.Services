@@ -41,7 +41,7 @@ namespace SCMS.Services.Api.Models.Foundations.Users
 
         [JsonIgnore]
         public IEnumerable<StudentGuardian> UpdatedStudentGuardians { get; set; }
-         
+
         [JsonIgnore]
         public IEnumerable<StudentLevel> CreatedStudentLevels { get; set; }
 

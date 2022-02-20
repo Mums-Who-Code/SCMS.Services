@@ -17,6 +17,6 @@ namespace SCMS.Services.Api.Models.Foundations.StudentLevels
         public User CreatedByUser { get; set; }
 
         public Guid UpdatedBy { get; set; }
-        public User UpdatedByUser { get; set; } 
+        public User UpdatedByUser { get; set; }
     }
 }
