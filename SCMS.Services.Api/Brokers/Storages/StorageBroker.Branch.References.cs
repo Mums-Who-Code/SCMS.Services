@@ -24,7 +24,7 @@ namespace SCMS.Services.Api.Brokers.Storages
             modelBuilder.Entity<Branch>()
                 .HasOne(branch => branch.UpdatedByUser)
                 .WithMany(user => user.UpdatedBranches)
-                .HasForeignKey(branch =>branch.UpdatedBy)
+                .HasForeignKey(branch => branch.UpdatedBy)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

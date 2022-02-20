@@ -50,7 +50,7 @@ namespace SCMS.Services.Api.Models.Foundations.Users
         public IEnumerable<StudentLevel> UpdatedStudentLevels { get; set; }
 
         [JsonIgnore]
-        public IEnumerable<Branch> CreatedBranches{ get; set; }
+        public IEnumerable<Branch> CreatedBranches { get; set; }
 
         [JsonIgnore]
         public IEnumerable<Branch> UpdatedBranches { get; set; }
