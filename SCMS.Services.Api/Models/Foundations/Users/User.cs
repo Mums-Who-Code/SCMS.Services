@@ -61,6 +61,5 @@ namespace SCMS.Services.Api.Models.Foundations.Users
 
         [JsonIgnore]
         public IEnumerable<TermsAndCondition> UpdatedTermsAndCondition { get; set; }
-
     }
 }
