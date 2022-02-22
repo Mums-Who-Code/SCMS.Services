@@ -22,6 +22,12 @@ namespace SCMS.Services.Api.Brokers.Storages
                 .WithMany(user => user.UpdatedAgreements)
                 .HasForeignKey(agreement => agreement.UpdatedBy)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Agreement>()
+                .HasOne(agreement => agreement.TermsAndCondition)
+                .WithMany(TermsAndCondition => TermsAndCondition.TermsAndConditiondAgreements)
+                .HasForeignKey(agreement => agreement.TermsAndConditionId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

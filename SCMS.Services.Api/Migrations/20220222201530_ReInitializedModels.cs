@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SCMS.Services.Api.Migrations
 {
-    public partial class InitializeModels : Migration
+    public partial class ReInitializedModels : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,34 +23,6 @@ namespace SCMS.Services.Api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Agreements",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    ResponseDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    TermsAndConditionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Agreements", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Agreements_Users_CreatedBy",
-                        column: x => x.CreatedBy,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Agreements_Users_UpdatedBy",
-                        column: x => x.UpdatedBy,
-                        principalTable: "Users",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -229,6 +201,39 @@ namespace SCMS.Services.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Agreements",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    ResponseDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    TermsAndConditionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Agreements", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Agreements_TermsAndConditions_TermsAndConditionId",
+                        column: x => x.TermsAndConditionId,
+                        principalTable: "TermsAndConditions",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Agreements_Users_CreatedBy",
+                        column: x => x.CreatedBy,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Agreements_Users_UpdatedBy",
+                        column: x => x.UpdatedBy,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "StudentGuardians",
                 columns: table => new
                 {
@@ -275,6 +280,11 @@ namespace SCMS.Services.Api.Migrations
                 name: "IX_Agreements_CreatedBy",
                 table: "Agreements",
                 column: "CreatedBy");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Agreements_TermsAndConditionId",
+                table: "Agreements",
+                column: "TermsAndConditionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Agreements_UpdatedBy",

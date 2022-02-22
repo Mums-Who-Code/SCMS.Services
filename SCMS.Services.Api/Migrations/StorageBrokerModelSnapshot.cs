@@ -53,6 +53,8 @@ namespace SCMS.Services.Api.Migrations
 
                     b.HasIndex("CreatedBy");
 
+                    b.HasIndex("TermsAndConditionId");
+
                     b.HasIndex("UpdatedBy");
 
                     b.ToTable("Agreements");
@@ -346,6 +348,12 @@ namespace SCMS.Services.Api.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("SCMS.Services.Api.Models.Foundations.TermsAndConditions.TermsAndCondition", "TermsAndCondition")
+                        .WithMany("TermsAndConditiondAgreements")
+                        .HasForeignKey("TermsAndConditionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "UpdatedByUser")
                         .WithMany("UpdatedAgreements")
                         .HasForeignKey("UpdatedBy")
@@ -353,6 +361,8 @@ namespace SCMS.Services.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("CreatedByUser");
+
+                    b.Navigation("TermsAndCondition");
 
                     b.Navigation("UpdatedByUser");
                 });
@@ -527,6 +537,11 @@ namespace SCMS.Services.Api.Migrations
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Students.Student", b =>
                 {
                     b.Navigation("RegisteredGuardians");
+                });
+
+            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.TermsAndConditions.TermsAndCondition", b =>
+                {
+                    b.Navigation("TermsAndConditiondAgreements");
                 });
 
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Users.User", b =>

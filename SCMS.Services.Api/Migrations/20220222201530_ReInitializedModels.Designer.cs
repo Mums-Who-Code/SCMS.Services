@@ -12,8 +12,8 @@ using SCMS.Services.Api.Brokers.Storages;
 namespace SCMS.Services.Api.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    [Migration("20220222181518_InitializeModels")]
-    partial class InitializeModels
+    [Migration("20220222201530_ReInitializedModels")]
+    partial class ReInitializedModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -54,6 +54,8 @@ namespace SCMS.Services.Api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("TermsAndConditionId");
 
                     b.HasIndex("UpdatedBy");
 
@@ -348,6 +350,12 @@ namespace SCMS.Services.Api.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("SCMS.Services.Api.Models.Foundations.TermsAndConditions.TermsAndCondition", "TermsAndCondition")
+                        .WithMany("TermsAndConditiondAgreements")
+                        .HasForeignKey("TermsAndConditionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "UpdatedByUser")
                         .WithMany("UpdatedAgreements")
                         .HasForeignKey("UpdatedBy")
@@ -355,6 +363,8 @@ namespace SCMS.Services.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("CreatedByUser");
+
+                    b.Navigation("TermsAndCondition");
 
                     b.Navigation("UpdatedByUser");
                 });
@@ -529,6 +539,11 @@ namespace SCMS.Services.Api.Migrations
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Students.Student", b =>
                 {
                     b.Navigation("RegisteredGuardians");
+                });
+
+            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.TermsAndConditions.TermsAndCondition", b =>
+                {
+                    b.Navigation("TermsAndConditiondAgreements");
                 });
 
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Users.User", b =>
