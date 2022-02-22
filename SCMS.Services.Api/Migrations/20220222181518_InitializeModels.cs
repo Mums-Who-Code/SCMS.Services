@@ -1,15 +1,11 @@
-﻿// -----------------------------------------------------------------------
-// Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
-// -----------------------------------------------------------------------
-
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace SCMS.Services.Api.Migrations
 {
-    public partial class ReInitializeModels : Migration
+    public partial class InitializeModels : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,6 +19,34 @@ namespace SCMS.Services.Api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Agreements",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    ResponseDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    TermsAndConditionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Agreements", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Agreements_Users_CreatedBy",
+                        column: x => x.CreatedBy,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Agreements_Users_UpdatedBy",
+                        column: x => x.UpdatedBy,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -244,6 +268,16 @@ namespace SCMS.Services.Api.Migrations
                 values: new object[] { new Guid("ddbda33e-4df4-44ca-945d-62fec7f73973"), "Admin" });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Agreements_CreatedBy",
+                table: "Agreements",
+                column: "CreatedBy");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Agreements_UpdatedBy",
+                table: "Agreements",
+                column: "UpdatedBy");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Branches_CreatedBy",
                 table: "Branches",
                 column: "CreatedBy");
@@ -326,6 +360,9 @@ namespace SCMS.Services.Api.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Agreements");
+
             migrationBuilder.DropTable(
                 name: "Branches");
 

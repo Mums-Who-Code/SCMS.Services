@@ -12,8 +12,8 @@ using SCMS.Services.Api.Brokers.Storages;
 namespace SCMS.Services.Api.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    [Migration("20220222022629_ReInitializeModels")]
-    partial class ReInitializeModels
+    [Migration("20220222181518_InitializeModels")]
+    partial class InitializeModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,42 @@ namespace SCMS.Services.Api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Agreements.Agreement", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("ResponseDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("TermsAndConditionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("UpdatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("Agreements");
+                });
 
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Branches.Branch", b =>
                 {
@@ -304,6 +340,25 @@ namespace SCMS.Services.Api.Migrations
                         });
                 });
 
+            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Agreements.Agreement", b =>
+                {
+                    b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "CreatedByUser")
+                        .WithMany("CreatedAgreements")
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "UpdatedByUser")
+                        .WithMany("UpdatedAgreements")
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("UpdatedByUser");
+                });
+
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Branches.Branch", b =>
                 {
                     b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "CreatedByUser")
@@ -478,6 +533,8 @@ namespace SCMS.Services.Api.Migrations
 
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Users.User", b =>
                 {
+                    b.Navigation("CreatedAgreements");
+
                     b.Navigation("CreatedBranches");
 
                     b.Navigation("CreatedGuardians");
@@ -491,6 +548,8 @@ namespace SCMS.Services.Api.Migrations
                     b.Navigation("CreatedStudents");
 
                     b.Navigation("CreatedTermsAndCondition");
+
+                    b.Navigation("UpdatedAgreements");
 
                     b.Navigation("UpdatedBranches");
 
