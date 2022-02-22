@@ -28,6 +28,6 @@ namespace SCMS.Services.Api.Services.Foundations.Branches
         }
 
         public ValueTask<Branch> AddBranchAsync(Branch branch) =>
-            throw new NotImplementedException();
+            this.storageBroker.InsertBranchAsync(branch);
     }
 }
