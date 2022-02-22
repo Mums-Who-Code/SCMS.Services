@@ -23,7 +23,7 @@ namespace SCMS.Services.Api.Services.Foundations.Guardians
                 (Rule: IsInvalid(text: guardian.CountryCode), Parameter: nameof(Guardian.CountryCode)),
                 (Rule: IsInvalidNumber(guardian.ContactNumber), Parameter: nameof(Guardian.ContactNumber)),
                 (Rule: IsInvalid(text: guardian.Occupation), Parameter: nameof(Guardian.Occupation)),
-                (Rule: IsInvalidEmail(guardian.EmailId), Parameter: nameof(Guardian.EmailId)),
+                (Rule: IsInvalidEmail(guardian.Email), Parameter: nameof(Guardian.Email)),
                 (Rule: IsInvalid(date: guardian.CreatedDate), Parameter: nameof(Guardian.CreatedDate)),
                 (Rule: IsInvalid(id: guardian.CreatedBy), Parameter: nameof(Guardian.CreatedBy)),
 
