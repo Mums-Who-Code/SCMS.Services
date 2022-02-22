@@ -69,7 +69,7 @@ namespace SCMS.Services.Api.Migrations
                     b.Property<DateTimeOffset>("CreatedDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("EmailId")
+                    b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
