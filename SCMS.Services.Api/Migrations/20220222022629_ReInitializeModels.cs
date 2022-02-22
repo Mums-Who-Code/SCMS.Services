@@ -1,15 +1,11 @@
-﻿// -----------------------------------------------------------------------
-// Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
-// -----------------------------------------------------------------------
-
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace SCMS.Services.Api.Migrations
 {
-    public partial class ReInitializedModels : Migration
+    public partial class ReInitializeModels : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,6 +22,32 @@ namespace SCMS.Services.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Branches",
+                columns: table => new
+                {
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Branches", x => x.Name);
+                    table.ForeignKey(
+                        name: "FK_Branches_Users_CreatedBy",
+                        column: x => x.CreatedBy,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Branches_Users_UpdatedBy",
+                        column: x => x.UpdatedBy,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Guardians",
                 columns: table => new
                 {
@@ -33,7 +55,7 @@ namespace SCMS.Services.Api.Migrations
                     Title = table.Column<int>(type: "int", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EmailId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CountryCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ContactNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Occupation = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -78,6 +100,59 @@ namespace SCMS.Services.Api.Migrations
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Schools_Users_UpdatedBy",
+                        column: x => x.UpdatedBy,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StudentLevels",
+                columns: table => new
+                {
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StudentLevels", x => x.Name);
+                    table.ForeignKey(
+                        name: "FK_StudentLevels_Users_CreatedBy",
+                        column: x => x.CreatedBy,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_StudentLevels_Users_UpdatedBy",
+                        column: x => x.UpdatedBy,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TermsAndConditions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    UpdatedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TermsAndConditions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TermsAndConditions_Users_CreatedBy",
+                        column: x => x.CreatedBy,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_TermsAndConditions_Users_UpdatedBy",
                         column: x => x.UpdatedBy,
                         principalTable: "Users",
                         principalColumn: "Id");
@@ -165,6 +240,16 @@ namespace SCMS.Services.Api.Migrations
                 values: new object[] { new Guid("ddbda33e-4df4-44ca-945d-62fec7f73973"), "Admin" });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Branches_CreatedBy",
+                table: "Branches",
+                column: "CreatedBy");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Branches_UpdatedBy",
+                table: "Branches",
+                column: "UpdatedBy");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Guardians_CreatedBy",
                 table: "Guardians",
                 column: "CreatedBy");
@@ -200,6 +285,16 @@ namespace SCMS.Services.Api.Migrations
                 column: "UpdatedBy");
 
             migrationBuilder.CreateIndex(
+                name: "IX_StudentLevels_CreatedBy",
+                table: "StudentLevels",
+                column: "CreatedBy");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StudentLevels_UpdatedBy",
+                table: "StudentLevels",
+                column: "UpdatedBy");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Students_CreatedBy",
                 table: "Students",
                 column: "CreatedBy");
@@ -213,12 +308,31 @@ namespace SCMS.Services.Api.Migrations
                 name: "IX_Students_UpdatedBy",
                 table: "Students",
                 column: "UpdatedBy");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TermsAndConditions_CreatedBy",
+                table: "TermsAndConditions",
+                column: "CreatedBy");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TermsAndConditions_UpdatedBy",
+                table: "TermsAndConditions",
+                column: "UpdatedBy");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Branches");
+
+            migrationBuilder.DropTable(
                 name: "StudentGuardians");
+
+            migrationBuilder.DropTable(
+                name: "StudentLevels");
+
+            migrationBuilder.DropTable(
+                name: "TermsAndConditions");
 
             migrationBuilder.DropTable(
                 name: "Guardians");
