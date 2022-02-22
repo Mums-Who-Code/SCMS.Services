@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using SCMS.Services.Api.Models.Foundations.Agreements;
 using SCMS.Services.Api.Models.Foundations.Branches;
 using SCMS.Services.Api.Models.Foundations.Guardians;
 using SCMS.Services.Api.Models.Foundations.Schools;
@@ -61,5 +62,11 @@ namespace SCMS.Services.Api.Models.Foundations.Users
 
         [JsonIgnore]
         public IEnumerable<TermsAndCondition> UpdatedTermsAndCondition { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<Agreement> CreatedAgreements { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<Agreement> UpdatedAgreements { get; set; }
     }
 }
