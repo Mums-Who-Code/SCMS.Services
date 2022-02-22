@@ -2,9 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 using SCMS.Services.Api.Models.Foundations.Guardians.Exceptions;
@@ -45,7 +43,7 @@ namespace SCMS.Services.Api.Controllers
                 return BadRequest(validationException.InnerException);
             }
             catch (StudentGuardianRequestOrchestrationDependencyValidationException validationException)
-                when(validationException.InnerException
+                when (validationException.InnerException
                     is InvalidStudentProcessingException
                     or InvalidStudentException
                     or NullGuardianRequestProcessingException

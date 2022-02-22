@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SCMS.Services.Api.Brokers.Storages;
 
@@ -11,9 +12,10 @@ using SCMS.Services.Api.Brokers.Storages;
 namespace SCMS.Services.Api.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    partial class StorageBrokerModelSnapshot : ModelSnapshot
+    [Migration("20220219073359_AddStudentLevel")]
+    partial class AddStudentLevel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,35 +23,6 @@ namespace SCMS.Services.Api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Branches.Branch", b =>
-                {
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<Guid>("UpdatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset>("UpdatedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.HasKey("Name");
-
-                    b.HasIndex("CreatedBy");
-
-                    b.HasIndex("UpdatedBy");
-
-                    b.ToTable("Branches");
-                });
 
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Guardians.Guardian", b =>
                 {
@@ -69,7 +42,7 @@ namespace SCMS.Services.Api.Migrations
                     b.Property<DateTimeOffset>("CreatedDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("EmailId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
@@ -245,42 +218,6 @@ namespace SCMS.Services.Api.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.TermsAndConditions.TermsAndCondition", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UpdatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset>("UpdatedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Url")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedBy");
-
-                    b.HasIndex("UpdatedBy");
-
-                    b.ToTable("TermsAndConditions");
-                });
-
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -300,25 +237,6 @@ namespace SCMS.Services.Api.Migrations
                             Id = new Guid("ddbda33e-4df4-44ca-945d-62fec7f73973"),
                             Name = "Admin"
                         });
-                });
-
-            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Branches.Branch", b =>
-                {
-                    b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "CreatedByUser")
-                        .WithMany("CreatedBranches")
-                        .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "UpdatedByUser")
-                        .WithMany("UpdatedBranches")
-                        .HasForeignKey("UpdatedBy")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("CreatedByUser");
-
-                    b.Navigation("UpdatedByUser");
                 });
 
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Guardians.Guardian", b =>
@@ -440,25 +358,6 @@ namespace SCMS.Services.Api.Migrations
                     b.Navigation("UpdatedByUser");
                 });
 
-            modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.TermsAndConditions.TermsAndCondition", b =>
-                {
-                    b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "CreatedByUser")
-                        .WithMany("CreatedTermsAndCondition")
-                        .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("SCMS.Services.Api.Models.Foundations.Users.User", "UpdatedByUser")
-                        .WithMany("UpdatedTermsAndCondition")
-                        .HasForeignKey("UpdatedBy")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("CreatedByUser");
-
-                    b.Navigation("UpdatedByUser");
-                });
-
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Guardians.Guardian", b =>
                 {
                     b.Navigation("RegisteredStudents");
@@ -476,8 +375,6 @@ namespace SCMS.Services.Api.Migrations
 
             modelBuilder.Entity("SCMS.Services.Api.Models.Foundations.Users.User", b =>
                 {
-                    b.Navigation("CreatedBranches");
-
                     b.Navigation("CreatedGuardians");
 
                     b.Navigation("CreatedSchools");
@@ -488,10 +385,6 @@ namespace SCMS.Services.Api.Migrations
 
                     b.Navigation("CreatedStudents");
 
-                    b.Navigation("CreatedTermsAndCondition");
-
-                    b.Navigation("UpdatedBranches");
-
                     b.Navigation("UpdatedGuardians");
 
                     b.Navigation("UpdatedSchools");
@@ -501,8 +394,6 @@ namespace SCMS.Services.Api.Migrations
                     b.Navigation("UpdatedStudentLevels");
 
                     b.Navigation("UpdatedStudents");
-
-                    b.Navigation("UpdatedTermsAndCondition");
                 });
 #pragma warning restore 612, 618
         }
