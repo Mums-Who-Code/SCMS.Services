@@ -81,7 +81,7 @@ namespace SCMS.Services.Tests.Unit.Services.Orchestrations.StudentGuardianReques
                 values: "Text is required.");
 
             invalidStudentGuardianRequestOrchestrationException.AddData(
-                key: nameof(GuardianRequest.EmailId),
+                key: nameof(GuardianRequest.Email),
                 values: "Text is required.");
 
             invalidStudentGuardianRequestOrchestrationException.AddData(

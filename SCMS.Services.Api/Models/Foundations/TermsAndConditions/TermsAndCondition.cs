@@ -4,22 +4,18 @@
 
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using SCMS.Services.Api.Models.Foundations.StudentGuardians;
+using System.Text.Json.Serialization;
+using SCMS.Services.Api.Models.Foundations.Agreements;
 using SCMS.Services.Api.Models.Foundations.Users;
 
-namespace SCMS.Services.Api.Models.Foundations.Guardians
+namespace SCMS.Services.Api.Models.Foundations.TermsAndConditions
 {
-    public class Guardian
+    public class TermsAndCondition
     {
         public Guid Id { get; set; }
-        public Title Title { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public string CountryCode { get; set; }
-        public string ContactNumber { get; set; }
-        public string Occupation { get; set; }
+        public string Name { get; set; }
+        public string Url { get; set; }
+        public TermsAndConditionType Type { get; set; }
         public DateTimeOffset CreatedDate { get; set; }
         public DateTimeOffset UpdatedDate { get; set; }
 
@@ -30,6 +26,6 @@ namespace SCMS.Services.Api.Models.Foundations.Guardians
         public User UpdatedByUser { get; set; }
 
         [JsonIgnore]
-        public IEnumerable<StudentGuardian> RegisteredStudents { get; set; }
+        public IEnumerable<Agreement> TermsAndConditiondAgreements { get; set; }
     }
 }

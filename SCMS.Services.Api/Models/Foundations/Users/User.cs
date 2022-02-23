@@ -5,11 +5,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using SCMS.Services.Api.Models.Foundations.Agreements;
+using SCMS.Services.Api.Models.Foundations.Branches;
 using SCMS.Services.Api.Models.Foundations.Guardians;
 using SCMS.Services.Api.Models.Foundations.Schools;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 using SCMS.Services.Api.Models.Foundations.StudentLevels;
 using SCMS.Services.Api.Models.Foundations.Students;
+using SCMS.Services.Api.Models.Foundations.TermsAndConditions;
 
 namespace SCMS.Services.Api.Models.Foundations.Users
 {
@@ -48,5 +51,22 @@ namespace SCMS.Services.Api.Models.Foundations.Users
         [JsonIgnore]
         public IEnumerable<StudentLevel> UpdatedStudentLevels { get; set; }
 
+        [JsonIgnore]
+        public IEnumerable<Branch> CreatedBranches { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<Branch> UpdatedBranches { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<TermsAndCondition> CreatedTermsAndCondition { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<TermsAndCondition> UpdatedTermsAndCondition { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<Agreement> CreatedAgreements { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<Agreement> UpdatedAgreements { get; set; }
     }
 }

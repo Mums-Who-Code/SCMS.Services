@@ -63,7 +63,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
                 CountryCode = invalidText,
                 ContactNumber = GetValidContactNumber(),
                 Occupation = invalidText,
-                EmailId = GetRandomEmail()
+                Email = GetRandomEmail()
             };
 
             var invalidGuardianException = new InvalidGuardianException();
@@ -138,12 +138,12 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
             DateTimeOffset randomDate = GetRandomDateTime();
             Guardian randomGuardian = CreateRandomGuardian(randomDate);
             Guardian invalidGuardian = randomGuardian;
-            invalidGuardian.EmailId = invalidEmail;
+            invalidGuardian.Email = invalidEmail;
 
             var invalidGuardianException = new InvalidGuardianException();
 
             invalidGuardianException.AddData(
-                key: nameof(Guardian.EmailId),
+                key: nameof(Guardian.Email),
                 values: "Text is invalid.");
 
             var expectedGuardianValidationException =

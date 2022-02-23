@@ -12,7 +12,7 @@ namespace SCMS.Services.Api.Models.Processings.GuardianRequests
         public GuardianRequestTitle Title { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string EmailId { get; set; }
+        public string Email { get; set; }
         public string CountryCode { get; set; }
         public string ContactNumber { get; set; }
         public string Occupation { get; set; }
