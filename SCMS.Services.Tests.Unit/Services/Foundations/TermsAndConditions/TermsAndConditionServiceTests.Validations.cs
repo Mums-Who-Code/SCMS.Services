@@ -1,8 +1,11 @@
-﻿using System;
+﻿// -----------------------------------------------------------------------
+// Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
+// -----------------------------------------------------------------------
+
+using System.Threading.Tasks;
 using Moq;
 using SCMS.Services.Api.Models.Foundations.TermsAndConditions;
 using SCMS.Services.Api.Models.Foundations.TermsAndConditions.Exceptions;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions

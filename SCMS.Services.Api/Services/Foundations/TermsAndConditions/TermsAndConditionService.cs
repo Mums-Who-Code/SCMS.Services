@@ -10,7 +10,7 @@ using SCMS.Services.Api.Models.Foundations.TermsAndConditions;
 
 namespace SCMS.Services.Api.Services.Foundations.TermsAndConditions
 {
-    public class TermsAndConditionService : ITermsAndConditionService
+    public partial class TermsAndConditionService : ITermsAndConditionService
     {
         private readonly IStorageBroker storageBroker;
         private readonly IDateTimeBroker dateTimeBroker;
@@ -26,7 +26,13 @@ namespace SCMS.Services.Api.Services.Foundations.TermsAndConditions
             this.loggingBroker = loggingBroker;
         }
 
-        public async ValueTask<TermsAndCondition> AddTermsAndConditionAsync(TermsAndCondition termsAndCondition) =>
-            await this.storageBroker.InsertTermsAndConditionAsync(termsAndCondition);
+        public ValueTask<TermsAndCondition> AddTermsAndConditionAsync(TermsAndCondition termsAndCondition) =>
+        TryCatch(async () =>
+        {
+            ValidateInput(termsAndCondition);
+
+            return await this.storageBroker.InsertTermsAndConditionAsync(termsAndCondition);
+        });
+
     }
 }
