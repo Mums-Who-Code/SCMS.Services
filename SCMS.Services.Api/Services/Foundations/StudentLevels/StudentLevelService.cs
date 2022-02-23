@@ -10,7 +10,7 @@ using SCMS.Services.Api.Models.Foundations.StudentLevels;
 
 namespace SCMS.Services.Api.Services.Foundations.StudentLevels
 {
-    public class StudentLevelService : IStudentLevelService
+    public partial class StudentLevelService : IStudentLevelService
     {
         private readonly IStorageBroker storageBroker;
         private readonly IDateTimeBroker dateTimeBroker;
@@ -26,7 +26,12 @@ namespace SCMS.Services.Api.Services.Foundations.StudentLevels
             this.loggingBroker = loggingBroker;
         }
 
-        public async ValueTask<StudentLevel> AddStudentLevelAsync(StudentLevel studentLevel) =>
-            await this.storageBroker.InsertStudentLevelAsync(studentLevel);
+        public ValueTask<StudentLevel> AddStudentLevelAsync(StudentLevel studentLevel) =>
+        TryCatch(async () =>
+        {
+            ValidateStudentLevel(studentLevel);
+
+            return await this.storageBroker.InsertStudentLevelAsync(studentLevel);
+        });
     }
 }
