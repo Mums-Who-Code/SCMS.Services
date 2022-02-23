@@ -2,7 +2,6 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
 using System.Threading.Tasks;
 using SCMS.Services.Api.Brokers.DateTimes;
 using SCMS.Services.Api.Brokers.Loggings;
@@ -27,7 +26,7 @@ namespace SCMS.Services.Api.Services.Foundations.StudentLevels
             this.loggingBroker = loggingBroker;
         }
 
-        public ValueTask<StudentLevel> AddStudentLevelAsync(StudentLevel studentLevel) =>
-            throw new NotImplementedException();
+        public async ValueTask<StudentLevel> AddStudentLevelAsync(StudentLevel studentLevel) =>
+            await this.storageBroker.InsertStudentLevelAsync(studentLevel);
     }
 }
