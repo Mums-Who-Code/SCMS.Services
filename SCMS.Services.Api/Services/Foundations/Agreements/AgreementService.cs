@@ -15,9 +15,7 @@ namespace SCMS.Services.Api.Services.Foundations.Agreements
         public AgreementService(IStorageBroker storageBroker) =>
             this.storageBroker = storageBroker;
 
-        public ValueTask<Agreement> AddAgreementAsync(Agreement agreement)
-        {
-            throw new System.NotImplementedException();
-        }
+        public async ValueTask<Agreement> AddAgreementAsync(Agreement agreement) =>
+            await this.storageBroker.InsertAgreementAsync(agreement);
     }
 }

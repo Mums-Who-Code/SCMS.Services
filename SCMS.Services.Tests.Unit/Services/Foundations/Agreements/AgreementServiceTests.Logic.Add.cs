@@ -31,7 +31,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Agreements
                 await this.agreementService.AddAgreementAsync(inputAgreement);
 
             //then
-            actualAgreement.Should().BeEquivalentTo(actualAgreement);
+            actualAgreement.Should().BeEquivalentTo(expectedAgreement);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertAgreementAsync(inputAgreement),
