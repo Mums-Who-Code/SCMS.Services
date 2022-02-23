@@ -143,7 +143,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians
             Guid userId = Guid.NewGuid();
 
             filler.Setup()
-                .OnProperty(guardian => guardian.EmailId).Use(GetRandomEmail())
+                .OnProperty(guardian => guardian.Email).Use(GetRandomEmail())
                 .OnProperty(guardian => guardian.ContactNumber).Use(GetValidContactNumber())
                 .OnProperty(guardian => guardian.CreatedByUser).IgnoreIt()
                 .OnProperty(guardian => guardian.UpdatedByUser).IgnoreIt()
