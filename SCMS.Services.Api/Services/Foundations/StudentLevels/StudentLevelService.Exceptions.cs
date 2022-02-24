@@ -24,6 +24,10 @@ namespace SCMS.Services.Api.Services.Foundations.StudentLevels
             {
                 throw CreateAndLogValidationException(nullStudentLevelException);
             }
+            catch (InvalidStudentLevelException invalidStudentLevelException)
+            {
+                throw CreateAndLogValidationException(invalidStudentLevelException);
+            }
         }
 
         private Xeption CreateAndLogValidationException(Xeption exception)

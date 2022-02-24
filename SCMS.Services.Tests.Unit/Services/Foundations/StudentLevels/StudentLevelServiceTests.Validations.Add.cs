@@ -60,7 +60,12 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentLevels
 
             var invalidStudentLevelException = new InvalidStudentLevelException();
 
-             invalidStudentLevelException.AddData(
+
+            invalidStudentLevelException.AddData(
+               key: nameof(StudentLevel.Name),
+               values: "Name is required.");
+
+            invalidStudentLevelException.AddData(
                 key: nameof(StudentLevel.CreatedDate),
                 values: "Date is required.");
 
