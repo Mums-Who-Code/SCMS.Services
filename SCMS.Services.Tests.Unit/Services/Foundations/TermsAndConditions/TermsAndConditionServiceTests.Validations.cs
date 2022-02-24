@@ -45,5 +45,63 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("  ")]
+        public async Task ShouldThrowValidationExceptionOnAddIfTermsAndConditionIsInvalidAndLogItAsync(
+            string invalidText)
+        {
+            // given
+            var invalidTermsAndCondition = new TermsAndCondition
+            {
+                Name = invalidText,
+                Type = GetInvalidEnum<TermsAndConditionType>()
+            };
+
+            var invalidTermsAndConditionException =
+                new InvalidTermsAndConditionException();
+
+            invalidTermsAndConditionException.AddData(
+                key: nameof(TermsAndCondition.Id),
+                values: "Id is required");
+
+            invalidTermsAndConditionException.AddData(
+                key: nameof(TermsAndCondition.Name),
+                values: "Text is required");
+
+            invalidTermsAndConditionException.AddData(
+                key: nameof(TermsAndCondition.Url),
+                values: "Text is invalid");
+
+            invalidTermsAndConditionException.AddData(
+                key: nameof(TermsAndCondition.Type),
+                values: "Value is not recognized");
+
+            var expectedTermsAndConditionValidationException =
+                new TermsAndConditionValidationException(invalidTermsAndConditionException);
+
+            // when
+            ValueTask<TermsAndCondition> addTermsAndConditionTask =
+                this.termsAndConditionService.AddTermsAndConditionAsync(invalidTermsAndCondition);
+
+            // then
+            await Assert.ThrowsAsync<TermsAndConditionValidationException>(() =>
+                addTermsAndConditionTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTermsAndConditionValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertTermsAndConditionAsync(It.IsAny<TermsAndCondition>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
