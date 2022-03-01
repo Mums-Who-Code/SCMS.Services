@@ -37,10 +37,10 @@ namespace SCMS.Services.Api.Services.Foundations.StudentLevels
             Message = "Date is required."
         };
 
-        private static dynamic IsInvalid(string text) => new
+        private static dynamic IsInvalid(string name) => new
         {
-            Condition = string.IsNullOrWhiteSpace(text),
-            Message = "Text is required."
+            Condition = string.IsNullOrWhiteSpace(name),
+            Message = "Name is required."
         };
 
         private static dynamic IsInvalid(Guid id) => new
