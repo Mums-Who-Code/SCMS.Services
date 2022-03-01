@@ -106,5 +106,43 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentLevels
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnAddIfCreatedDateIsNotSameAsUpdatedDateAndLogItAsync()
+        {
+            // given
+            StudentLevel randomStudentLevel = CreateRandomStudentLevel();
+            StudentLevel invalidStudentLevel = randomStudentLevel;
+            invalidStudentLevel.UpdatedDate = invalidStudentLevel.CreatedDate.AddDays(1);
+            var invalidStudentLevelException = new InvalidStudentLevelException();
+
+            invalidStudentLevelException.AddData(
+                key: nameof(StudentLevel.UpdatedDate),
+                values: $"Date is not same as {nameof(StudentLevel.CreatedDate)}.");
+
+            var expectedStudentLevelValidationException =
+                new StudentLevelValidationException(invalidStudentLevelException);
+
+            // when
+            ValueTask<StudentLevel> addStudentLevelTask =
+                this.studentLevelService.AddStudentLevelAsync(invalidStudentLevel);
+
+            // then
+            await Assert.ThrowsAsync<StudentLevelValidationException>(() =>
+                addStudentLevelTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentLevelValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentLevelAsync(It.IsAny<StudentLevel>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
     }
 }
