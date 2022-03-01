@@ -90,6 +90,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
             await Assert.ThrowsAsync<TermsAndConditionValidationException>(() =>
                 addTermsAndConditionTask.AsTask());
 
+            this.dateTimeBrokerMock.Verify(broker =>
+               broker.GetCurrentDateTime(),
+                   Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedTermsAndConditionValidationException))),

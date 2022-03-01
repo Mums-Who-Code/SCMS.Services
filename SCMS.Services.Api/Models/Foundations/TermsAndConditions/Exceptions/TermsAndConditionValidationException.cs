@@ -9,7 +9,7 @@ namespace SCMS.Services.Api.Models.Foundations.TermsAndConditions.Exceptions
 {
     public class TermsAndConditionValidationException : Xeption
     {
-        public TermsAndConditionValidationException(Exception innerException)
+        public TermsAndConditionValidationException(Xeption innerException)
             : base(message: "Terms And Condition validation error occured, fix the error and try again.",
                     innerException)
         { }

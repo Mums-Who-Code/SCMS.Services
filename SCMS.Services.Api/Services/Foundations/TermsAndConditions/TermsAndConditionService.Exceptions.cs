@@ -24,6 +24,10 @@ namespace SCMS.Services.Api.Services.Foundations.TermsAndConditions
             {
                 throw CreateAndLogValidationException(nullTermsAndConditionException);
             }
+            catch (InvalidTermsAndConditionException invalidTermsAndConditionException)
+            {
+                throw CreateAndLogValidationException(invalidTermsAndConditionException);
+            }
         }
 
         private TermsAndConditionValidationException CreateAndLogValidationException(Xeption exception)
