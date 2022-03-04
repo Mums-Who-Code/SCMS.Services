@@ -52,7 +52,7 @@ namespace SCMS.Services.Infrastructure.Build
 
                                 TargetDotNetVersion = new TargetDotNetVersion
                                 {
-                                    DotNetVersion = "7.0.0-preview.1 ",
+                                    DotNetVersion = "7.0.100-preview.1.22110.4 ",
                                     IncludePrerelease = true
                                 },
                             },
