@@ -65,27 +65,27 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
 
             invalidTermsAndConditionException.AddData(
                 key: nameof(TermsAndCondition.Id),
-                values: "Id is required");
+                values: "Id is required.");
 
             invalidTermsAndConditionException.AddData(
                 key: nameof(TermsAndCondition.Name),
-                values: "Text is required");
+                values: "Text is invalid.");
 
-           invalidTermsAndConditionException.AddData(
-                key: nameof(TermsAndCondition.Url),
-                values: "Text is invalid");
+            invalidTermsAndConditionException.AddData(
+                 key: nameof(TermsAndCondition.Url),
+                 values: "Text is invalid.");
 
             invalidTermsAndConditionException.AddData(
                 key: nameof(TermsAndCondition.Type),
-                values: "Value is not recognized");
+                values: "Value is not recognized.");
 
-           invalidTermsAndConditionException.AddData(
-                key: nameof(TermsAndCondition.CreatedBy),
-                values: "Id is required.");
+            invalidTermsAndConditionException.AddData(
+                 key: nameof(TermsAndCondition.CreatedBy),
+                 values: "Id is required.");
 
-           invalidTermsAndConditionException.AddData(
-                key: nameof(TermsAndCondition.UpdatedBy),
-                values: "Id is required.");
+            invalidTermsAndConditionException.AddData(
+                 key: nameof(TermsAndCondition.UpdatedBy),
+                 values: "Id is required.");
 
             invalidTermsAndConditionException.AddData(
                 key: nameof(TermsAndCondition.CreatedDate),

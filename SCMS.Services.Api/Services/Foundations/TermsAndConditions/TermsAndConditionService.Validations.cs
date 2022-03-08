@@ -36,19 +36,19 @@ namespace SCMS.Services.Api.Services.Foundations.TermsAndConditions
         private static dynamic IsInvalid(Guid id) => new
         {
             Condition = id == Guid.Empty,
-            Message = "Id is required"
+            Message = "Id is required."
         };
 
         private static dynamic IsInvalid(string text) => new
         {
             Condition = String.IsNullOrWhiteSpace(text),
-            Message = "Text is required"
+            Message = "Text is invalid."
         };
 
         private static dynamic IsInvalid(TermsAndConditionType status) => new
         {
             Condition = status != TermsAndConditionType.Registration,
-            Message = "Value is invalid."
+            Message = "Value is not recognized."
         };
 
         private static dynamic IsInvalid(DateTimeOffset date) => new
