@@ -124,5 +124,51 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Theory]
+        [MemberData(nameof(InvalidUrls))]
+        public async Task ShouldThrowValidationExceptionOnAddIfUrlIsInvalidAndLogItAsync(
+            string invalidUrl)
+        {
+            //given
+            TermsAndCondition randomTermsAndCondition = CreateRandomTermsAndCondition();
+            TermsAndCondition invalidTermsAndCondition = randomTermsAndCondition;
+            invalidTermsAndCondition.Url = invalidUrl;
+
+            var invalidTermsAndConditionException =
+               new InvalidTermsAndConditionException();
+
+            invalidTermsAndConditionException.AddData(
+                key: nameof(TermsAndCondition.Url),
+                values: "Text is invalid.");
+
+            var expectedTermsAndConditionValidationException =
+                new TermsAndConditionValidationException(invalidTermsAndConditionException);
+
+            //when
+            ValueTask<TermsAndCondition> addTermsAndConditionTask =
+                this.termsAndConditionService.AddTermsAndConditionAsync(invalidTermsAndCondition);
+
+            //then
+            await Assert.ThrowsAsync<TermsAndConditionValidationException>(() =>
+                addTermsAndConditionTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+               broker.GetCurrentDateTime(),
+                   Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTermsAndConditionValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertTermsAndConditionAsync(It.IsAny<TermsAndCondition>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }

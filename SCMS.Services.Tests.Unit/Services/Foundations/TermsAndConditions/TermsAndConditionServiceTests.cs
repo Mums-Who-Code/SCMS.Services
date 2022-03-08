@@ -12,6 +12,7 @@ using SCMS.Services.Api.Models.Foundations.TermsAndConditions;
 using SCMS.Services.Api.Services.Foundations.TermsAndConditions;
 using Tynamix.ObjectFiller;
 using Xeptions;
+using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
 {
@@ -33,6 +34,23 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
                 dateTimeBroker: this.dateTimeBrokerMock.Object,
                 loggingBroker: this.loggingBrokerMock.Object);
         }
+
+        public static TheoryData InvalidUrls()
+        {
+            string randomString = GetRandomString();
+            string letterString = randomString;
+
+            return new TheoryData<string>
+            {
+                null,
+                "",
+                "  ",
+                letterString
+            };
+        }
+
+        private static string GetRandomString() =>
+            new MnemonicString().GetValue();
 
         private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
         {
