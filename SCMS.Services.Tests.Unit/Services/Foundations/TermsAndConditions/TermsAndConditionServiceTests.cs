@@ -42,6 +42,13 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
                 && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
+        private static TermsAndConditionType GetRandomStatus()
+        {
+            TermsAndConditionType Type = TermsAndConditionType.Registration;
+
+            return Type;
+        }
+
         private static T GetInvalidEnum<T>()
         {
             int randomNumber = GetLocalRandomNumber();
@@ -70,6 +77,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
 
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime())
+                .OnProperty(termsAndCondition => termsAndCondition.Type).Use(GetRandomStatus())
                 .OnProperty(termsAndCondition => termsAndCondition.CreatedByUser).IgnoreIt()
                 .OnProperty(termsAndCondition => termsAndCondition.UpdatedByUser).IgnoreIt();
 
