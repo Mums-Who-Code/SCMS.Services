@@ -71,13 +71,30 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
                 key: nameof(TermsAndCondition.Name),
                 values: "Text is required");
 
-            invalidTermsAndConditionException.AddData(
+           invalidTermsAndConditionException.AddData(
                 key: nameof(TermsAndCondition.Url),
                 values: "Text is invalid");
 
             invalidTermsAndConditionException.AddData(
                 key: nameof(TermsAndCondition.Type),
                 values: "Value is not recognized");
+
+           invalidTermsAndConditionException.AddData(
+                key: nameof(TermsAndCondition.CreatedBy),
+                values: "Id is required.");
+
+           invalidTermsAndConditionException.AddData(
+                key: nameof(TermsAndCondition.UpdatedBy),
+                values: "Id is required.");
+
+            invalidTermsAndConditionException.AddData(
+                key: nameof(TermsAndCondition.CreatedDate),
+                values: "Date is required.");
+
+            invalidTermsAndConditionException.AddData(
+                key: nameof(TermsAndCondition.UpdatedDate),
+                values: "Date is required.");
+
 
             var expectedTermsAndConditionValidationException =
                 new TermsAndConditionValidationException(invalidTermsAndConditionException);
@@ -92,7 +109,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
 
             this.dateTimeBrokerMock.Verify(broker =>
                broker.GetCurrentDateTime(),
-                   Times.Once);
+                   Times.Never);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
