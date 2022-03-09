@@ -17,7 +17,7 @@ namespace SCMS.Services.Api.Services.Foundations.TermsAndConditions
             Validate(
                (Rule: IsInvalid(termsAndCondition.Id), Parameter: nameof(TermsAndCondition.Id)),
                (Rule: IsInvalid(text: termsAndCondition.Name), Parameter: nameof(TermsAndCondition.Name)),
-               (Rule: IsInvalid(text: termsAndCondition.Url), Parameter: nameof(TermsAndCondition.Url)),
+               (Rule: IsInvalidUrl(termsAndCondition.Url), Parameter: nameof(TermsAndCondition.Url)),
                (Rule: IsInvalid(termsAndCondition.Type), Parameter: nameof(TermsAndCondition.Type)),
                (Rule: IsInvalid(id: termsAndCondition.CreatedBy), Parameter: nameof(TermsAndCondition.CreatedBy)),
                (Rule: IsInvalid(id: termsAndCondition.UpdatedBy), Parameter: nameof(TermsAndCondition.UpdatedBy)),
@@ -42,6 +42,12 @@ namespace SCMS.Services.Api.Services.Foundations.TermsAndConditions
         private static dynamic IsInvalid(string text) => new
         {
             Condition = String.IsNullOrWhiteSpace(text),
+            Message = "Text is invalid."
+        };
+
+        private static dynamic IsInvalidUrl(string url) => new
+        {
+            Condition = String.IsNullOrWhiteSpace(url) || Uri.IsWellFormedUriString(url, UriKind.RelativeOrAbsolute),
             Message = "Text is invalid."
         };
 
