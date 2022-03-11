@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using Moq;
 using SCMS.Services.Api.Models.Foundations.StudentLevels;
@@ -118,6 +119,44 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentLevels
             invalidStudentLevelException.AddData(
                 key: nameof(StudentLevel.UpdatedDate),
                 values: $"Date is not same as {nameof(StudentLevel.CreatedDate)}.");
+
+            var expectedStudentLevelValidationException =
+                new StudentLevelValidationException(invalidStudentLevelException);
+
+            // when
+            ValueTask<StudentLevel> addStudentLevelTask =
+                this.studentLevelService.AddStudentLevelAsync(invalidStudentLevel);
+
+            // then
+            await Assert.ThrowsAsync<StudentLevelValidationException>(() =>
+                addStudentLevelTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentLevelValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertStudentLevelAsync(It.IsAny<StudentLevel>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnAddIfCreatedByIsNotSameAsByAndLogItAsync()
+        {
+            // given
+            Guid randomGuid = Guid.NewGuid();
+            StudentLevel randomStudentLevel = CreateRandomStudentLevel();
+            StudentLevel invalidStudentLevel = randomStudentLevel;
+            invalidStudentLevel.UpdatedBy = randomGuid;
+            var invalidStudentLevelException = new InvalidStudentLevelException();
+
+            invalidStudentLevelException.AddData(
+                key: nameof(StudentLevel.UpdatedBy),
+                values: $"Id is not same as {nameof(StudentLevel.CreatedBy)}.");
 
             var expectedStudentLevelValidationException =
                 new StudentLevelValidationException(invalidStudentLevelException);
