@@ -19,8 +19,13 @@ namespace SCMS.Services.Api.Services.Foundations.StudentLevels
                 (Rule: IsInvalid(studentLevel.CreatedDate), Parameter: nameof(StudentLevel.CreatedDate)),
                 (Rule: IsInvalid(studentLevel.UpdatedDate), Parameter: nameof(StudentLevel.UpdatedDate)),
                 (Rule: IsInvalid(id: studentLevel.CreatedBy), Parameter: nameof(StudentLevel.CreatedBy)),
-                (Rule: IsInvalid(id: studentLevel.UpdatedBy), Parameter: nameof(StudentLevel.UpdatedBy))
-                );
+                (Rule: IsInvalid(id: studentLevel.UpdatedBy), Parameter: nameof(StudentLevel.UpdatedBy)),
+
+                (Rule: IsNotSame(
+                    firstDate: studentLevel.UpdatedDate,
+                    secondDate: studentLevel.CreatedDate,
+                    secondDateName: nameof(studentLevel.CreatedDate)),
+                Parameter: nameof(studentLevel.UpdatedDate)));
         }
 
         private static void ValidateStudentLevelIsNull(StudentLevel studentLevel)
@@ -48,6 +53,15 @@ namespace SCMS.Services.Api.Services.Foundations.StudentLevels
             Condition = id == Guid.Empty,
             Message = "Id is required."
         };
+
+        private static dynamic IsNotSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate != secondDate,
+                Message = $"Date is not same as {secondDateName}."
+            };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
