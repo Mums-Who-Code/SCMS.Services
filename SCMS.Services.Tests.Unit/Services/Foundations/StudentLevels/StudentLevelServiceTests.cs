@@ -51,11 +51,13 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentLevels
         private static Filler<StudentLevel> CreateStudentLevelFiller(DateTimeOffset dates)
         {
             var filler = new Filler<StudentLevel>();
+            Guid userId = Guid.NewGuid();
 
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dates)
                 .OnProperty(studentLevel => studentLevel.CreatedByUser).IgnoreIt()
-                .OnProperty(studentLevel => studentLevel.UpdatedByUser).IgnoreIt();
+                .OnProperty(studentLevel => studentLevel.UpdatedByUser).IgnoreIt()
+                .OnType<Guid>().Use(userId);
 
             return filler;
         }
