@@ -47,9 +47,12 @@ namespace SCMS.Services.Api.Services.Foundations.TermsAndConditions
 
         private static dynamic IsInvalidUrl(string url) => new
         {
-            Condition = String.IsNullOrWhiteSpace(url) || Uri.IsWellFormedUriString(url, UriKind.RelativeOrAbsolute),
+            Condition = String.IsNullOrWhiteSpace(url) || IsInvalidUrlFormat(url),
             Message = "Text is invalid."
         };
+
+        private static bool IsInvalidUrlFormat(string value) =>
+            Uri.IsWellFormedUriString(value, UriKind.Absolute) is false;
 
         private static dynamic IsInvalid(TermsAndConditionType status) => new
         {
