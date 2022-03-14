@@ -86,6 +86,9 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
+        private static int GetRandomNumber() =>
+            new IntRange(min: 1, max: 10).GetValue();
+
         private static TermsAndCondition CreateRandomTermsAndCondition() =>
             CreateTermsAndConditionFiller().Create();
 
