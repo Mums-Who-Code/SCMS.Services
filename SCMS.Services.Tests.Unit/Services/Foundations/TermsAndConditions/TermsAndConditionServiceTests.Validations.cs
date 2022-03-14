@@ -166,48 +166,5 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
-
-        [Fact]
-        public async Task ShouldThrowValidationExceptionOnAddIfCreatedDateIsNotSameAsUpdatedDateAndLogItAsync()
-        {
-            //given
-            int randomDays = GetRandomNumber();
-            TermsAndCondition randomTermsAndCondition = CreateRandomTermsAndCondition();
-            TermsAndCondition invalidTermsAndCondition = randomTermsAndCondition;
-
-            invalidTermsAndCondition.UpdatedDate =
-                invalidTermsAndCondition.UpdatedDate.AddDays(randomDays);
-
-            var invalidTermsAndConditionException =
-               new InvalidTermsAndConditionException();
-
-            invalidTermsAndConditionException.AddData(
-                key: nameof(TermsAndCondition.UpdatedDate),
-                values: $"Date is not same as {nameof(TermsAndCondition.CreatedDate)}.");
-
-            var expectedTermsAndConditionValidationException =
-                new TermsAndConditionValidationException(invalidTermsAndConditionException);
-
-            //when
-            ValueTask<TermsAndCondition> addTermsAndConditionTask =
-                this.termsAndConditionService.AddTermsAndConditionAsync(invalidTermsAndCondition);
-
-            //then
-            await Assert.ThrowsAsync<TermsAndConditionValidationException>(() =>
-                addTermsAndConditionTask.AsTask());
-
-            this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(SameExceptionAs(
-                    expectedTermsAndConditionValidationException))),
-                        Times.Once);
-
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertTermsAndConditionAsync(It.IsAny<TermsAndCondition>()),
-                    Times.Never);
-
-            this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
-            this.dateTimeBrokerMock.VerifyNoOtherCalls();
-        }
     }
 }

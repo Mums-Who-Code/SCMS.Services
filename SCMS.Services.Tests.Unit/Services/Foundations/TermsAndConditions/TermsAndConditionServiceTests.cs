@@ -49,9 +49,6 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
             };
         }
 
-        private static int GetRandomNumber() =>
-            new IntRange(min: 1, max: 10).GetValue();
-
         private static string GetRandomString() =>
             new MnemonicString().GetValue();
 
@@ -86,9 +83,6 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
                     .GetValue();
         }
 
-        private static string GetRandomUrl() =>
-            new RandomUrl(RandomUri.SchemeType.HttpAndHttps).GetValue();
-
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
 
@@ -101,7 +95,6 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
 
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime())
-                .OnProperty(termsAndCondition => termsAndCondition.Url).Use(GetRandomUrl())
                 .OnProperty(termsAndCondition => termsAndCondition.Type).Use(GetRandomStatus())
                 .OnProperty(termsAndCondition => termsAndCondition.CreatedByUser).IgnoreIt()
                 .OnProperty(termsAndCondition => termsAndCondition.UpdatedByUser).IgnoreIt();
