@@ -12,7 +12,7 @@ namespace SCMS.Services.Api.Services.Foundations.TermsAndConditions
     {
         private static void ValidateInput(TermsAndCondition termsAndCondition)
         {
-            ValidateArtistIsNotNull(termsAndCondition);
+            ValidateTermsAndConditionIsNotNull(termsAndCondition);
 
             Validate(
                (Rule: IsInvalid(termsAndCondition.Id), Parameter: nameof(TermsAndCondition.Id)),
@@ -31,7 +31,7 @@ namespace SCMS.Services.Api.Services.Foundations.TermsAndConditions
                 Parameter: nameof(TermsAndCondition.CreatedDate)));
         }
 
-        private static void ValidateArtistIsNotNull(TermsAndCondition termsAndCondition)
+        private static void ValidateTermsAndConditionIsNotNull(TermsAndCondition termsAndCondition)
         {
             if (termsAndCondition == null)
             {

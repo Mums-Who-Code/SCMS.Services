@@ -90,15 +90,19 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
             new IntRange(min: 1, max: 10).GetValue();
 
         private static TermsAndCondition CreateRandomTermsAndCondition() =>
-            CreateTermsAndConditionFiller().Create();
+            CreateTermsAndConditionFiller(dateTime: GetRandomDateTime()).Create();
 
-        private static Filler<TermsAndCondition> CreateTermsAndConditionFiller()
+        private static TermsAndCondition CreateRandomTermsAndCondition(DateTimeOffset dateTime) =>
+           CreateTermsAndConditionFiller(dateTime).Create();
+
+        private static Filler<TermsAndCondition> CreateTermsAndConditionFiller(DateTimeOffset dateTime)
         {
             var filler = new Filler<TermsAndCondition>();
 
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime())
-                .OnProperty(termsAndCondition => termsAndCondition.Type).Use(GetRandomStatus())
+                .OnProperty(termsAndCondition => termsAndCondition.Type).Use(TermsAndConditionType.Registration)
+                .OnProperty(termsAndCondition => termsAndCondition.Url).Use(new RandomUrl())
                 .OnProperty(termsAndCondition => termsAndCondition.CreatedByUser).IgnoreIt()
                 .OnProperty(termsAndCondition => termsAndCondition.UpdatedByUser).IgnoreIt();
 

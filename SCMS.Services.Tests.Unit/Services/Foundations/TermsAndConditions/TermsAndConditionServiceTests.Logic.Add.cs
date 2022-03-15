@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
@@ -17,14 +18,23 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
         public async Task ShouldAddTermsAndConditionAsync()
         {
             // given
-            TermsAndCondition randomTermsAndCondition =
-                CreateRandomTermsAndCondition();
+            DateTimeOffset randomDateTime = GetRandomDateTime();
 
-            TermsAndCondition inputTermsAndCondition = randomTermsAndCondition;
-            TermsAndCondition storedTermsAndCondition = inputTermsAndCondition;
+            TermsAndCondition randomTermsAndCondition =
+                CreateRandomTermsAndCondition(randomDateTime);
+
+            TermsAndCondition inputTermsAndCondition =
+                randomTermsAndCondition;
+
+            TermsAndCondition storedTermsAndCondition =
+                inputTermsAndCondition;
 
             TermsAndCondition expectedTermsAndCondition =
                 storedTermsAndCondition.DeepClone();
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertTermsAndConditionAsync(inputTermsAndCondition))
@@ -39,13 +49,17 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
             actualTermsAndCondition.Should().
                 BeEquivalentTo(expectedTermsAndCondition);
 
+            this.dateTimeBrokerMock.Verify(broker =>
+               broker.GetCurrentDateTime(),
+                   Times.Never);
+
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertTermsAndConditionAsync(
-                    inputTermsAndCondition),
+                     It.IsAny<TermsAndCondition>()),
                         Times.Once);
 
-            this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
     }
