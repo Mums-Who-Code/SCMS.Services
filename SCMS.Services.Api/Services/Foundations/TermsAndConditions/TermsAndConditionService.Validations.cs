@@ -22,7 +22,13 @@ namespace SCMS.Services.Api.Services.Foundations.TermsAndConditions
                (Rule: IsInvalid(id: termsAndCondition.CreatedBy), Parameter: nameof(TermsAndCondition.CreatedBy)),
                (Rule: IsInvalid(id: termsAndCondition.UpdatedBy), Parameter: nameof(TermsAndCondition.UpdatedBy)),
                (Rule: IsInvalid(termsAndCondition.CreatedDate), Parameter: nameof(TermsAndCondition.CreatedDate)),
-               (Rule: IsInvalid(termsAndCondition.UpdatedDate), Parameter: nameof(TermsAndCondition.UpdatedDate)));
+               (Rule: IsInvalid(termsAndCondition.UpdatedDate), Parameter: nameof(TermsAndCondition.UpdatedDate)),
+
+               (Rule: IsNotSame(
+                    firstDate: termsAndCondition.CreatedDate,
+                    secondDate: termsAndCondition.UpdatedDate,
+                    secondDateName: nameof(TermsAndCondition.UpdatedDate)),
+                Parameter: nameof(TermsAndCondition.CreatedDate)));
         }
 
         private static void ValidateArtistIsNotNull(TermsAndCondition termsAndCondition)
@@ -65,6 +71,15 @@ namespace SCMS.Services.Api.Services.Foundations.TermsAndConditions
             Condition = date == default,
             Message = "Date is required."
         };
+
+        private static dynamic IsNotSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate != secondDate,
+                Message = $"Date is not same as {secondDateName}."
+            };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {

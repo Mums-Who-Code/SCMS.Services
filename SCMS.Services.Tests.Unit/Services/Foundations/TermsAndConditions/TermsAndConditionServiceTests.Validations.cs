@@ -176,14 +176,14 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
             TermsAndCondition invalidTermsAndCondition = randomTermsAndCondition;
 
             invalidTermsAndCondition.UpdatedDate =
-                invalidTermsAndCondition.UpdatedDate.AddDays(randomDays);
+                invalidTermsAndCondition.CreatedDate.AddDays(randomDays);
 
             var invalidTermsAndConditionException =
                new InvalidTermsAndConditionException();
 
             invalidTermsAndConditionException.AddData(
-                key: nameof(TermsAndCondition.UpdatedDate),
-                values: $"Date is not same as {nameof(TermsAndCondition.CreatedDate)}.");
+                key: nameof(TermsAndCondition.CreatedDate),
+                values: $"Date is not same as {nameof(TermsAndCondition.UpdatedDate)}.");
 
             var expectedTermsAndConditionValidationException =
                 new TermsAndConditionValidationException(invalidTermsAndConditionException);
