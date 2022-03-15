@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using Moq;
 using SCMS.Services.Api.Models.Foundations.TermsAndConditions;
@@ -200,6 +201,46 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedTermsAndConditionValidationException))),
                         Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertTermsAndConditionAsync(It.IsAny<TermsAndCondition>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnAddIfCreatedByNotSameAsUpdatedByAndLogItAsync()
+        {
+            //given
+            TermsAndCondition randomTermsAndCondition = CreateRandomTermsAndCondition();
+            TermsAndCondition invalidTermsAndCondition = randomTermsAndCondition;
+            invalidTermsAndCondition.CreatedBy = Guid.NewGuid();
+
+            var invalidTermsAndConditionException =
+                new InvalidTermsAndConditionException();
+
+            invalidTermsAndConditionException.AddData(
+                key: nameof(TermsAndCondition.CreatedBy),
+                values: $"Id is not same as {nameof(TermsAndCondition.UpdatedBy)}");
+
+            var expectedTermsAndConditionException =
+                new TermsAndConditionValidationException(invalidTermsAndConditionException);
+
+            //when
+            ValueTask<TermsAndCondition> addTermsAndConditionTask =
+                this.termsAndConditionService.AddTermsAndConditionAsync(invalidTermsAndCondition);
+
+            //then
+            await Assert.ThrowsAsync<TermsAndConditionValidationException>(() =>
+                addTermsAndConditionTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTermsAndConditionException))),
+                    Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertTermsAndConditionAsync(It.IsAny<TermsAndCondition>()),
