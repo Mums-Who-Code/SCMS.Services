@@ -28,7 +28,13 @@ namespace SCMS.Services.Api.Services.Foundations.TermsAndConditions
                     firstDate: termsAndCondition.CreatedDate,
                     secondDate: termsAndCondition.UpdatedDate,
                     secondDateName: nameof(TermsAndCondition.UpdatedDate)),
-                Parameter: nameof(TermsAndCondition.CreatedDate)));
+                Parameter: nameof(TermsAndCondition.CreatedDate)),
+
+               (Rule: IsNotSame(
+                    firstId: termsAndCondition.CreatedBy,
+                    secondId: termsAndCondition.UpdatedBy,
+                    secondIdName: nameof(TermsAndCondition.UpdatedBy)),
+                Parameter: nameof(TermsAndCondition.CreatedBy)));
         }
 
         private static void ValidateTermsAndConditionIsNotNull(TermsAndCondition termsAndCondition)
@@ -79,6 +85,15 @@ namespace SCMS.Services.Api.Services.Foundations.TermsAndConditions
             {
                 Condition = firstDate != secondDate,
                 Message = $"Date is not same as {secondDateName}."
+            };
+
+        private static dynamic IsNotSame(
+            Guid firstId,
+            Guid secondId,
+            string secondIdName) => new
+            {
+                Condition = firstId != secondId,
+                Message = $"Id is not same as {secondIdName}"
             };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
