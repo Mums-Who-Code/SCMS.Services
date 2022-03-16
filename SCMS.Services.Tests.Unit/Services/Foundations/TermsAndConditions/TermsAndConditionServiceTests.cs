@@ -114,9 +114,11 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
         private static Filler<TermsAndCondition> CreateTermsAndConditionFiller(DateTimeOffset dateTime)
         {
             var filler = new Filler<TermsAndCondition>();
+            Guid userId = Guid.NewGuid();
 
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(GetRandomDateTime())
+                .OnType<Guid>().Use(userId)
                 .OnProperty(termsAndCondition => termsAndCondition.Type).Use(TermsAndConditionType.Registration)
                 .OnProperty(termsAndCondition => termsAndCondition.Url).Use(new RandomUrl())
                 .OnProperty(termsAndCondition => termsAndCondition.CreatedByUser).IgnoreIt()
