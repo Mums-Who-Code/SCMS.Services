@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using Moq;
 using SCMS.Services.Api.Brokers.DateTimes;
@@ -48,6 +49,21 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
                 letterString
             };
         }
+
+        public static IEnumerable<object[]> InvalidMinuteCases()
+        {
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+            return new List<object[]>
+            {
+                new object[] { randomMoreThanMinuteFromNow },
+                new object[] { randomMoreThanMinuteBeforeNow }
+            };
+        }
+
+        private static int GetNegativeRandomNumber() =>
+            -1 * GetRandomNumber();
 
         private static string GetRandomString() =>
             new MnemonicString().GetValue();

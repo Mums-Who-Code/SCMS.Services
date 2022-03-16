@@ -250,5 +250,55 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Theory]
+        [MemberData(nameof(InvalidMinuteCases))]
+        public async void ShouldThrowValidationExceptionOnAddIfCreatedDateIsNotRecentAndLogItAsync(
+            int minutes)
+        {
+            // given
+            DateTimeOffset randomDateTime = GetRandomDateTime();
+            TermsAndCondition randomTermsAndCondition = CreateRandomTermsAndCondition(randomDateTime);
+            TermsAndCondition invalidTermsAndCondition = randomTermsAndCondition;
+            invalidTermsAndCondition.CreatedDate = invalidTermsAndCondition.CreatedDate.AddMinutes(minutes);
+            invalidTermsAndCondition.UpdatedDate = invalidTermsAndCondition.CreatedDate;
+            var invalidTermsAndConditionException = new InvalidTermsAndConditionException();
+
+            invalidTermsAndConditionException.AddData(
+                key: nameof(TermsAndCondition.CreatedDate),
+                values: $"Date is not recent");
+
+            var expectedTermsAndConditionValidationException =
+                new TermsAndConditionValidationException(invalidTermsAndConditionException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Returns(randomDateTime);
+
+            // when
+            ValueTask<TermsAndCondition> addTermsAndConditionTask =
+                this.termsAndConditionService.AddTermsAndConditionAsync(invalidTermsAndCondition);
+
+            // then
+            await Assert.ThrowsAsync<TermsAndConditionValidationException>(() =>
+                addTermsAndConditionTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTermsAndConditionValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertTermsAndConditionAsync(It.IsAny<TermsAndCondition>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
