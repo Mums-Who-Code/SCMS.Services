@@ -10,7 +10,7 @@ namespace SCMS.Services.Api.Services.Foundations.StudentLevels
 {
     public partial class StudentLevelService
     {
-        private static void ValidateStudentLevel(StudentLevel studentLevel)
+        private void ValidateStudentLevel(StudentLevel studentLevel)
         {
             ValidateStudentLevelIsNull(studentLevel);
 
@@ -25,7 +25,9 @@ namespace SCMS.Services.Api.Services.Foundations.StudentLevels
                     firstDate: studentLevel.UpdatedDate,
                     secondDate: studentLevel.CreatedDate,
                     secondDateName: nameof(studentLevel.CreatedDate)),
-                Parameter: nameof(studentLevel.UpdatedDate)));
+                Parameter: nameof(studentLevel.UpdatedDate)),
+
+                (Rule: IsNotRecent(studentLevel.CreatedDate), Parameter: nameof(StudentLevel.CreatedDate)));
         }
 
         private static void ValidateStudentLevelIsNull(StudentLevel studentLevel)
@@ -62,6 +64,23 @@ namespace SCMS.Services.Api.Services.Foundations.StudentLevels
                 Condition = firstDate != secondDate,
                 Message = $"Date is not same as {secondDateName}."
             };
+
+        private dynamic IsNotRecent(DateTimeOffset date) => new
+        {
+            Condition = IsNotRecent(date),
+            Message = "Date is not recent."
+        };
+
+        private bool IsDateNotRecent(DateTimeOffset date)
+        {
+            DateTimeOffset currentDateTime =
+                this.dateTimeBroker.GetCurrentDateTime();
+
+            TimeSpan timeDifference = currentDateTime.Subtract(date);
+            TimeSpan oneMinute = TimeSpan.FromMinutes(1);
+
+            return timeDifference.Duration() > oneMinute;
+        }
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
