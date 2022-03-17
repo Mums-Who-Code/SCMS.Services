@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using Moq;
 using SCMS.Services.Api.Brokers.DateTimes;
@@ -34,6 +35,18 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentLevels
                 loggingBroker: this.loggingBrokerMock.Object);
         }
 
+        public static IEnumerable<object[]> InvalidMinuteCases()
+        {
+            int randomMoreThanMinuteFromNow = GetRandomNumber();
+            int randomMoreThanMinuteBeforeNow = GetNegativeRandomNumber();
+
+            return new List<object[]>
+            {
+                new object[] { randomMoreThanMinuteFromNow },
+                new object[] { randomMoreThanMinuteBeforeNow }
+            };
+        }
+
         private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException)
         {
             return actualException =>
@@ -42,8 +55,17 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentLevels
                 && (actualException.InnerException as Xeption).DataEquals(expectedException.InnerException.Data);
         }
 
+        private static int GetRandomNumber() =>
+           new IntRange(min: 2, max: 10).GetValue();
+
+        private static int GetNegativeRandomNumber() =>
+            -1 * GetRandomNumber();
+
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+        private static StudentLevel CreateRandomStudentLevel(DateTimeOffset dates) =>
+            CreateStudentLevelFiller(dates).Create();
 
         private static StudentLevel CreateRandomStudentLevel() =>
             CreateStudentLevelFiller(dates: GetRandomDateTime()).Create();
@@ -51,11 +73,13 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.StudentLevels
         private static Filler<StudentLevel> CreateStudentLevelFiller(DateTimeOffset dates)
         {
             var filler = new Filler<StudentLevel>();
+            Guid userId = Guid.NewGuid();
 
             filler.Setup()
                 .OnType<DateTimeOffset>().Use(dates)
                 .OnProperty(studentLevel => studentLevel.CreatedByUser).IgnoreIt()
-                .OnProperty(studentLevel => studentLevel.UpdatedByUser).IgnoreIt();
+                .OnProperty(studentLevel => studentLevel.UpdatedByUser).IgnoreIt()
+                .OnType<Guid>().Use(userId);
 
             return filler;
         }

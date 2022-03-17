@@ -25,9 +25,13 @@ namespace SCMS.Services.Api.Services.Foundations.StudentLevels
                     firstDate: studentLevel.UpdatedDate,
                     secondDate: studentLevel.CreatedDate,
                     secondDateName: nameof(studentLevel.CreatedDate)),
-                Parameter: nameof(studentLevel.UpdatedDate)),
+               Parameter: nameof(StudentLevel.UpdatedDate)),
 
-                (Rule: IsNotRecent(studentLevel.CreatedDate), Parameter: nameof(StudentLevel.CreatedDate)));
+                (Rule: IsNotSame(
+                    firstId: studentLevel.UpdatedBy,
+                    secondId: studentLevel.CreatedBy,
+                    secondIdName: nameof(StudentLevel.CreatedBy)),
+                Parameter: nameof(StudentLevel.UpdatedBy)));
         }
 
         private static void ValidateStudentLevelIsNull(StudentLevel studentLevel)
@@ -71,16 +75,14 @@ namespace SCMS.Services.Api.Services.Foundations.StudentLevels
             Message = "Date is not recent."
         };
 
-        private bool IsDateNotRecent(DateTimeOffset date)
-        {
-            DateTimeOffset currentDateTime =
-                this.dateTimeBroker.GetCurrentDateTime();
-
-            TimeSpan timeDifference = currentDateTime.Subtract(date);
-            TimeSpan oneMinute = TimeSpan.FromMinutes(1);
-
-            return timeDifference.Duration() > oneMinute;
-        }
+        private static dynamic IsNotSame(
+           Guid firstId,
+           Guid secondId,
+           string secondIdName) => new
+           {
+               Condition = firstId != secondId,
+               Message = $"Id is not same as {secondIdName}."
+           };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
