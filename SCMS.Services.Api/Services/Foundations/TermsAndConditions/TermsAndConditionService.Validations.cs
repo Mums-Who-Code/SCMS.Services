@@ -10,7 +10,7 @@ namespace SCMS.Services.Api.Services.Foundations.TermsAndConditions
 {
     public partial class TermsAndConditionService
     {
-        private static void ValidateInput(TermsAndCondition termsAndCondition)
+        private void ValidateInput(TermsAndCondition termsAndCondition)
         {
             ValidateTermsAndConditionIsNotNull(termsAndCondition);
 
@@ -34,7 +34,10 @@ namespace SCMS.Services.Api.Services.Foundations.TermsAndConditions
                     firstId: termsAndCondition.CreatedBy,
                     secondId: termsAndCondition.UpdatedBy,
                     secondIdName: nameof(TermsAndCondition.UpdatedBy)),
-                Parameter: nameof(TermsAndCondition.CreatedBy)));
+                Parameter: nameof(TermsAndCondition.CreatedBy)),
+
+               (Rule: IsNotRecent(termsAndCondition.CreatedDate), Parameter: nameof(TermsAndCondition.CreatedDate))
+            );
         }
 
         private static void ValidateTermsAndConditionIsNotNull(TermsAndCondition termsAndCondition)
@@ -95,6 +98,22 @@ namespace SCMS.Services.Api.Services.Foundations.TermsAndConditions
                 Condition = firstId != secondId,
                 Message = $"Id is not same as {secondIdName}"
             };
+
+
+        private dynamic IsNotRecent(DateTimeOffset dateTimeOffset) => new
+        {
+            Condition = IsDateNotRecent(dateTimeOffset),
+            Message = "Date is not recent."
+        };
+
+        private bool IsDateNotRecent(DateTimeOffset dateTime)
+        {
+            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            int oneMinute = 1;
+            TimeSpan difference = now.Subtract(dateTime);
+
+            return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {

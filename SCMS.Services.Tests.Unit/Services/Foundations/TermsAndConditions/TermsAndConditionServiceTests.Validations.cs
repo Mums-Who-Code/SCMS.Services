@@ -110,7 +110,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
 
             this.dateTimeBrokerMock.Verify(broker =>
                broker.GetCurrentDateTime(),
-                   Times.Never);
+                   Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
@@ -154,6 +154,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
             await Assert.ThrowsAsync<TermsAndConditionValidationException>(() =>
                 addTermsAndConditionTask.AsTask());
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedTermsAndConditionValidationException))),
@@ -173,7 +177,8 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
         {
             //given
             int randomDays = GetRandomNumber();
-            TermsAndCondition randomTermsAndCondition = CreateRandomTermsAndCondition();
+            DateTimeOffset randomDate = GetRandomDateTime();
+            TermsAndCondition randomTermsAndCondition = CreateRandomTermsAndCondition(randomDate);
             TermsAndCondition invalidTermsAndCondition = randomTermsAndCondition;
 
             invalidTermsAndCondition.UpdatedDate =
@@ -189,6 +194,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
             var expectedTermsAndConditionValidationException =
                 new TermsAndConditionValidationException(invalidTermsAndConditionException);
 
+            this.dateTimeBrokerMock.Setup(broker =>
+               broker.GetCurrentDateTime())
+                   .Returns(randomDate);
+
             //when
             ValueTask<TermsAndCondition> addTermsAndConditionTask =
                 this.termsAndConditionService.AddTermsAndConditionAsync(invalidTermsAndCondition);
@@ -196,6 +205,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
             //then
             await Assert.ThrowsAsync<TermsAndConditionValidationException>(() =>
                 addTermsAndConditionTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
@@ -237,6 +250,10 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
             await Assert.ThrowsAsync<TermsAndConditionValidationException>(() =>
                 addTermsAndConditionTask.AsTask());
 
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedTermsAndConditionException))),
@@ -266,7 +283,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
 
             invalidTermsAndConditionException.AddData(
                 key: nameof(TermsAndCondition.CreatedDate),
-                values: $"Date is not recent");
+                values: $"Date is not recent.");
 
             var expectedTermsAndConditionValidationException =
                 new TermsAndConditionValidationException(invalidTermsAndConditionException);

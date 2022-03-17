@@ -117,7 +117,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
             Guid userId = Guid.NewGuid();
 
             filler.Setup()
-                .OnType<DateTimeOffset>().Use(GetRandomDateTime())
+                .OnType<DateTimeOffset>().Use(dateTime)
                 .OnType<Guid>().Use(userId)
                 .OnProperty(termsAndCondition => termsAndCondition.Type).Use(TermsAndConditionType.Registration)
                 .OnProperty(termsAndCondition => termsAndCondition.Url).Use(new RandomUrl())

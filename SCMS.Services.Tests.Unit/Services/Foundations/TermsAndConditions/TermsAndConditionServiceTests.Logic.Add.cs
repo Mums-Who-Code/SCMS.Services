@@ -51,7 +51,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
 
             this.dateTimeBrokerMock.Verify(broker =>
                broker.GetCurrentDateTime(),
-                   Times.Never);
+                   Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertTermsAndConditionAsync(
