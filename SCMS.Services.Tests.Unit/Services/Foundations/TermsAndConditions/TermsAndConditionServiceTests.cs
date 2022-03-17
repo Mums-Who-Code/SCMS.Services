@@ -4,7 +4,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using Moq;
 using SCMS.Services.Api.Brokers.DateTimes;
 using SCMS.Services.Api.Brokers.Loggings;
@@ -98,6 +100,9 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
                 new IntRange(min: int.MinValue, max: int.MaxValue)
                     .GetValue();
         }
+
+        private static SqlException GetSqlException() =>
+          (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         private static DateTimeOffset GetRandomDateTime() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
