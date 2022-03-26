@@ -4,6 +4,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using Moq;
 using SCMS.Services.Api.Models.Foundations.TermsAndConditions;
 using SCMS.Services.Api.Models.Foundations.TermsAndConditions.Exceptions;
@@ -23,7 +24,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
                 CreateRandomTermsAndCondition(randonDateTime);
 
             TermsAndCondition inputTermsAndCondition = randomTermsAndCondition;
-            Exception sqlException = GetSqlException();
+            SqlException sqlException = GetSqlException();
 
             var failedTermsAndConditionDependencyException =
                 new FailedTermsAndConditionStorageException(sqlException);
