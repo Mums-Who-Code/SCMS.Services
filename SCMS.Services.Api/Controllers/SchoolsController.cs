@@ -2,14 +2,14 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using RESTFulSense.Controllers;
 using SCMS.Services.Api.Models.Foundations.Schools;
 using SCMS.Services.Api.Models.Foundations.Schools.Exceptions;
 using SCMS.Services.Api.Services.Foundations.Schools;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SCMS.Services.Api.Controllers
 {

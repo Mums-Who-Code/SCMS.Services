@@ -2,12 +2,12 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
 using SCMS.Services.Api.Models.Foundations.Schools;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 using SCMS.Services.Api.Models.Foundations.Users;
+using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace SCMS.Services.Api.Models.Foundations.Students
 {

@@ -2,10 +2,10 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System.Net.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 using RESTFulSense.Clients;
 using SCMS.Services.Api;
+using System.Net.Http;
 
 namespace SCMS.Services.Tests.Acceptance.Brokers
 {

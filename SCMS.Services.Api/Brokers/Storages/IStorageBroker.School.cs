@@ -3,10 +3,10 @@
 // -----------------------------------------------------------------------
 
 
+using SCMS.Services.Api.Models.Foundations.Schools;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using SCMS.Services.Api.Models.Foundations.Schools;
 
 namespace SCMS.Services.Api.Brokers.Storages
 {

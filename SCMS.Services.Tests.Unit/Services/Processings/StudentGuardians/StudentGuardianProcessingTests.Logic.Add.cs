@@ -2,11 +2,11 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
 using Moq;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Processings.StudentGuardians

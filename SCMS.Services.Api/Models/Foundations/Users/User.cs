@@ -2,9 +2,6 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
 using SCMS.Services.Api.Models.Foundations.Agreements;
 using SCMS.Services.Api.Models.Foundations.Branches;
 using SCMS.Services.Api.Models.Foundations.Guardians;
@@ -13,6 +10,9 @@ using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 using SCMS.Services.Api.Models.Foundations.StudentLevels;
 using SCMS.Services.Api.Models.Foundations.Students;
 using SCMS.Services.Api.Models.Foundations.TermsAndConditions;
+using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace SCMS.Services.Api.Models.Foundations.Users
 {

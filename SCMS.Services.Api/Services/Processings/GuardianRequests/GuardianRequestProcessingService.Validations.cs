@@ -2,9 +2,9 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
 using SCMS.Services.Api.Models.Processings.GuardianRequests;
 using SCMS.Services.Api.Models.Processings.GuardianRequests.Exceptions;
+using System;
 
 namespace SCMS.Services.Api.Services.Processings.GuardianRequests
 {

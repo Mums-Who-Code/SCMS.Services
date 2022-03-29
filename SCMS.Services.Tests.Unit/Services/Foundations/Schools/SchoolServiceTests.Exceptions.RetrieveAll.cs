@@ -2,10 +2,10 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
 using Microsoft.Data.SqlClient;
 using Moq;
 using SCMS.Services.Api.Models.Foundations.Schools.Exceptions;
+using System;
 using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools

@@ -2,12 +2,12 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System.Linq;
-using System.Threading.Tasks;
 using SCMS.Services.Api.Brokers.DateTimes;
 using SCMS.Services.Api.Brokers.Loggings;
 using SCMS.Services.Api.Brokers.Storages;
 using SCMS.Services.Api.Models.Foundations.Schools;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SCMS.Services.Api.Services.Foundations.Schools
 {
