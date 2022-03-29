@@ -112,5 +112,56 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowDependencyValidationExceptionOnAddIfReferenceErrorOccursAndLogItAsync()
+        {
+            // given
+            TermsAndCondition randomTermsAndCondition = CreateRandomTermsAndCondition();
+            TermsAndCondition alreadyExistsTermsAndCondition = randomTermsAndCondition;
+            string randomMessage = GetRandomMessage();
+            string exceptionMessage = randomMessage;
+
+            var foreignKeyConstraintConflictException =
+               new ForeignKeyConstraintConflictException(exceptionMessage);
+
+            var invalidTermsAndConditionReferenceException =
+                new InvalidTermsAndConditionReferenceException(
+                    foreignKeyConstraintConflictException);
+
+            var expectedTermsAndConditionDependencyValidationException =
+               new TermsAndConditionDependencyValidationException(
+                   invalidTermsAndConditionReferenceException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Throws(foreignKeyConstraintConflictException);
+
+            //when
+            ValueTask<TermsAndCondition> addTermsAndConditionTask =
+                this.termsAndConditionService.AddTermsAndConditionAsync(
+                    alreadyExistsTermsAndCondition);
+
+            //then
+            await Assert.ThrowsAsync<TermsAndConditionDependencyValidationException>(() =>
+                addTermsAndConditionTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTermsAndConditionDependencyValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertTermsAndConditionAsync(alreadyExistsTermsAndCondition),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }

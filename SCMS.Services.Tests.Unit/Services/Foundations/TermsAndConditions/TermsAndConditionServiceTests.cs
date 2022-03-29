@@ -64,6 +64,9 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
             };
         }
 
+        private static string GetRandomMessage() =>
+            new MnemonicString(wordCount: GetRandomNumber()).GetValue();
+
         private static int GetNegativeRandomNumber() =>
             -1 * GetRandomNumber();
 
