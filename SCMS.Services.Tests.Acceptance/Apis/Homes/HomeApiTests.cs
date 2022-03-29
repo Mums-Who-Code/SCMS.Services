@@ -2,9 +2,9 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System.Threading.Tasks;
 using FluentAssertions;
 using SCMS.Services.Tests.Acceptance.Brokers;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace SCMS.Services.Tests.Acceptance.Apis.Homes

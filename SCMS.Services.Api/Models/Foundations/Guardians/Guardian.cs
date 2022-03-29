@@ -2,11 +2,11 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 using SCMS.Services.Api.Models.Foundations.Users;
+using System;
+using System.Collections.Generic;
 
 namespace SCMS.Services.Api.Models.Foundations.Guardians
 {

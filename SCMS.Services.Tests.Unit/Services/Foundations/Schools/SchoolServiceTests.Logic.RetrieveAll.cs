@@ -2,11 +2,11 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System.Linq;
 using FluentAssertions;
 using Force.DeepCloner;
 using Moq;
 using SCMS.Services.Api.Models.Foundations.Schools;
+using System.Linq;
 using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.Schools

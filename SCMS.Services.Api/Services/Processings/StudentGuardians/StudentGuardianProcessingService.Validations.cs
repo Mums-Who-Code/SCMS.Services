@@ -2,10 +2,10 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
-using System.Linq;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 using SCMS.Services.Api.Models.Processings.StudentGuardians.Exceptions;
+using System;
+using System.Linq;
 
 namespace SCMS.Services.Api.Services.Processings.StudentGuardians
 {

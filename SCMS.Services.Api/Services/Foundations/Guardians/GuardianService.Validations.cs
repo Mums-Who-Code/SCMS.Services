@@ -2,10 +2,10 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
-using System.Text.RegularExpressions;
 using SCMS.Services.Api.Models.Foundations.Guardians;
 using SCMS.Services.Api.Models.Foundations.Guardians.Exceptions;
+using System;
+using System.Text.RegularExpressions;
 
 namespace SCMS.Services.Api.Services.Foundations.Guardians
 {

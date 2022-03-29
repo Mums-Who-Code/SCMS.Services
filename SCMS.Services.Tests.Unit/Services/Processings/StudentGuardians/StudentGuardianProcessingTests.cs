@@ -2,16 +2,16 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using Moq;
 using SCMS.Services.Api.Brokers.Loggings;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 using SCMS.Services.Api.Models.Foundations.StudentGuardians.Exceptions;
 using SCMS.Services.Api.Services.Foundations.StudentGuardians;
 using SCMS.Services.Api.Services.Processings.StudentGuardians;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using Tynamix.ObjectFiller;
 using Xeptions;
 using Xunit;

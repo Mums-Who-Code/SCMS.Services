@@ -2,9 +2,9 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System.IO;
 using Microsoft.Extensions.Configuration;
 using SCMS.Services.Infrastructure.Provision.Models.Configurations;
+using System.IO;
 
 namespace SCMS.Services.Infrastructure.Provision.Brokers.Configurations
 {

@@ -2,12 +2,12 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
-using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Moq;
 using SCMS.Services.Api.Models.Foundations.Guardians;
 using SCMS.Services.Api.Models.Foundations.Guardians.Exceptions;
+using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.Guardians

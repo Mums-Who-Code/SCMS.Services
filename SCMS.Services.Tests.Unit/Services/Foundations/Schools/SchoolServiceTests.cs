@@ -2,10 +2,6 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
 using Moq;
 using SCMS.Services.Api.Brokers.DateTimes;
@@ -13,6 +9,10 @@ using SCMS.Services.Api.Brokers.Loggings;
 using SCMS.Services.Api.Brokers.Storages;
 using SCMS.Services.Api.Models.Foundations.Schools;
 using SCMS.Services.Api.Services.Foundations.Schools;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using Tynamix.ObjectFiller;
 using Xeptions;
 using Xunit;

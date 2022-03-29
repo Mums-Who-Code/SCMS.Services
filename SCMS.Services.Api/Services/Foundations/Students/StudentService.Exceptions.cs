@@ -2,13 +2,13 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
-using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SCMS.Services.Api.Models.Foundations.Students;
 using SCMS.Services.Api.Models.Foundations.Students.Exceptions;
+using System;
+using System.Threading.Tasks;
 using Xeptions;
 
 namespace SCMS.Services.Api.Services.Foundations.Students

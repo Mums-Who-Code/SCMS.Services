@@ -2,9 +2,9 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
 using Microsoft.EntityFrameworkCore;
 using SCMS.Services.Api.Models.Foundations.Users;
+using System;
 
 namespace SCMS.Services.Api.Brokers.Storages
 {

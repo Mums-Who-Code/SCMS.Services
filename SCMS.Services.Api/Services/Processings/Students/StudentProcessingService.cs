@@ -2,11 +2,11 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
-using System.Threading.Tasks;
 using SCMS.Services.Api.Brokers.Loggings;
 using SCMS.Services.Api.Models.Foundations.Students;
 using SCMS.Services.Api.Services.Foundations.Students;
+using System;
+using System.Threading.Tasks;
 
 namespace SCMS.Services.Api.Services.Processings.Students
 {

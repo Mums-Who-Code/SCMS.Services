@@ -2,8 +2,6 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.Azure.Management.AppService.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
 using Microsoft.Azure.Management.Sql.Fluent;
@@ -11,6 +9,8 @@ using SCMS.Services.Infrastructure.Provision.Brokers.Configurations;
 using SCMS.Services.Infrastructure.Provision.Models.Configurations;
 using SCMS.Services.Infrastructure.Provision.Models.Storages;
 using SCMS.Services.Infrastructure.Provision.Services.Foundations.CloudManagements;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SCMS.Services.Infrastructure.Provision.Services.Processings.CloudManagements
 {

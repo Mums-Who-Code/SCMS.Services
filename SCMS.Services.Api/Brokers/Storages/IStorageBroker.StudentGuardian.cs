@@ -2,10 +2,10 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using SCMS.Services.Api.Models.Foundations.StudentGuardians;
 
 namespace SCMS.Services.Api.Brokers.Storages
 {

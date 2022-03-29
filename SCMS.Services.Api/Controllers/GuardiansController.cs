@@ -2,12 +2,12 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 using SCMS.Services.Api.Models.Foundations.Guardians;
 using SCMS.Services.Api.Models.Foundations.Guardians.Exceptions;
 using SCMS.Services.Api.Services.Foundations.Guardians;
+using System.Threading.Tasks;
 
 namespace SCMS.Services.Api.Controllers
 {

@@ -2,8 +2,6 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
-using System.Linq.Expressions;
 using KellermanSoftware.CompareNetObjects;
 using Moq;
 using SCMS.Services.Api.Brokers.Loggings;
@@ -12,6 +10,8 @@ using SCMS.Services.Api.Models.Foundations.Guardians.Exceptions;
 using SCMS.Services.Api.Models.Processings.GuardianRequests;
 using SCMS.Services.Api.Services.Foundations.Guardians;
 using SCMS.Services.Api.Services.Processings.GuardianRequests;
+using System;
+using System.Linq.Expressions;
 using Tynamix.ObjectFiller;
 using Xeptions;
 using Xunit;
