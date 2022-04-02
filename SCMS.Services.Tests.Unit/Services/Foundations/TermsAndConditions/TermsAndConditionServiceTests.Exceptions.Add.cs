@@ -207,5 +207,48 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async void ShouldThrowServiceExceptionOnAddIfServiceErrorOccursAndLogItAsync()
+        {
+            //given
+            TermsAndCondition someTermsAndCondition = CreateRandomTermsAndCondition();
+            var serviceException = new Exception();
+
+            var failedTermsAndConditionServiceException =
+                new FailedTermsAndConditionServiceException(serviceException);
+
+            var expectedTermsAndConditionServiceException =
+               new TermsAndConditionServiceException(failedTermsAndConditionServiceException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                .Throws(serviceException);
+
+            //when
+            ValueTask<TermsAndCondition> addTermsAndConditionTask =
+               this.termsAndConditionService.AddTermsAndConditionAsync(someTermsAndCondition);
+
+            //then
+            await Assert.ThrowsAsync<TermsAndConditionDependencyException>(() =>
+                addTermsAndConditionTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTermsAndConditionServiceException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertTermsAndConditionAsync(It.IsAny<TermsAndCondition>()),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
