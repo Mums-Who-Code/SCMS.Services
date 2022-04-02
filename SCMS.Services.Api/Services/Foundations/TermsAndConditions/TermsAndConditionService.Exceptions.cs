@@ -46,6 +46,13 @@ namespace SCMS.Services.Api.Services.Foundations.TermsAndConditions
                 throw CreateAndLogDependencyValidationException(
                     alreadyExistsTermsAndConditionException);
             }
+            catch (ForeignKeyConstraintConflictException foreignKeyConstraintConflictException)
+            {
+                var invalidTermsAndConditionReferenceException =
+                    new InvalidTermsAndConditionReferenceException(foreignKeyConstraintConflictException);
+
+                throw CreateAndLogDependencyValidationException(invalidTermsAndConditionReferenceException);
+            }
         }
 
         private TermsAndConditionValidationException CreateAndLogValidationException(Xeption exception)
