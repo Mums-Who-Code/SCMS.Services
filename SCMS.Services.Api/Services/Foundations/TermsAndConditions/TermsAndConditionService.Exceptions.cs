@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -61,6 +62,13 @@ namespace SCMS.Services.Api.Services.Foundations.TermsAndConditions
 
                 throw CreateAndLogDependencyException(failedTermsAndConditionException);
             }
+            catch (Exception exception)
+            {
+                var failedTermsAndConditionServiceException =
+                    new FailedTermsAndConditionServiceException(exception);
+
+                throw CreateAndLogServiceException(failedTermsAndConditionServiceException);
+            }
         }
 
         private TermsAndConditionValidationException CreateAndLogValidationException(Xeption exception)
@@ -101,6 +109,16 @@ namespace SCMS.Services.Api.Services.Foundations.TermsAndConditions
             this.loggingBroker.LogError(termsAndConditionDependencyException);
 
             return termsAndConditionDependencyException;
+        }
+
+        private TermsAndConditionServiceException CreateAndLogServiceException(Xeption exception)
+        {
+            var termsAndConditionServiceException =
+                new TermsAndConditionServiceException(exception);
+
+            this.loggingBroker.LogError(termsAndConditionServiceException);
+
+            return termsAndConditionServiceException;
         }
     }
 }

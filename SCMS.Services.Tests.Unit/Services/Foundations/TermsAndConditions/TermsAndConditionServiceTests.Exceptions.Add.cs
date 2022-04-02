@@ -230,7 +230,7 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
                this.termsAndConditionService.AddTermsAndConditionAsync(someTermsAndCondition);
 
             //then
-            await Assert.ThrowsAsync<TermsAndConditionDependencyException>(() =>
+            await Assert.ThrowsAsync<TermsAndConditionServiceException>(() =>
                 addTermsAndConditionTask.AsTask());
 
             this.dateTimeBrokerMock.Verify(broker =>
