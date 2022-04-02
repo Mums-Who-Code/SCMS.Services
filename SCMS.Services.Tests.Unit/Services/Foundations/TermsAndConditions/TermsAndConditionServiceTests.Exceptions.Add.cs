@@ -6,6 +6,7 @@ using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using SCMS.Services.Api.Models.Foundations.TermsAndConditions;
 using SCMS.Services.Api.Models.Foundations.TermsAndConditions.Exceptions;
@@ -157,6 +158,49 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.TermsAndConditions
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertTermsAndConditionAsync(alreadyExistsTermsAndCondition),
+                    Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnAddIfDatabaseUpdateErrorOccursAndLogItAsync()
+        {
+            // given
+            TermsAndCondition someTermsAndCondition = CreateRandomTermsAndCondition();
+            var databaseUpdateException = new DbUpdateException();
+
+            var failedTermsAndConditionStorageException =
+                new FailedTermsAndConditionStorageException(databaseUpdateException);
+
+            var expectedTermsAndConditionDependencyException =
+                new TermsAndConditionDependencyException(failedTermsAndConditionStorageException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTime())
+                    .Throws(databaseUpdateException);
+
+            // when
+            ValueTask<TermsAndCondition> addTermsAndConditionTask =
+                this.termsAndConditionService.AddTermsAndConditionAsync(someTermsAndCondition);
+
+            // then
+            await Assert.ThrowsAsync<TermsAndConditionDependencyException>(() =>
+                addTermsAndConditionTask.AsTask());
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTime(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedTermsAndConditionDependencyException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertTermsAndConditionAsync(It.IsAny<TermsAndCondition>()),
                     Times.Never);
 
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
