@@ -5,6 +5,7 @@
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using SCMS.Services.Api.Models.Foundations.TermsAndConditions;
 using SCMS.Services.Api.Models.Foundations.TermsAndConditions.Exceptions;
 using Xeptions;
@@ -53,6 +54,13 @@ namespace SCMS.Services.Api.Services.Foundations.TermsAndConditions
 
                 throw CreateAndLogDependencyValidationException(invalidTermsAndConditionReferenceException);
             }
+            catch (DbUpdateException dbUpdateException)
+            {
+                var failedTermsAndConditionException =
+                    new FailedTermsAndConditionStorageException(dbUpdateException);
+
+                throw CreateAndLogDependencyException(failedTermsAndConditionException);
+            }
         }
 
         private TermsAndConditionValidationException CreateAndLogValidationException(Xeption exception)
@@ -83,6 +91,16 @@ namespace SCMS.Services.Api.Services.Foundations.TermsAndConditions
             this.loggingBroker.LogError(termsAndConditionDependencyValidationException);
 
             return termsAndConditionDependencyValidationException;
+        }
+
+        private TermsAndConditionDependencyException CreateAndLogDependencyException(Xeption exception)
+        {
+            var termsAndConditionDependencyException =
+                new TermsAndConditionDependencyException(exception);
+
+            this.loggingBroker.LogError(termsAndConditionDependencyException);
+
+            return termsAndConditionDependencyException;
         }
     }
 }
