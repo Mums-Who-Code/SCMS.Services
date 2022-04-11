@@ -2,12 +2,11 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System.Threading.Tasks;
-using SCMS.Services.Api.Models.Foundations.Branches;
-
-namespace SCMS.Services.Api.Brokers.Storages
+namespace SCMS.Services.Api.Models.Foundations.Agreements
 {
-    public partial interface IStorageBroker
-    { 
+    public enum AgreementStatus
+    {
+        Accepted,
+        Pending
     }
 }

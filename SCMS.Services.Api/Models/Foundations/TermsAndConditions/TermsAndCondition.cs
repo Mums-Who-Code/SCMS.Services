@@ -3,6 +3,9 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using SCMS.Services.Api.Models.Foundations.Agreements;
 using SCMS.Services.Api.Models.Foundations.Users;
 
 namespace SCMS.Services.Api.Models.Foundations.TermsAndConditions
@@ -21,5 +24,8 @@ namespace SCMS.Services.Api.Models.Foundations.TermsAndConditions
 
         public Guid UpdatedBy { get; set; }
         public User UpdatedByUser { get; set; }
+
+        [JsonIgnore]
+        public IEnumerable<Agreement> TermsAndConditiondAgreements { get; set; }
     }
 }

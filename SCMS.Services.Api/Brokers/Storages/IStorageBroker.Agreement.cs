@@ -3,11 +3,12 @@
 // -----------------------------------------------------------------------
 
 using System.Threading.Tasks;
-using SCMS.Services.Api.Models.Foundations.Branches;
+using SCMS.Services.Api.Models.Foundations.Agreements;
 
 namespace SCMS.Services.Api.Brokers.Storages
 {
     public partial interface IStorageBroker
-    { 
+    {
+        ValueTask<Agreement> InsertAgreementAsync(Agreement agreement);
     }
 }
