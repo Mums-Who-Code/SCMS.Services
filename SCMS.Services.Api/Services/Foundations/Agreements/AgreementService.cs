@@ -9,7 +9,7 @@ using SCMS.Services.Api.Models.Foundations.Agreements;
 
 namespace SCMS.Services.Api.Services.Foundations.Agreements
 {
-    public class AgreementService : IAgreementService
+    public partial class AgreementService : IAgreementService
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -22,7 +22,12 @@ namespace SCMS.Services.Api.Services.Foundations.Agreements
             this.loggingBroker = loggingBroker;
         }
 
-        public async ValueTask<Agreement> AddAgreementAsync(Agreement agreement) =>
-            await this.storageBroker.InsertAgreementAsync(agreement);
+        public ValueTask<Agreement> AddAgreementAsync(Agreement agreement) =>
+        TryCatch(async () =>
+        {
+            ValidateInput(agreement);
+
+            return await this.storageBroker.InsertAgreementAsync(agreement);
+        });
     }
 }
