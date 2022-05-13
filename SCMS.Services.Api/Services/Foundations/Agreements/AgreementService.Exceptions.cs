@@ -23,6 +23,10 @@ namespace SCMS.Services.Api.Services.Foundations.Agreements
             {
                 throw CreateAndLogValidationException(nullAgreementException);
             }
+            catch (InvalidAgreementException invalidAgreementException)
+            {
+                throw CreateAndLogValidationException(invalidAgreementException);
+            }
         }
 
         private AgreementValidationException CreateAndLogValidationException(Xeption exception)

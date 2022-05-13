@@ -57,11 +57,27 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Agreements
 
             invalidAgreementException.AddData(
                 key: nameof(Agreement.Id),
-                values: "Id is required");
+                values: "Id is required.");
 
             invalidAgreementException.AddData(
                 key: nameof(Agreement.Status),
-                values: "Value is not recognized");
+                values: "Value is invalid.");
+
+            invalidAgreementException.AddData(
+                key: nameof(Agreement.CreatedBy),
+                values: "Id is required.");
+
+            invalidAgreementException.AddData(
+                 key: nameof(Agreement.UpdatedBy),
+                 values: "Id is required.");
+
+            invalidAgreementException.AddData(
+                key: nameof(Agreement.CreatedDate),
+                values: "Date is required.");
+
+            invalidAgreementException.AddData(
+                key: nameof(Agreement.UpdatedDate),
+                values: "Date is required.");
 
             var expectedAgreementValidationException =
                 new AgreementValidationException(invalidAgreementException);
