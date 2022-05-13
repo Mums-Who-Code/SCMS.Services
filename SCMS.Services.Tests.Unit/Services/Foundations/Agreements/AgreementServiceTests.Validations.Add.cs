@@ -42,5 +42,49 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Agreements
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnAddIfAgreementIsInvalidAndLogItAsync()
+        {
+            //given
+            var invalidAgreement = new Agreement
+            {
+                Status = GetInvalidEnum<AgreementStatus>()
+            };
+
+            var invalidAgreementException =
+               new InvalidAgreementException();
+
+            invalidAgreementException.AddData(
+                key: nameof(Agreement.Id),
+                values: "Id is required");
+
+            invalidAgreementException.AddData(
+                key: nameof(Agreement.Status),
+                values: "Value is not recognized");
+
+            var expectedAgreementValidationException =
+                new AgreementValidationException(invalidAgreementException);
+
+            //when
+            ValueTask<Agreement> addAgreementTask =
+                this.agreementService.AddAgreementAsync(invalidAgreement);
+
+            //then
+            await Assert.ThrowsAsync<AgreementValidationException>(() =>
+                addAgreementTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedAgreementValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertAgreementAsync(It.IsAny<Agreement>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
