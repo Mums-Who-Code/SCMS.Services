@@ -37,7 +37,7 @@ namespace SCMS.Services.Api.Services.Foundations.Students
         });
 
         public IQueryable<Student> RetrieveAllStudents()=>
-            throw new NotImplementedException();
+           this.storageBroker.SelectAllStudents();
 
         public ValueTask<Student> RetrieveStudentByIdAsync(Guid studentId) =>
         TryCatch(async () =>

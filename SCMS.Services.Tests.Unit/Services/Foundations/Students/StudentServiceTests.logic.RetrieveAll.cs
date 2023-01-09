@@ -5,11 +5,7 @@
 using FluentAssertions;
 using Moq;
 using SCMS.Services.Api.Models.Foundations.Students;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
@@ -22,13 +18,13 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             //given
             IQueryable<Student> randomStudents = CreateRandomStudents();
             IQueryable<Student> retrievedStudents = randomStudents;
-            IQueryable<Student> expectedStudents= retrievedStudents;
+            IQueryable<Student> expectedStudents = retrievedStudents;
 
-            this.storageBrokerMock.Setup(broker=>
+            this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllStudents()).Returns(retrievedStudents);
 
             //when
-            IQueryable<Student> actualStudents= this.studentService.RetrieveAllStudents();
+            IQueryable<Student> actualStudents = this.studentService.RetrieveAllStudents();
 
             //then
             actualStudents.Should().BeEquivalentTo(expectedStudents);
