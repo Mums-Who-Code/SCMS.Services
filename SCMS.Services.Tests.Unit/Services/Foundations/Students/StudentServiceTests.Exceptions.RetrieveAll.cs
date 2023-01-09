@@ -6,10 +6,6 @@ using Microsoft.Data.SqlClient;
 using Moq;
 using SCMS.Services.Api.Models.Foundations.Students.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
@@ -22,13 +18,13 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             //given
             SqlException sqlException = GetSqlException();
 
-            var failedStudentStorageException = 
+            var failedStudentStorageException =
                 new FailedStudentStorageException(sqlException);
 
-            var expectedStudentDependencyException = 
+            var expectedStudentDependencyException =
                 new StudentDependencyException(failedStudentStorageException);
 
-            this.storageBrokerMock.Setup(broker=>
+            this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllStudents()).Throws(sqlException);
 
             //when
@@ -38,12 +34,12 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             //then
             Assert.Throws<StudentDependencyException>(retrieveAllStudentsAction);
 
-            this.storageBrokerMock.Verify(broker=>
-                broker.SelectAllStudents(),Times.Once);
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllStudents(), Times.Once);
 
-            this.loggingBrokerMock.Verify(broker=>
+            this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(
-                    expectedStudentDependencyException))),Times.Once);
+                    expectedStudentDependencyException))), Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
