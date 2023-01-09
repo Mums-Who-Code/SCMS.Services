@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using SCMS.Services.Api.Brokers.DateTimes;
 using SCMS.Services.Api.Brokers.Loggings;
@@ -34,6 +35,9 @@ namespace SCMS.Services.Api.Services.Foundations.Students
 
             return await this.storageBroker.InsertStudentAsync(student);
         });
+
+        public IQueryable<Student> RetrieveAllStudents()=>
+            throw new NotImplementedException();
 
         public ValueTask<Student> RetrieveStudentByIdAsync(Guid studentId) =>
         TryCatch(async () =>

@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using SCMS.Services.Api.Models.Foundations.Students;
 
@@ -13,5 +14,6 @@ namespace SCMS.Services.Api.Services.Foundations.Students
         ValueTask<Student> AddStudentAsync(Student student);
 
         ValueTask<Student> RetrieveStudentByIdAsync(Guid studentId);
+        IQueryable<Student> RetrieveAllStudents();
     }
 }
