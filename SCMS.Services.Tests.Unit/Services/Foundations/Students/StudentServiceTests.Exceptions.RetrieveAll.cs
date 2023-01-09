@@ -2,6 +2,7 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
+using FluentAssertions;
 using Microsoft.Data.SqlClient;
 using Moq;
 using SCMS.Services.Api.Models.Foundations.Students.Exceptions;
@@ -40,6 +41,40 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(
                     expectedStudentDependencyException))), Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async void ShouldThrowServiceExceptionOnRetrieveAllIfServiceErrorOccursAndLogItAsync()
+        {
+            //given
+            Exception seviceException = new Exception();
+
+            var failedStudentServiceException = 
+                new FailedStudentServiceException(seviceException);
+
+            var  expectedStudentServiceException= 
+                new StudentServiceException(seviceException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllStudents()).Throws(seviceException);
+
+            //when
+            Action retrieveAllStudentsAction =()=>
+                this.studentService.RetrieveAllStudents();
+
+            //then
+            Assert.Throws<StudentServiceException>(retrieveAllStudentsAction);
+
+            this.storageBrokerMock.Verify(broker=>
+                broker.SelectAllStudents(), Times.Once);
+
+            this.loggingBrokerMock.Verify(broker=>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedStudentServiceException))),Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
