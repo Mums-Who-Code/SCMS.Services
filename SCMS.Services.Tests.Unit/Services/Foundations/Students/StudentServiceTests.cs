@@ -2,10 +2,6 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
 using Moq;
 using SCMS.Services.Api.Brokers.DateTimes;
@@ -13,6 +9,11 @@ using SCMS.Services.Api.Brokers.Loggings;
 using SCMS.Services.Api.Brokers.Storages;
 using SCMS.Services.Api.Models.Foundations.Students;
 using SCMS.Services.Api.Services.Foundations.Students;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using Tynamix.ObjectFiller;
 using Xeptions;
 
@@ -72,6 +73,12 @@ namespace SCMS.Services.Tests.Unit.Services.Foundations.Students
 
         private static Student CreateRandomStudent() =>
             CreateStudentFiller(dateTime: GetRandomDateTime()).Create();
+
+        private static IQueryable<Student> CreateRandomStudents()
+        {
+            return CreateStudentFiller(dateTime: GetRandomDateTime())
+                .Create(count: GetRandomNumber()).AsQueryable();
+        }
 
         private static Filler<Student> CreateStudentFiller(DateTimeOffset dateTime)
         {

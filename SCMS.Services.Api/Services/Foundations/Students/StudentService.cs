@@ -2,12 +2,13 @@
 // Copyright (c) Signature Chess Club & MumsWhoCode. All rights reserved.
 // -----------------------------------------------------------------------
 
-using System;
-using System.Threading.Tasks;
 using SCMS.Services.Api.Brokers.DateTimes;
 using SCMS.Services.Api.Brokers.Loggings;
 using SCMS.Services.Api.Brokers.Storages;
 using SCMS.Services.Api.Models.Foundations.Students;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SCMS.Services.Api.Services.Foundations.Students
 {
@@ -34,6 +35,9 @@ namespace SCMS.Services.Api.Services.Foundations.Students
 
             return await this.storageBroker.InsertStudentAsync(student);
         });
+
+        public IQueryable<Student> RetrieveAllStudents() =>
+          TryCatch(() => this.storageBroker.SelectAllStudents());
 
         public ValueTask<Student> RetrieveStudentByIdAsync(Guid studentId) =>
         TryCatch(async () =>
